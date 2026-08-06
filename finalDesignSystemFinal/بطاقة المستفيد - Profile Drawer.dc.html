@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f5f5f5; --card:#f8f8f8; --border:#e8e8e8; --text:#706f6f; --head:#8b1538;
+      --primary:#8b1538; --primary-hover:#6e102c;
+      --primary-soft:rgba(139,21,56,0.08); --primary-soft-2:rgba(139,21,56,0.12);
+    }
+    body { margin:0; background:var(--bg); }
+    * { box-sizing:border-box; }
+    @keyframes slidein { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+    [dir=rtl] @keyframes slidein { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    .drawer-panel { animation: slidein 0.28s cubic-bezier(0.2,0,0,1); }
+  </style>
+</helmet>
+
+<div dir="rtl" style="font-family: 'Tajawal', Tahoma, Arial, sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); padding: 40px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+  <div style="max-width: 40rem; text-align: center;">
+    <div style="font-size: 12px; font-weight: 800; color: #fff; background: var(--primary); display: inline-block; padding: 4px 14px; border-radius: 9999px; margin-bottom: 12px;">مكوّن مقترح — للتجربة قبل الاعتماد</div>
+    <h1 style="font-size: 26px; font-weight: 800; color: var(--head); margin: 0 0 6px;">درج ملف المستفيد (Profile Drawer)</h1>
+    <p style="font-size: 14px; margin: 0 0 20px;">درج جانبي يفتح من جهة البدء (اليمين) يعرض ملف المستفيد الكامل في تبويبات: البيانات، المرفقات، سجل الطلبات، الملاحظات. جرّبه ثم قرّر دمجه في الدليل.</p>
+    <button onClick="{{ open }}" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; background: var(--primary); color: #fff; border: none; padding: 13px 26px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer;" style-hover="background: var(--primary-hover);">فتح ملف المستفيد</button>
+  </div>
+
+  <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ close }}" style="position: fixed; inset: 0; z-index: 60; background: rgba(23,16,18,0.5);">
+      <div class="drawer-panel" onClick="{{ stop }}" style="position: absolute; inset-inline-start: 0; top: 0; bottom: 0; width: 420px; max-width: 92vw; background: var(--card); box-shadow: 0 0 60px rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+        <!-- header -->
+        <div style="background: var(--primary); color: #fff; padding: 22px 24px; position: relative;">
+          <button onClick="{{ close }}" aria-label="إغلاق" style="position: absolute; top: 16px; inset-inline-end: 16px; width: 34px; height: 34px; border-radius: 10px; border: none; background: rgba(255,255,255,0.15); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">{{ xIcon }}</button>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 60px; height: 60px; border-radius: 9999px; background: rgba(255,255,255,0.2); flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 20px; font-weight: 800;">سارة العتيبي</div>
+              <div style="font-size: 13px; opacity: 0.9;">التمكين المالي · الرياض</div>
+              <span style="display: inline-block; margin-top: 6px; background: #f2b824; color: #6e102c; font-size: 11px; font-weight: 800; padding: 2px 12px; border-radius: 9999px;">نشط</span>
+            </div>
+          </div>
+        </div>
+        <!-- tabs -->
+        <div style="display: flex; border-bottom: 1px solid var(--border); padding: 0 12px;">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.select }}" style="flex: 1; padding: 13px 6px; font-size: 13px; font-weight: {{ t.weight }}; color: {{ t.color }}; background: transparent; border: none; border-bottom: 3px solid {{ t.indicator }}; margin-bottom: -1px; cursor: pointer; font-family: inherit;">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <!-- body -->
+        <div style="flex: 1; overflow-y: auto; padding: 20px 24px;">
+          <sc-if value="{{ isData }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <sc-for list="{{ dataFields }}" as="f" hint-placeholder-count="5">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px;"><span style="font-size: 13px; color: var(--text);">{{ f.label }}</span><span dir="{{ f.dir }}" style="font-size: 14px; font-weight: 600; color: var(--head);">{{ f.value }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isFiles }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <sc-for list="{{ files }}" as="f" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 12px;">
+                  <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ fileIcon }}</span>
+                  <div style="flex: 1; min-width: 0;"><div style="font-size: 14px; font-weight: 600; color: var(--head);">{{ f.name }}</div><div style="font-size: 12px; color: var(--text);">{{ f.meta }}</div></div>
+                  <span style="color: #15803d; display: flex;">{{ checkIcon }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isHistory }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column;">
+              <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+                <div style="display: flex; gap: 14px;">
+                  <div style="display: flex; flex-direction: column; align-items: center;"><div style="width: 30px; height: 30px; border-radius: 9999px; background: {{ h.dotBg }}; color: {{ h.dotColor }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ h.svg }}</div><sc-if value="{{ h.line }}" hint-placeholder-val="{{ true }}"><div style="width: 2px; flex: 1; min-height: 20px; background: var(--border);"></div></sc-if></div>
+                  <div style="padding-bottom: 18px;"><div style="font-size: 14px; font-weight: 700; color: var(--head);">{{ h.title }}</div><div style="font-size: 12px; color: var(--text);">{{ h.time }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isNotes }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <sc-for list="{{ notes }}" as="n" hint-placeholder-count="2">
+                <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px;"><div style="font-size: 13px; color: var(--head); line-height: 1.7;">{{ n.text }}</div><div style="font-size: 11px; color: var(--text); margin-top: 8px;">{{ n.by }} · {{ n.time }}</div></div>
+              </sc-for>
+              <textarea rows="3" placeholder="أضف ملاحظة…" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px; color: var(--text); font-family: inherit; font-size: 13px; outline: none; resize: vertical;" style-focus="border-color: var(--primary);"></textarea>
+            </div>
+          </sc-if>
+        </div>
+        <!-- footer -->
+        <div style="display: flex; gap: 10px; padding: 16px 24px; border-top: 1px solid var(--border);">
+          <button style="flex: 1; border-radius: 12px; background: var(--primary); color: #fff; border: none; padding: 11px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;" style-hover="background: var(--primary-hover);">تعديل الملف</button>
+          <button onClick="{{ close }}" style="border-radius: 12px; border: 1px solid var(--border); background: var(--card); color: var(--text); padding: 11px 20px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: false, tab: 0 };
+  icon(p) { return React.createElement('svg', { xmlns:'http://www.w3.org/2000/svg', width:20, height:20, viewBox:'0 0 24 24', fill:'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round', dangerouslySetInnerHTML:{__html:p} }); }
+  renderVals() {
+    const I = (p) => this.icon(p);
+    const x = I('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>');
+    const check = I('<polyline points="20 6 9 17 4 12"/>');
+    const file = I('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>');
+    const t = this.state.tab;
+    return {
+      isOpen: this.state.open,
+      open: () => this.setState({ open: true }),
+      close: () => this.setState({ open: false }),
+      stop: (e) => e.stopPropagation(),
+      xIcon: x, checkIcon: check, fileIcon: file,
+      tabs: ['البيانات', 'المرفقات', 'الطلبات', 'الملاحظات'].map((label, i) => ({
+        label, select: () => this.setState({ tab: i }),
+        color: i === t ? 'var(--primary)' : 'var(--text)', weight: i === t ? 700 : 600,
+        indicator: i === t ? 'var(--primary)' : 'transparent',
+      })),
+      isData: t === 0, isFiles: t === 1, isHistory: t === 2, isNotes: t === 3,
+      dataFields: [
+        { label: 'رقم الملف', value: 'BEN-2026-0417', dir: 'ltr' },
+        { label: 'رقم الهوية', value: '1XXXXXXXXX', dir: 'ltr' },
+        { label: 'الجوال', value: '0551234567', dir: 'ltr' },
+        { label: 'المدينة', value: 'الرياض', dir: 'rtl' },
+        { label: 'البرنامج', value: 'التمكين المالي', dir: 'rtl' },
+        { label: 'تاريخ الانضمام', value: '1447/01/12', dir: 'ltr' },
+      ],
+      files: [
+        { name: 'الهوية الوطنية.pdf', meta: 'صالحة · 1.2MB' },
+        { name: 'صك الأسرة.pdf', meta: 'صالح · 640KB' },
+        { name: 'كشف الحساب.pdf', meta: 'حديث · 1.8MB' },
+      ],
+      history: [
+        { title: 'صرف دفعة التمكين', time: '01 يوليو 2026', dotBg: 'var(--primary)', dotColor: '#fff', svg: check, line: true },
+        { title: 'اعتماد الطلب', time: '28 يونيو 2026', dotBg: 'var(--primary)', dotColor: '#fff', svg: check, line: true },
+        { title: 'اكتمال المراجعة', time: '25 يونيو 2026', dotBg: 'var(--primary-soft-2)', dotColor: 'var(--primary)', svg: check, line: true },
+        { title: 'تقديم الطلب', time: '20 يونيو 2026', dotBg: 'var(--primary-soft-2)', dotColor: 'var(--primary)', svg: file, line: false },
+      ],
+      notes: [
+        { text: 'تم التواصل مع المستفيدة وتأكيد بيانات الحساب البنكي.', by: 'أ. محمد', time: 'قبل يومين' },
+        { text: 'بحاجة لتحديث صك الأسرة قبل الدفعة القادمة.', by: 'أ. نورة', time: 'الأسبوع الماضي' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+/* ==========================================================================
+   نظام الزاد الموحّد — Zad Universal Design System
+   tokens.css — المستوى 1: متغيرات CSS مشتقة من tokens.json
+   مستقل تماماً: لا اعتماديات، لا إطار عمل. اربطه ثم استخدم var(--*) فقط.
+   بدّل --brand-primary وحده ليتبدّل النظام كله (انظر مثال الثيم البديل بالأسفل).
+   ========================================================================== */
+
+:root {
+  /* ----- السلالم الخام (referenceable scales) ----- */
+  --primary-50:#f8f1f3; --primary-100:#f0e0e5; --primary-200:#edb5c6; --primary-300:#e184a0;
+  --primary-400:#d5537a; --primary-500:#bc2e58; --primary-600:#9c2649; --primary-700:#7b1e3a;
+  --primary-800:#60162c; --primary-900:#3e0e1c;
+
+  --secondary-50:#f9f7f1; --secondary-100:#f1ecdf; --secondary-200:#f2e0b1; --secondary-300:#e9cc7c;
+  --secondary-400:#e0b748; --secondary-500:#c99c22; --secondary-600:#a6811c; --secondary-700:#836616;
+  --secondary-800:#664f0f; --secondary-900:#43330a;
+
+  --neutral-0:#ffffff; --neutral-50:#f5f5f5; --neutral-100:#e8e8e8; --neutral-200:#d2d0d1;
+  --neutral-300:#b4b1b3; --neutral-400:#969294; --neutral-500:#777375; --neutral-600:#635f61;
+  --neutral-700:#4e4b4d; --neutral-800:#3c3a3b; --neutral-900:#272626; --neutral-1000:#171012;
+
+  /* ----- العلامة (نقطة تبديل واحدة) ----- */
+  --brand-primary: var(--primary-700);
+  --brand-secondary: var(--secondary-400);
+  --brand-accent: var(--secondary-500);
+
+  /* ----- ألوان الحالات ----- */
+  --success-solid:#16a34a; --success-surface:#dcfce7; --success-border:#86efac; --success-text:#15803d;
+  --warning-solid:#d97706; --warning-surface:#fef3c7; --warning-border:#fde68a; --warning-text:#854d0e;
+  --danger-solid:#dc2626;  --danger-surface:#fee2e2;  --danger-border:#fca5a5;  --danger-text:#991b1b;
+  --info-solid:#2563eb;    --info-surface:#dbeafe;    --info-border:#93c5fd;    --info-text:#1d4ed8;
+
+  /* ----- المسافات (سلم 4px) ----- */
+  --space-0:0; --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px;
+  --space-6:24px; --space-8:32px; --space-10:40px; --space-12:48px; --space-16:64px; --space-20:80px; --space-24:96px;
+
+  /* ----- الأنصاف والحدود ----- */
+  --radius-none:0; --radius-sm:6px; --radius-md:10px; --radius-lg:14px; --radius-xl:20px; --radius-2xl:28px; --radius-full:9999px;
+  --border-hairline:1px; --border-thin:1.5px; --border-thick:2px; --border-heavy:4px;
+
+  /* ----- الظلال ----- */
+  --shadow-xs:0 1px 2px rgba(23,16,18,0.06);
+  --shadow-sm:0 1px 3px rgba(23,16,18,0.10), 0 1px 2px rgba(23,16,18,0.06);
+  --shadow-md:0 4px 12px rgba(23,16,18,0.10);
+  --shadow-lg:0 12px 28px rgba(23,16,18,0.14);
+  --shadow-xl:0 24px 60px rgba(23,16,18,0.22);
+  --shadow-focus:0 0 0 3px var(--focus-ring);
+
+  /* ----- الخطوط ----- */
+  --font-arabic:'Tajawal','Segoe UI',Tahoma,Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --text-2xs:12px; --text-xs:14px; --text-sm:15px; --text-base:16px; --text-lg:18px;
+  --text-xl:20px; --text-2xl:24px; --text-3xl:30px; --text-4xl:38px; --text-5xl:48px;
+  --leading-tight:1.2; --leading-snug:1.4; --leading-normal:1.6; --leading-relaxed:1.8;
+  --weight-regular:400; --weight-medium:500; --weight-bold:700; --weight-black:800;
+
+  /* ----- الطبقات ----- */
+  --z-base:0; --z-dropdown:1000; --z-sticky:1100; --z-drawer:1200; --z-overlay:1300;
+  --z-modal:1400; --z-popover:1500; --z-toast:1600; --z-tooltip:1700;
+
+  /* ----- الحركة ----- */
+  --duration-instant:0ms; --duration-fast:120ms; --duration-base:200ms; --duration-slow:320ms; --duration-slower:480ms;
+  --ease-standard:cubic-bezier(0.2,0,0,1); --ease-decelerate:cubic-bezier(0,0,0,1);
+  --ease-accelerate:cubic-bezier(0.3,0,1,1); --ease-emphasized:cubic-bezier(0.2,0,0,1.2);
+
+  /* ----- القياسات ----- */
+  --touch-min:44px; --container:1152px; --sidebar:264px; --sidebar-collapsed:72px;
+}
+
+/* ==========================================================================
+   الثيمات الدلالية — نفس الأسماء في الوضعين
+   ========================================================================== */
+:root, [data-theme="light"] {
+  --surface-base: var(--neutral-50);
+  --surface-raised: var(--neutral-0);
+  --surface-sunken: var(--neutral-100);
+  --surface-inverse: var(--neutral-900);
+
+  --text-primary: var(--neutral-800);
+  --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-500);
+  --text-inverse: var(--neutral-0);
+  --text-brand: var(--primary-700);
+  --text-link: var(--primary-600);
+
+  --border-subtle: var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --border-strong: var(--neutral-400);
+  --border-focus: var(--primary-500);
+
+  --action-primary-surface: var(--brand-primary);
+  --action-primary-hover: var(--primary-800);
+  --action-primary-active: var(--primary-900);
+  --action-primary-text: var(--neutral-0);
+  --action-secondary-surface: var(--neutral-0);
+  --action-secondary-hover: var(--neutral-100);
+  --action-secondary-border: var(--neutral-300);
+  --action-secondary-text: var(--neutral-800);
+  --action-accent-surface: var(--brand-secondary);
+  --action-accent-hover: var(--secondary-500);
+  --action-accent-text: var(--neutral-900);
+  --action-ghost-hover: var(--primary-50);
+  --action-ghost-text: var(--primary-700);
+
+  --feedback-success-text: var(--success-text);
+  --feedback-warning-text: var(--warning-text);
+  --feedback-danger-text: var(--danger-text);
+  --feedback-info-text: var(--info-text);
+
+  --focus-ring: rgba(188,46,88,0.35);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --surface-base: var(--neutral-1000);
+  --surface-raised: #241a1e;
+  --surface-sunken: #120c0e;
+  --surface-inverse: var(--neutral-50);
+
+  --text-primary: #ede7e9;
+  --text-secondary: #c4b9bc;
+  --text-muted: #9a8f92;
+  --text-inverse: var(--neutral-900);
+  --text-brand: var(--primary-300);
+  --text-link: var(--primary-300);
+
+  --border-subtle: #2c2024;
+  --border-default: #3a2c31;
+  --border-strong: #4d3a40;
+  --border-focus: var(--primary-400);
+
+  --action-primary-surface: var(--primary-500);
+  --action-primary-hover: var(--primary-400);
+  --action-primary-active: var(--primary-600);
+  --action-primary-text: var(--neutral-0);
+  --action-secondary-surface: #241a1e;
+  --action-secondary-hover: #2c2024;
+  --action-secondary-border: #3a2c31;
+  --action-secondary-text: #ede7e9;
+  --action-accent-surface: var(--brand-secondary);
+  --action-accent-hover: var(--secondary-300);
+  --action-accent-text: var(--neutral-900);
+  --action-ghost-hover: rgba(188,46,88,0.18);
+  --action-ghost-text: var(--primary-300);
+
+  --feedback-success-text: #4ade80;
+  --feedback-warning-text: #fbbf24;
+  --feedback-danger-text: #f87171;
+  --feedback-info-text: #60a5fa;
+
+  --focus-ring: rgba(213,83,122,0.45);
+  color-scheme: dark;
+}
+
+/* دعم تفضيل النظام تلقائياً عند غياب data-theme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --surface-base: var(--neutral-1000); --surface-raised:#241a1e; --surface-sunken:#120c0e; --surface-inverse:var(--neutral-50);
+    --text-primary:#ede7e9; --text-secondary:#c4b9bc; --text-muted:#9a8f92; --text-brand:var(--primary-300); --text-link:var(--primary-300);
+    --border-subtle:#2c2024; --border-default:#3a2c31; --border-strong:#4d3a40; --border-focus:var(--primary-400);
+    --action-primary-surface:var(--primary-500); --action-primary-hover:var(--primary-400); --action-primary-active:var(--primary-600);
+    --action-secondary-surface:#241a1e; --action-secondary-hover:#2c2024; --action-secondary-border:#3a2c31; --action-secondary-text:#ede7e9;
+    --action-ghost-hover:rgba(188,46,88,0.18); --action-ghost-text:var(--primary-300);
+    --feedback-success-text:#4ade80; --feedback-warning-text:#fbbf24; --feedback-danger-text:#f87171; --feedback-info-text:#60a5fa;
+    --focus-ring:rgba(213,83,122,0.45); color-scheme:dark;
+  }
+}
+
+/* أساس RTL موحّد */
+[dir="rtl"], .zad-root { direction: rtl; text-align: start; }
+.zad-root {
+  font-family: var(--font-arabic);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  background: var(--surface-base);
+  color: var(--text-primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
+}
+
+/* ==========================================================================
+   مثال الثيم البديل — جهة فرعية بلون مختلف دون كسر النظام.
+   يكفي إعادة تعريف --brand-primary وربط --action-primary-surface به.
+     <div class="zad-root" data-brand="teal"> ... </div>
+   ========================================================================== */
+[data-brand="teal"] {
+  --primary-50:#effcfa; --primary-100:#d5f5f0; --primary-200:#a6e9e0; --primary-300:#6fd6cb;
+  --primary-400:#3cbcb0; --primary-500:#1f9d92; --primary-600:#197f78; --primary-700:#166661;
+  --primary-800:#124f4c; --primary-900:#0d3634;
+  --brand-primary: var(--primary-700);
+  --focus-ring: rgba(31,157,146,0.35);
+}

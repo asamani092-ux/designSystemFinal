@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <link href="./tokens.css" rel="stylesheet">
+  <style>
+    body { margin: 0; }
+    @keyframes zadspin { to { transform: rotate(360deg); } }
+    .demo-card { background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+    .zad-in:focus { outline: none; border-color: var(--border-focus) !important; box-shadow: var(--shadow-focus); }
+    .tip { position: relative; }
+    .tip > .tip-body { visibility: hidden; opacity: 0; transition: opacity var(--duration-fast); }
+    .tip:hover > .tip-body, .tip:focus-within > .tip-body { visibility: visible; opacity: 1; }
+    @media print { .no-print { display: none !important; } }
+  </style>
+</helmet>
+
+<div dir="rtl" data-theme="{{ theme }}" class="zad-root" style="font-family: var(--font-arabic); background: var(--surface-base); color: var(--text-primary); min-height: 100vh;">
+
+  <!-- Top bar -->
+  <header class="no-print" style="position: sticky; top: 0; z-index: var(--z-sticky); background: var(--surface-raised); border-bottom: 1px solid var(--border-default); box-shadow: var(--shadow-sm);">
+    <div style="max-width: 1200px; margin-inline: auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="../assets/logo-icon.png" alt="الزاد" style="width: 34px; height: 34px; object-fit: contain;">
+        <div style="display: flex; flex-direction: column; line-height: 1.25;">
+          <span style="font-weight: 800; color: var(--text-brand); font-size: 16px;">المكوّنات المرجعية</span>
+          <span style="font-size: 11px; color: var(--text-muted);">المستوى 3 — نظام الزاد الموحّد</span>
+        </div>
+      </div>
+      <button onClick="{{ toggleTheme }}" style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); border: 1px solid var(--action-secondary-border); background: var(--action-secondary-surface); color: var(--action-secondary-text); padding: 9px 14px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">{{ themeLabel }}</button>
+    </div>
+    <div style="max-width: 1200px; margin-inline: auto; padding: 0 24px 0; display: flex; gap: 4px; flex-wrap: wrap; border-top: 1px solid var(--border-subtle);">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="7">
+        <button onClick="{{ g.select }}" style="padding: 12px 16px; font-size: 14px; font-weight: {{ g.weight }}; color: {{ g.color }}; background: transparent; border: none; border-bottom: 3px solid {{ g.indicator }}; margin-bottom: -1px; cursor: pointer; font-family: inherit;">{{ g.label }}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <main style="max-width: 1200px; margin-inline: auto; padding: 32px 24px 80px;">
+
+    <!-- ================= الأساسيات ================= -->
+    <sc-if value="{{ isBasics }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div class="demo-card" style="padding: 24px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 16px;">الأزرار — Button</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px;">
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: var(--action-primary-text); border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px;" style-hover="background: var(--action-primary-hover);">إجراء رئيسي</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-secondary-surface); color: var(--action-secondary-text); border: 1px solid var(--action-secondary-border); padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px;" style-hover="background: var(--action-secondary-hover);">ثانوي</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-accent-surface); color: var(--action-accent-text); border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px;" style-hover="background: var(--action-accent-hover);">تمييز</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: transparent; color: var(--action-ghost-text); border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px;" style-hover="background: var(--action-ghost-hover);">شفاف</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--danger-solid); color: #fff; border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px;">حذف</button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 8px 16px; font-family: inherit; font-weight: 700; font-size: 13px; min-height: 36px;">صغير</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 14px 26px; font-family: inherit; font-weight: 700; font-size: 16px; min-height: 52px;">كبير</button>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px;"><span style="display: flex;">{{ ic.spin }}</span> جارٍ الحفظ…</button>
+          <button disabled="" style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; opacity: 0.55; cursor: not-allowed;">معطّل</button>
+          <button aria-label="إضافة" style="width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">{{ ic.plus }}</button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+        <div class="demo-card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">الحقول — TextField / Select</div>
+          <div>
+            <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary);">الاسم الكامل</label>
+            <input class="zad-in" type="text" placeholder="أدخل الاسم" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-raised); padding: 12px 14px; color: var(--text-primary); font-family: inherit; font-size: 14px;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary);">بحث</label>
+            <div style="position: relative;">
+              <span style="position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); display: flex;">{{ ic.search }}</span>
+              <input class="zad-in" type="search" placeholder="ابحث…" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-raised); padding: 12px 42px 12px 14px; color: var(--text-primary); font-family: inherit; font-size: 14px;">
+            </div>
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary);">البرنامج</label>
+            <select class="zad-in" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-raised); padding: 12px 14px; color: var(--text-primary); font-family: inherit; font-size: 14px; cursor: pointer;">
+              <option>التمكين المالي</option><option>ريادة الأعمال</option><option>التدريب المهني</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--feedback-danger-text);">حقل بخطأ</label>
+            <input type="text" value="قيمة غير صحيحة" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--danger-solid); background: var(--surface-raised); padding: 12px 14px; color: var(--text-primary); font-family: inherit; font-size: 14px;">
+            <div style="font-size: 12px; color: var(--feedback-danger-text); margin-top: 6px;">هذا الحقل مطلوب.</div>
+          </div>
+        </div>
+
+        <div class="demo-card" style="padding: 24px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">التحكّم — Switch / Checkbox / Radio / MultiSelect</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 12px; color: var(--text-muted);">اختيار متعدد (Chips)</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 1px solid var(--border-default); border-radius: var(--radius-md); min-height: 44px;">
+              <sc-for list="{{ tags }}" as="t" hint-placeholder-count="3">
+                <span style="display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-full); background: var(--primary-50); color: var(--text-brand); font-size: 13px; font-weight: 600; padding: 5px 10px 5px 6px;">
+                  <button onClick="{{ t.remove }}" aria-label="حذف {{ t.label }}" style="width: 18px; height: 18px; border-radius: 9999px; border: none; background: var(--primary-100); color: var(--text-brand); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px;">✕</button>
+                  {{ t.label }}
+                </span>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 600; color: var(--text-secondary);">
+            تفعيل الإشعارات
+            <button onClick="{{ toggleSw1 }}" role="switch" aria-checked="{{ sw1 }}" style="position: relative; width: 46px; height: 26px; border-radius: 9999px; border: none; cursor: pointer; background: {{ sw1Bg }}; transition: background var(--duration-fast); padding: 0;"><span style="position: absolute; top: 3px; inset-inline-start: {{ sw1Pos }}; width: 20px; height: 20px; border-radius: 9999px; background: #fff; box-shadow: var(--shadow-sm); transition: inset-inline-start var(--duration-fast);"></span></button>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer;"><input type="checkbox" checked="" style="width: 18px; height: 18px; accent-color: var(--brand-primary);"> أوافق على الشروط</label>
+          <div style="display: flex; gap: 20px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); cursor: pointer;"><input type="radio" name="g" checked="" style="width: 18px; height: 18px; accent-color: var(--brand-primary);"> ذكر</label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); cursor: pointer;"><input type="radio" name="g" style="width: 18px; height: 18px; accent-color: var(--brand-primary);"> أنثى</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">الشارات والوسوم والتنبيهات</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <span style="border-radius: var(--radius-full); background: var(--primary-50); color: var(--text-brand); font-size: 12px; font-weight: 700; padding: 3px 12px;">علامة</span>
+          <span style="border-radius: var(--radius-full); background: var(--success-surface); color: var(--success-text); font-size: 12px; font-weight: 700; padding: 3px 12px;">نجاح</span>
+          <span style="border-radius: var(--radius-full); background: var(--warning-surface); color: var(--warning-text); font-size: 12px; font-weight: 700; padding: 3px 12px;">تحذير</span>
+          <span style="border-radius: var(--radius-full); background: var(--danger-surface); color: var(--danger-text); font-size: 12px; font-weight: 700; padding: 3px 12px;">خطأ</span>
+          <span style="border-radius: var(--radius-full); border: 1px solid var(--border-strong); color: var(--text-secondary); font-size: 12px; font-weight: 700; padding: 3px 12px;">محايد</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-full); background: var(--info-surface); color: var(--info-text); font-size: 12px; font-weight: 700; padding: 3px 10px;"><span style="width: 7px; height: 7px; border-radius: 9999px; background: var(--info-solid);"></span>قيد المعالجة</span>
+        </div>
+        <sc-for list="{{ alerts }}" as="al" hint-placeholder-count="4">
+          <div style="display: flex; align-items: flex-start; gap: 12px; background: {{ al.bg }}; border-inline-start: var(--border-heavy) solid {{ al.color }}; border-radius: var(--radius-md); padding: 12px 16px;">
+            <span style="color: {{ al.color }}; flex-shrink: 0; display: flex;">{{ al.svg }}</span>
+            <div><div style="font-weight: 700; color: {{ al.color }}; font-size: 14px;">{{ al.title }}</div><div style="font-size: 13px; color: {{ al.color }}; opacity: 0.9;">{{ al.body }}</div></div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+        <div class="demo-card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">النافذة والتلميح</div>
+          <button onClick="{{ openModal }}" style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">افتح النافذة</button>
+          <div class="tip" tabindex="0" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-secondary); cursor: help;">{{ ic.info }} مرّر لعرض التلميح
+            <span class="tip-body" style="position: absolute; bottom: calc(100% + 8px); inset-inline-start: 0; background: var(--surface-inverse); color: var(--text-inverse); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-sm); white-space: nowrap; z-index: var(--z-tooltip);">هذا تلميح توضيحي</span>
+          </div>
+        </div>
+        <div class="demo-card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">التحميل — Skeleton</div>
+          <div style="display: flex; align-items: center; gap: 12px;"><div style="width: 44px; height: 44px; border-radius: 9999px; background: var(--surface-sunken);"></div><div style="flex: 1; display: flex; flex-direction: column; gap: 8px;"><div style="height: 12px; width: 70%; background: var(--surface-sunken); border-radius: 4px;"></div><div style="height: 10px; width: 45%; background: var(--surface-sunken); border-radius: 4px;"></div></div></div>
+          <div style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 13px;">{{ ic.spin }} جارٍ التحميل…</div>
+        </div>
+        <div class="demo-card" style="padding: 24px; border-style: dashed; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div style="width: 52px; height: 52px; border-radius: 9999px; background: var(--primary-50); color: var(--text-brand); display: flex; align-items: center; justify-content: center;">{{ ic.inbox }}</div>
+          <div style="font-weight: 700; color: var(--text-primary);">لا توجد بيانات</div>
+          <div style="font-size: 13px; color: var(--text-muted);">ابدأ بإضافة أول عنصر.</div>
+          <button style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 9px 18px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">إضافة</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= التخطيط ================= -->
+    <sc-if value="{{ isLayout }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div class="demo-card" style="padding: 16px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 12px; padding: 0 8px;">مسار التنقّل — Breadcrumb</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 0 8px;">
+          <span style="color: var(--text-link); font-weight: 600;">الرئيسية</span><span style="color: var(--text-muted);">‹</span>
+          <span style="color: var(--text-link); font-weight: 600;">المستفيدون</span><span style="color: var(--text-muted);">‹</span>
+          <span style="color: var(--text-secondary);">سارة العتيبي</span>
+        </div>
+      </div>
+
+      <div class="demo-card" style="padding: 16px; display: flex; gap: 16px; min-height: 320px;">
+        <aside style="width: {{ sideW }}; flex-shrink: 0; background: var(--surface-base); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px 10px; display: flex; flex-direction: column; gap: 4px; transition: width var(--duration-base);">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 12px; justify-content: {{ sideJustify }};">
+            <img src="../assets/logo-icon.png" alt="الزاد" style="width: 30px; height: 30px; object-fit: contain; flex-shrink: 0;">
+            <sc-if value="{{ sideExpanded }}" hint-placeholder-val="{{ true }}"><span style="font-weight: 800; color: var(--text-brand); font-size: 14px;">المنصة</span></sc-if>
+          </div>
+          <sc-for list="{{ sidebar }}" as="n" hint-placeholder-count="5">
+            <button style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 10px; border-radius: var(--radius-md); border: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: {{ n.color }}; background: {{ n.bg }}; justify-content: {{ n.justify }};">
+              <span style="display: flex; flex-shrink: 0;">{{ n.svg }}</span>
+              <sc-if value="{{ sideExpanded }}" hint-placeholder-val="{{ true }}"><span style="flex: 1; text-align: start;">{{ n.label }}</span></sc-if>
+            </button>
+          </sc-for>
+        </aside>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <button onClick="{{ toggleSide }}" style="display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); border: 1px solid var(--action-secondary-border); background: var(--action-secondary-surface); color: var(--action-secondary-text); padding: 8px 14px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">{{ sideToggleLabel }}</button>
+            <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">الشريط الجانبي القابل للطي</div>
+          </div>
+          <div style="flex: 1; border: 1px dashed var(--border-default); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px;">منطقة المحتوى</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div class="demo-card" style="overflow: hidden;">
+          <div style="height: 96px; background: linear-gradient(135deg, var(--primary-100), var(--secondary-200));"></div>
+          <div style="padding: 16px;"><div style="font-weight: 700; color: var(--text-brand); margin-bottom: 4px;">بطاقة بوسائط</div><div style="font-size: 13px; color: var(--text-secondary);">رأس مرئي + محتوى + تذييل.</div></div>
+          <div style="padding: 0 16px 16px; display: flex; gap: 8px;"><button style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 8px 16px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">إجراء</button></div>
+        </div>
+        <div class="demo-card" style="padding: 0;">
+          <button onClick="{{ togglePanel }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 16px; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 15px; font-weight: 700; color: var(--text-brand);">لوح قابل للطي <span style="display: flex; transform: {{ panelRot }}; transition: transform var(--duration-fast);">{{ ic.chev }}</span></button>
+          <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}"><div style="padding: 0 16px 16px; font-size: 14px; color: var(--text-secondary); line-height: 1.8;">محتوى اللوح يظهر ويختفي بالطي. يُستخدم للأقسام الثانوية والأسئلة الشائعة.</div></sc-if>
+        </div>
+        <div class="demo-card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">الفاصل — Divider</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">القسم الأول</div>
+          <div style="display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 12px;"><div style="flex: 1; height: 1px; background: var(--border-default);"></div>أو<div style="flex: 1; height: 1px; background: var(--border-default);"></div></div>
+          <div style="font-size: 13px; color: var(--text-secondary);">القسم الثاني</div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= البيانات ================= -->
+    <sc-if value="{{ isData }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="demo-card" style="padding: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <span style="font-size: 13px; font-weight: 800; color: var(--text-brand);">شريط الترشيح:</span>
+        <div style="position: relative; flex: 1; min-width: 200px;"><span style="position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); display: flex;">{{ ic.search }}</span><input class="zad-in" placeholder="ابحث عن مستفيد…" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-raised); padding: 10px 40px 10px 14px; color: var(--text-primary); font-family: inherit; font-size: 14px;"></div>
+        <sc-for list="{{ tags }}" as="t" hint-placeholder-count="3"><span style="display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-full); background: var(--primary-50); color: var(--text-brand); font-size: 12px; font-weight: 600; padding: 5px 10px 5px 6px;"><button onClick="{{ t.remove }}" aria-label="حذف" style="width: 16px; height: 16px; border-radius: 9999px; border: none; background: var(--primary-100); color: var(--text-brand); cursor: pointer; font-size: 10px;">✕</button>{{ t.label }}</span></sc-for>
+      </div>
+
+      <div class="demo-card" style="overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border-subtle);">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">جدول البيانات — DataTable</div>
+          <button style="display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-md); border: 1px solid var(--action-secondary-border); background: var(--action-secondary-surface); color: var(--action-secondary-text); padding: 8px 14px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">{{ ic.download }} تصدير</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; font-size: 14px; border-collapse: collapse; text-align: start;">
+            <thead><tr style="background: var(--primary-50); color: var(--text-brand);">
+              <th style="padding: 12px 16px; width: 44px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--brand-primary);"></th>
+              <sc-for list="{{ columns }}" as="col" hint-placeholder-count="4"><th onClick="{{ col.sort }}" style="padding: 12px 16px; text-align: start; font-weight: 700; cursor: pointer; white-space: nowrap;"><span style="display: inline-flex; align-items: center; gap: 6px;">{{ col.label }}<span style="color: {{ col.arrowColor }}; display: flex;">{{ col.arrow }}</span></span></th></sc-for>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4"><tr style="border-top: 1px solid var(--border-subtle);" style-hover="background: var(--surface-sunken);">
+                <td style="padding: 12px 16px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--brand-primary);"></td>
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-brand);">{{ r.name }}</td>
+                <td style="padding: 12px 16px; color: var(--text-secondary);">{{ r.program }}</td>
+                <td style="padding: 12px 16px; color: var(--text-secondary);">{{ r.city }}</td>
+                <td style="padding: 12px 16px;"><span style="border-radius: var(--radius-full); background: {{ r.stBg }}; color: {{ r.stColor }}; font-size: 12px; font-weight: 700; padding: 3px 12px;">{{ r.status }}</span></td>
+              </tr></sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-top: 1px solid var(--border-subtle);">
+          <span style="font-size: 13px; color: var(--text-muted);">{{ pageInfo }}</span>
+          <div style="display: flex; gap: 6px;">
+            <sc-for list="{{ pages }}" as="pg" hint-placeholder-count="3"><button onClick="{{ pg.go }}" style="width: 38px; height: 38px; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: {{ pg.bg }}; color: {{ pg.color }}; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit;">{{ pg.n }}</button></sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted);">على الشاشات < 768px يتحوّل الجدول إلى بطاقات (كل صف بطاقة) — سلوك تحوّل لا تصغير.</div>
+    </div>
+    </sc-if>
+
+    <!-- ================= المؤشرات ================= -->
+    <sc-if value="{{ isKpi }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4"><div class="demo-card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--primary-50); color: var(--text-brand); display: flex; align-items: center; justify-content: center;">{{ k.svg }}</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">{{ k.label }}</div>
+          <div style="font-size: 28px; font-weight: 800; color: var(--text-primary); line-height: 1;">{{ k.value }}</div>
+          <div style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: {{ k.color }};">{{ k.arrow }} {{ k.delta }}</div>
+        </div></sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+        <div class="demo-card" style="padding: 20px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 16px;">مخطّط أعمدة</div>
+          <div style="display: flex; align-items: flex-end; gap: 12px; height: 160px;">
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="6"><div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: {{ b.h }}; background: var(--brand-primary); border-radius: var(--radius-sm) var(--radius-sm) 0 0;"></div><span style="font-size: 11px; color: var(--text-muted);">{{ b.label }}</span></div></sc-for>
+          </div>
+        </div>
+        <div class="demo-card" style="padding: 20px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 16px;">مخطّط خطي</div>
+          <svg viewBox="0 0 300 160" style="width: 100%; height: 160px;" preserveAspectRatio="none">
+            <polyline points="{{ lineArea }}" fill="var(--primary-100)" stroke="none"></polyline>
+            <polyline points="{{ linePts }}" fill="none" stroke="var(--brand-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+          </svg>
+        </div>
+        <div class="demo-card" style="padding: 20px; display: flex; gap: 20px; align-items: center;">
+          <div>
+            <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 16px;">مخطّط دائري</div>
+            <div style="width: 120px; height: 120px; border-radius: 9999px; background: {{ pie }};"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{ pieLegend }}" as="p" hint-placeholder-count="3"><div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary);"><span style="width: 12px; height: 12px; border-radius: 3px; background: {{ p.color }};"></span>{{ p.label }}</div></sc-for>
+          </div>
+        </div>
+        <div class="demo-card" style="padding: 20px; display: flex; flex-direction: column; gap: 16px; justify-content: center;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">أشرطة التقدّم</div>
+          <sc-for list="{{ progress }}" as="pr" hint-placeholder-count="3"><div><div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary);"><span>{{ pr.label }}</span><span style="color: var(--text-brand);">{{ pr.pct }}٪</span></div><div style="height: 9px; border-radius: 9999px; background: var(--surface-sunken); overflow: hidden;"><div style="width: {{ pr.pct }}%; height: 100%; background: {{ pr.color }}; border-radius: 9999px;"></div></div></div></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= التقارير ================= -->
+    <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <button onClick="{{ doPrint }}" class="no-print" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 10px 18px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">{{ ic.printer }} طباعة التقرير</button>
+      <div class="demo-card" style="padding: 32px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: var(--border-thick) solid var(--brand-primary); padding-bottom: 16px; margin-bottom: 20px;">
+          <div><div style="font-size: 22px; font-weight: 800; color: var(--text-brand);">تقرير المستفيدين الربعي</div><div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">الفترة: الربع الثاني ٢٠٢٦ · رقم المرجع: RPT-2026-Q2</div></div>
+          <img src="../assets/logo.png" alt="الزاد" style="width: 130px; height: auto;">
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <sc-for list="{{ criteria }}" as="c" hint-placeholder-count="4"><div style="background: var(--surface-base); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 14px;"><div style="font-size: 11px; color: var(--text-muted);">{{ c.label }}</div><div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">{{ c.value }}</div></div></sc-for>
+        </div>
+        <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+          <thead><tr style="background: var(--primary-50); color: var(--text-brand);"><th style="padding: 10px 14px; text-align: start;">البرنامج</th><th style="padding: 10px 14px; text-align: start;">المستفيدون</th><th style="padding: 10px 14px; text-align: start;">المكتمل</th><th style="padding: 10px 14px; text-align: start;">النسبة</th></tr></thead>
+          <tbody><sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="3"><tr style="border-top: 1px solid var(--border-subtle);"><td style="padding: 10px 14px; font-weight: 600; color: var(--text-primary);">{{ r.prog }}</td><td style="padding: 10px 14px; color: var(--text-secondary);">{{ r.total }}</td><td style="padding: 10px 14px; color: var(--text-secondary);">{{ r.done }}</td><td style="padding: 10px 14px; color: var(--text-brand); font-weight: 700;">{{ r.pct }}</td></tr></sc-for></tbody>
+          <tfoot><tr style="border-top: var(--border-thick) solid var(--border-strong); font-weight: 800; color: var(--text-primary);"><td style="padding: 10px 14px;">الإجمالي</td><td style="padding: 10px 14px;">١٬٢٤٧</td><td style="padding: 10px 14px;">٨٩٨</td><td style="padding: 10px 14px; color: var(--text-brand);">٧٢٪</td></tr></tfoot>
+        </table>
+        <div class="no-print" style="font-size: 12px; color: var(--text-muted); margin-top: 16px;">عند الطباعة (@media print): A4، بلا تنقّل/ظلال، رأس مكرّر، ألوان داكنة على أبيض.</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= المهام ================= -->
+    <sc-if value="{{ isTasks }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <sc-for list="{{ kanban }}" as="col" hint-placeholder-count="3"><div style="background: var(--surface-base); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 6px;"><span style="font-size: 14px; font-weight: 800; color: var(--text-primary);">{{ col.title }}</span><span style="border-radius: var(--radius-full); background: var(--surface-sunken); color: var(--text-secondary); font-size: 12px; font-weight: 700; padding: 1px 10px;">{{ col.count }}</span></div>
+          <sc-for list="{{ col.cards }}" as="t" hint-placeholder-count="2"><div class="demo-card" style="padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; justify-content: space-between;"><span style="border-radius: var(--radius-sm); background: {{ t.prBg }}; color: {{ t.prColor }}; font-size: 11px; font-weight: 700; padding: 2px 8px;">{{ t.priority }}</span><span style="font-size: 11px; color: {{ t.dueColor }};">{{ t.due }}</span></div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">{{ t.title }}</div>
+            <div style="display: flex; align-items: center; justify-content: space-between;"><div style="width: 28px; height: 28px; border-radius: 9999px; background: {{ t.avBg }};"></div><span style="font-size: 11px; color: var(--text-muted);">{{ t.tag }}</span></div>
+          </div></sc-for>
+        </div></sc-for>
+      </div>
+      <div class="demo-card" style="padding: 24px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-brand); margin-bottom: 18px;">الخط الزمني — Timeline</div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <sc-for list="{{ timeline }}" as="e" hint-placeholder-count="4"><div style="display: flex; gap: 14px;">
+            <div style="display: flex; flex-direction: column; align-items: center;"><div style="width: 32px; height: 32px; border-radius: 9999px; background: {{ e.dotBg }}; color: {{ e.dotColor }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ e.svg }}</div><sc-if value="{{ e.line }}" hint-placeholder-val="{{ true }}"><div style="width: 2px; flex: 1; min-height: 24px; background: var(--border-default);"></div></sc-if></div>
+            <div style="padding-bottom: 20px;"><div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">{{ e.title }}</div><div style="font-size: 12px; color: var(--text-muted);">{{ e.time }}</div></div>
+          </div></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= المرفقات ================= -->
+    <sc-if value="{{ isFiles }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="demo-card" style="padding: 32px; border-style: dashed; border-width: var(--border-thick); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <div style="width: 56px; height: 56px; border-radius: 9999px; background: var(--primary-50); color: var(--text-brand); display: flex; align-items: center; justify-content: center;">{{ ic.upload }}</div>
+        <div style="font-weight: 700; color: var(--text-primary); font-size: 16px;">اسحب الملفات هنا أو</div>
+        <button style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 10px 20px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">استعراض الملفات</button>
+        <div style="font-size: 12px; color: var(--text-muted);">PDF · JPG · PNG — حتى 5 ميجابايت</div>
+      </div>
+      <div class="demo-card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 13px; font-weight: 800; color: var(--text-brand);">صفوف الملفات — كل الحالات</div>
+        <sc-for list="{{ files }}" as="f" hint-placeholder-count="3"><div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+          <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: {{ f.iconBg }}; color: {{ f.iconColor }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ f.svg }}</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);">{{ f.name }}</div>
+            <sc-if value="{{ f.uploading }}" hint-placeholder-val="{{ false }}"><div style="height: 5px; border-radius: 9999px; background: var(--surface-sunken); overflow: hidden; margin-top: 6px;"><div style="width: {{ f.pct }}%; height: 100%; background: var(--brand-primary);"></div></div></sc-if>
+            <sc-if value="{{ f.hasMeta }}" hint-placeholder-val="{{ true }}"><div style="font-size: 12px; color: {{ f.metaColor }}; margin-top: 2px;">{{ f.meta }}</div></sc-if>
+          </div>
+          <button aria-label="{{ f.action }}" style="width: 34px; height: 34px; border-radius: var(--radius-md); border: none; background: transparent; color: {{ f.actionColor }}; cursor: pointer; display: flex; align-items: center; justify-content: center;">{{ f.actionSvg }}</button>
+        </div></sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+        <sc-for list="{{ uploadErrors }}" as="e" hint-placeholder-count="3"><div style="display: flex; align-items: flex-start; gap: 10px; background: var(--danger-surface); border-radius: var(--radius-md); padding: 12px 14px;"><span style="color: var(--danger-text); display: flex; flex-shrink: 0;">{{ ic.alert }}</span><div><div style="font-size: 13px; font-weight: 700; color: var(--danger-text);">{{ e.title }}</div><div style="font-size: 12px; color: var(--danger-text); opacity: 0.9;">{{ e.body }}</div></div></div></sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+
+  <!-- Modal -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(23,16,18,0.55); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div style="background: var(--surface-raised); border-radius: var(--radius-lg); max-width: 26rem; width: 100%; box-shadow: var(--shadow-xl); overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border-subtle);"><h3 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--text-brand);">تأكيد الإجراء</h3><button onClick="{{ closeModal }}" aria-label="إغلاق" style="width: 34px; height: 34px; border-radius: var(--radius-md); border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;">{{ ic.x }}</button></div>
+        <div style="padding: 22px; font-size: 14px; line-height: 1.8; color: var(--text-secondary);">هل أنت متأكد من اعتماد هذا الطلب؟ لا يمكن التراجع عن الإجراء.</div>
+        <div style="display: flex; gap: 10px; padding: 0 22px 22px;"><button onClick="{{ closeModal }}" style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: #fff; border: none; padding: 10px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">اعتماد</button><button onClick="{{ closeModal }}" style="border-radius: var(--radius-md); background: var(--action-secondary-surface); color: var(--action-secondary-text); border: 1px solid var(--action-secondary-border); padding: 10px 22px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">إلغاء</button></div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { group: 0, theme: 'light', sw1: true, side: false, modal: false, panel: true, sortKey: 'name', sortDir: 'asc', page: 1, tags: ['التمكين المالي','الرياض','نشط'] };
+  arNum(n){ return String(n).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); }
+  icon(p, fill){ return React.createElement('svg', { xmlns:'http://www.w3.org/2000/svg', width:20, height:20, viewBox:'0 0 24 24', fill: fill||'none', stroke: fill?'none':'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round', dangerouslySetInnerHTML:{__html:p} }); }
+  renderVals(){
+    const I = (p,f) => this.icon(p,f);
+    const ic = {
+      plus: I('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
+      search: I('<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'),
+      x: I('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'),
+      chev: I('<polyline points="6 9 12 15 18 9"/>'),
+      check: I('<polyline points="20 6 9 17 4 12"/>'),
+      alert: I('<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>'),
+      info: I('<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'),
+      inbox: I('<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'),
+      download: I('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>'),
+      upload: I('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>'),
+      home: I('<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
+      users: I('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>'),
+      file: I('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'),
+      chart: I('<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>'),
+      settings: I('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'),
+      up: I('<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>'),
+      down: I('<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>'),
+      sort: I('<path d="M11 5h10"/><path d="M11 9h7"/><path d="M11 13h4"/><path d="m3 17 3 3 3-3"/><path d="M6 18V4"/>'),
+      trash: I('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'),
+      refresh: I('<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>'),
+      image: I('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'),
+      printer: I('<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>'),
+      clock: I('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'),
+      spin: React.createElement('svg', { width:18, height:18, viewBox:'0 0 24 24', fill:'none', stroke:'currentColor', strokeWidth:2.5, strokeLinecap:'round', style:{ animation:'zadspin 0.8s linear infinite' }, dangerouslySetInnerHTML:{ __html:'<path d="M21 12a9 9 0 1 1-6.219-8.56"/>' } }),
+    };
+    const G = ['الأساسيات','التخطيط','البيانات','المؤشرات','التقارير','المهام','المرفقات'];
+    const active = this.state.group;
+
+    // table
+    const base = [
+      { name:'سارة العتيبي', program:'التمكين المالي', city:'الرياض', status:'نشط', stBg:'var(--primary-50)', stColor:'var(--text-brand)' },
+      { name:'محمد القحطاني', program:'ريادة الأعمال', city:'جدة', status:'معلّق', stBg:'var(--warning-surface)', stColor:'var(--warning-text)' },
+      { name:'نورة الشهري', program:'التدريب المهني', city:'أبها', status:'مكتمل', stBg:'var(--success-surface)', stColor:'var(--success-text)' },
+      { name:'خالد الدوسري', program:'التمكين المالي', city:'الدمام', status:'نشط', stBg:'var(--primary-50)', stColor:'var(--text-brand)' },
+      { name:'ريم الغامدي', program:'ريادة الأعمال', city:'مكة', status:'معلّق', stBg:'var(--warning-surface)', stColor:'var(--warning-text)' },
+      { name:'فهد العنزي', program:'التدريب المهني', city:'تبوك', status:'مكتمل', stBg:'var(--success-surface)', stColor:'var(--success-text)' },
+      { name:'أمل الحربي', program:'التمكين المالي', city:'المدينة', status:'نشط', stBg:'var(--primary-50)', stColor:'var(--text-brand)' },
+    ];
+    const dir = this.state.sortDir, key = this.state.sortKey;
+    const sorted = [...base].sort((a,b) => a[key].localeCompare(b[key],'ar') * (dir==='asc'?1:-1));
+    const size = 4, totalPages = Math.ceil(sorted.length/size), page = Math.min(this.state.page, totalPages);
+    const rows = sorted.slice((page-1)*size, page*size);
+    const colDefs = [['name','المستفيد'],['program','البرنامج'],['city','المدينة'],['status','الحالة']];
+
+    return {
+      ic,
+      theme: this.state.theme,
+      themeLabel: this.state.theme==='light' ? '◐ داكن' : '◑ فاتح',
+      toggleTheme: () => this.setState(s => ({ theme: s.theme==='light'?'dark':'light' })),
+      groups: G.map((label,i) => ({ label, select: () => this.setState({ group:i }), color: i===active?'var(--text-brand)':'var(--text-muted)', weight: i===active?800:600, indicator: i===active?'var(--brand-primary)':'transparent' })),
+      isBasics: active===0, isLayout: active===1, isData: active===2, isKpi: active===3, isReport: active===4, isTasks: active===5, isFiles: active===6,
+
+      tags: this.state.tags.map((label,i) => ({ label, remove: () => this.setState(s => ({ tags: s.tags.filter((_,j)=>j!==i) })) })),
+      sw1: this.state.sw1, sw1Bg: this.state.sw1?'var(--action-primary-surface)':'var(--border-strong)', sw1Pos: this.state.sw1?'23px':'3px', toggleSw1: () => this.setState(s => ({ sw1:!s.sw1 })),
+      alerts: [
+        { title:'تم الحفظ', body:'حُدّثت البيانات بنجاح.', bg:'var(--success-surface)', color:'var(--success-text)', svg: ic.check },
+        { title:'انتباه', body:'يوجد ٣ طلبات بحاجة مراجعة.', bg:'var(--warning-surface)', color:'var(--warning-text)', svg: ic.alert },
+        { title:'خطأ', body:'تعذّر رفع الملف.', bg:'var(--danger-surface)', color:'var(--danger-text)', svg: ic.alert },
+        { title:'معلومة', body:'سيُغلق التسجيل نهاية الشهر.', bg:'var(--info-surface)', color:'var(--info-text)', svg: ic.info },
+      ],
+      openModal: () => this.setState({ modal:true }), closeModal: () => this.setState({ modal:false }), modalOpen: this.state.modal,
+
+      // layout
+      sideExpanded: !this.state.side, sideW: this.state.side?'72px':'220px', sideJustify: this.state.side?'center':'flex-start',
+      toggleSide: () => this.setState(s => ({ side:!s.side })), sideToggleLabel: this.state.side?'توسيع ⟩':'⟨ طيّ',
+      sidebar: [ {label:'لوحة التحكم',svg:ic.home,active:true},{label:'المستفيدون',svg:ic.users,active:false},{label:'التقارير',svg:ic.chart,active:false},{label:'الإعدادات',svg:ic.settings,active:false} ].map(n => ({ ...n, color: n.active?'var(--text-brand)':'var(--text-secondary)', bg: n.active?'var(--primary-50)':'transparent', justify: this.state.side?'center':'flex-start' })),
+      panelOpen: this.state.panel, panelRot: this.state.panel?'rotate(180deg)':'rotate(0deg)', togglePanel: () => this.setState(s => ({ panel:!s.panel })),
+
+      // data table
+      columns: colDefs.map(([k,label]) => ({ label, sort: () => this.setState(s => ({ sortKey:k, sortDir: s.sortKey===k && s.sortDir==='asc'?'desc':'asc', page:1 })), arrow: key===k ? (dir==='asc'?ic.up:ic.down) : ic.sort, arrowColor: key===k?'var(--text-brand)':'var(--text-muted)' })),
+      rows,
+      pageInfo: `صفحة ${this.arNum(page)} من ${this.arNum(totalPages)} · ${this.arNum(sorted.length)} سجل`,
+      pages: Array.from({length: totalPages}, (_,i)=>i+1).map(p => ({ n: this.arNum(p), go: () => this.setState({ page:p }), bg: p===page?'var(--action-primary-surface)':'var(--surface-raised)', color: p===page?'#fff':'var(--text-secondary)' })),
+
+      // kpi
+      kpis: [
+        { label:'إجمالي المستفيدين', value:'١٬٢٤٧', delta:'٨٪', color:'var(--success-text)', arrow: ic.up, svg: ic.users },
+        { label:'طلبات معلّقة', value:'٨٦', delta:'١٢', color:'var(--warning-text)', arrow: ic.down, svg: ic.file },
+        { label:'برامج مكتملة', value:'٣٤', delta:'٣', color:'var(--success-text)', arrow: ic.up, svg: ic.check },
+        { label:'معدل الإنجاز', value:'٧٢٪', delta:'٤٪', color:'var(--success-text)', arrow: ic.up, svg: ic.chart },
+      ],
+      bars: [['ينا',60],['فبر',85],['مار',45],['أبر',95],['ماي',70],['يون',100]].map(([label,h]) => ({ label, h: h+'%' })),
+      linePts: '0,120 60,80 120,95 180,40 240,60 300,20',
+      lineArea: '0,160 0,120 60,80 120,95 180,40 240,60 300,20 300,160',
+      pie: 'conic-gradient(var(--brand-primary) 0 45%, var(--brand-secondary) 45% 72%, var(--info-solid) 72% 100%)',
+      pieLegend: [ {label:'التمكين المالي ٤٥٪', color:'var(--brand-primary)'}, {label:'ريادة الأعمال ٢٧٪', color:'var(--brand-secondary)'}, {label:'التدريب ٢٨٪', color:'var(--info-solid)'} ],
+      progress: [ {label:'التمكين المالي', pct:72, color:'var(--brand-primary)'}, {label:'ريادة الأعمال', pct:45, color:'var(--brand-secondary)'}, {label:'التدريب المهني', pct:88, color:'var(--success-solid)'} ],
+
+      // report
+      criteria: [ {label:'الفترة', value:'الربع الثاني ٢٠٢٦'}, {label:'المنطقة', value:'الرياض'}, {label:'البرنامج', value:'الكل'}, {label:'الحالة', value:'نشط'} ],
+      reportRows: [ {prog:'التمكين المالي', total:'٥٤٢', done:'٣٩٠', pct:'٧٢٪'}, {prog:'ريادة الأعمال', total:'٣٣٨', done:'٢٤٠', pct:'٧١٪'}, {prog:'التدريب المهني', total:'٣٦٧', done:'٢٦٨', pct:'٧٣٪'} ],
+      doPrint: () => window.print(),
+
+      // tasks
+      kanban: [
+        { title:'قيد الانتظار', count:'٢', cards:[ {priority:'عالية', prBg:'var(--danger-surface)', prColor:'var(--danger-text)', due:'خلال ٢ يوم', dueColor:'var(--danger-text)', title:'مراجعة مرفقات سارة', avBg:'var(--brand-primary)', tag:'مراجعة'}, {priority:'متوسطة', prBg:'var(--warning-surface)', prColor:'var(--warning-text)', due:'خلال ٥ أيام', dueColor:'var(--text-muted)', title:'تحديث بيانات محمد', avBg:'#b45309', tag:'بيانات'} ] },
+        { title:'قيد التنفيذ', count:'١', cards:[ {priority:'عاجلة', prBg:'var(--danger-surface)', prColor:'var(--danger-text)', due:'اليوم', dueColor:'var(--danger-text)', title:'اعتماد المرحلة الثانية', avBg:'#3F6E51', tag:'اعتماد'} ] },
+        { title:'مكتملة', count:'١', cards:[ {priority:'منخفضة', prBg:'var(--surface-sunken)', prColor:'var(--text-secondary)', due:'أمس', dueColor:'var(--text-muted)', title:'إرسال إشعار القبول', avBg:'var(--info-solid)', tag:'إشعار'} ] },
+      ],
+      timeline: [
+        { title:'تم تقديم الطلب', time:'١ يوليو ٢٠٢٦ · ٩:١٤ ص', dotBg:'var(--brand-primary)', dotColor:'#fff', svg: ic.file, line:true },
+        { title:'اكتملت المراجعة الأولية', time:'٣ يوليو ٢٠٢٦', dotBg:'var(--success-surface)', dotColor:'var(--success-text)', svg: ic.check, line:true },
+        { title:'بانتظار الاعتماد النهائي', time:'قيد الانتظار', dotBg:'var(--warning-surface)', dotColor:'var(--warning-text)', svg: ic.clock, line:true },
+        { title:'الاعتماد', time:'—', dotBg:'var(--surface-sunken)', dotColor:'var(--text-muted)', svg: ic.check, line:false },
+      ],
+
+      // files
+      files: [
+        { name:'الهوية_الوطنية.pdf', svg: ic.file, iconBg:'var(--danger-surface)', iconColor:'var(--danger-text)', uploading:false, hasMeta:true, meta:'✓ اكتمل الرفع · 1.2MB', metaColor:'var(--success-text)', action:'حذف', actionSvg: ic.trash, actionColor:'var(--text-muted)' },
+        { name:'كشف_الحساب.pdf', svg: ic.file, iconBg:'var(--primary-50)', iconColor:'var(--text-brand)', uploading:true, pct:64, hasMeta:false, meta:'', metaColor:'', action:'إلغاء', actionSvg: ic.x, actionColor:'var(--text-muted)' },
+        { name:'صورة_المشروع.png', svg: ic.image, iconBg:'var(--danger-surface)', iconColor:'var(--danger-text)', uploading:false, hasMeta:true, meta:'فشل الرفع — انقر لإعادة المحاولة', metaColor:'var(--danger-text)', action:'إعادة', actionSvg: ic.refresh, actionColor:'var(--danger-text)' },
+      ],
+      uploadErrors: [
+        { title:'نوع غير مدعوم', body:'المسموح: PDF, JPG, PNG فقط.' },
+        { title:'حجم زائد', body:'الحد الأقصى 5 ميجابايت.' },
+        { title:'فشل الرفع', body:'تحقّق من الاتصال ثم أعد المحاولة.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

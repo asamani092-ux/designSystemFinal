@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+  <link href="./tokens.css" rel="stylesheet">
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    body { margin: 0; }
+  </style>
+</helmet>
+
+<div dir="rtl" data-theme="{{ theme }}" class="zad-root" style="font-family: var(--font-arabic); background: var(--surface-base); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px;">
+
+  <!-- Header -->
+  <header style="background: var(--action-primary-surface); color: var(--action-primary-text); padding: 40px 32px;">
+    <div style="max-width: 1152px; margin-inline: auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="background: var(--brand-secondary); color: var(--neutral-900); font-size: 12px; font-weight: 800; padding: 4px 14px; border-radius: 9999px; align-self: flex-start;">المستوى 1 + عقد الشعار — للاعتماد</span>
+        <h1 style="margin: 0; font-size: 34px; font-weight: 800; line-height: 1.2;">نظام الزاد الموحّد</h1>
+        <p style="margin: 0; font-size: 15px; opacity: 0.9; max-width: 44rem;">توكنات محايدة قابلة للنقل، RTL أولاً، مستقلة عن أي منصة. راجع الأسس والشعار واعتمدها قبل بناء المستوى 3 (التنفيذ المرجعي).</p>
+      </div>
+      <button onClick="{{ toggleTheme }}" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); color: #fff; padding: 10px 16px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">{{ themeLabel }}</button>
+    </div>
+  </header>
+
+  <main style="max-width: 1152px; margin-inline: auto; padding: 32px; display: flex; flex-direction: column; gap: 40px;">
+
+    <!-- Logo contract -->
+    <section>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 4px;">٠ — عقد الشعار</h2>
+      <p style="font-size: 14px; color: var(--text-secondary); margin: 0 0 16px;">الألوان مُستخرجة من الشعار ومحوّلة لتوكنات؛ لا يُستخدم لون الشعار مباشرةً بل عبر السلّم.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); align-self: flex-start;">على خلفية فاتحة · مساحة الحماية</div>
+          <div style="background: #fff; border-radius: var(--radius-md); padding: 28px; width: 100%; display: flex; justify-content: center;"><img src="../assets/logo.png" alt="شعار جمعية الزاد" style="max-width: 220px; width: 100%; height: auto;"></div>
+          <div style="font-size: 12px; color: var(--text-muted); align-self: flex-start;">الحد الأدنى للعرض: 120px</div>
+        </div>
+        <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); align-self: flex-start;">على خلفية داكنة</div>
+          <div style="background: var(--neutral-1000); border-radius: var(--radius-md); padding: 28px; width: 190px; display: flex; justify-content: center; height: 105px"><img src="../assets/logo-dark.png" alt="شعار جمعية الزاد — نسخة الوضع الداكن" style="max-width: 220px; width: 100%; height: auto;"></div>
+          <div style="font-size: 12px; color: var(--text-muted); align-self: flex-start;">النسخة الرسمية للوضع الداكن</div>
+        </div>
+        <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); align-self: flex-start;">الرمز (أيقونة المتجر)</div>
+          <div style="background: #fff; border-radius: var(--radius-md); padding: 20px; width: 100%; display: flex; justify-content: center;"><img src="../assets/logo-icon.png" alt="رمز جمعية الزاد" style="width: 88px; height: 88px; object-fit: contain;"></div>
+          <div style="font-size: 12px; color: var(--text-muted); align-self: flex-start;">للأماكن الضيقة · الشريط المطوي · أيقونة التطبيق</div>
+        </div>
+        <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--feedback-danger-text);">الممنوع</div>
+          <sc-for list="{{ logoDonts }}" as="d" hint-placeholder-count="5">
+            <div style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-secondary);"><span style="color: var(--feedback-danger-text); font-weight: 800;">✕</span>{{ d }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- Color scales -->
+    <section>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 4px;">١ — سلالم الألوان (50 → 900)</h2>
+      <p style="font-size: 14px; color: var(--text-secondary); margin: 0 0 16px;">علامة <strong style="color: var(--feedback-success-text);">AA</strong> = تباين ≥ 4.5:1 كنص على أبيض. الرقم أسفل كل درجة هو نسبة التباين على الأبيض.</p>
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <sc-for list="{{ scales }}" as="sc" hint-placeholder-count="3">
+          <div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
+              <div style="font-size: 15px; font-weight: 800; color: var(--text-primary);">{{ sc.name }}</div>
+              <div style="font-size: 12px; color: var(--text-muted);">{{ sc.role }}</div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px;">
+              <sc-for list="{{ sc.steps }}" as="st" hint-placeholder-count="10">
+                <div style="border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-subtle);">
+                  <div style="background: {{ st.hex }}; height: 60px; display: flex; align-items: flex-start; justify-content: space-between; padding: 5px 6px;">
+                    <span style="font-size: 10px; font-weight: 800; color: {{ st.fg }};">{{ st.step }}</span>
+                    <sc-if value="{{ st.aa }}" hint-placeholder-val="{{ false }}"><span style="font-size: 9px; font-weight: 800; color: {{ st.fg }}; background: rgba(255,255,255,0.18); border-radius: 3px; padding: 0 3px;">AA</span></sc-if>
+                  </div>
+                  <div dir="ltr" style="background: var(--surface-raised); font-size: 9px; text-align: center; color: var(--text-muted); padding: 3px 0; font-family: var(--font-mono);">{{ st.hex }}</div>
+                  <div dir="ltr" style="background: var(--surface-raised); font-size: 9px; text-align: center; color: var(--text-muted); padding: 0 0 3px; font-family: var(--font-mono);">{{ st.cw }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Feedback colors -->
+    <section>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 4px;">٢ — ألوان الحالات</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
+        <sc-for list="{{ feedback }}" as="f" hint-placeholder-count="4">
+          <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-default);">
+            <div style="background: {{ f.solid }}; height: 46px;"></div>
+            <div style="background: {{ f.surface }}; color: {{ f.text }}; padding: 12px 14px; font-size: 13px; font-weight: 700;">{{ f.name }}
+              <div dir="ltr" style="font-size: 11px; font-weight: 500; opacity: 0.8; font-family: var(--font-mono); margin-top: 2px;">{{ f.solid }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Semantic theme surfaces -->
+    <section>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 4px;">٣ — الأسماء الدلالية (نفسها في الوضعين)</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 12px;">
+        <sc-for list="{{ semantics }}" as="s" hint-placeholder-count="6">
+          <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 14px;">
+            <div style="height: 40px; border-radius: var(--radius-sm); background: {{ s.swatch }}; border: 1px solid var(--border-subtle); margin-bottom: 10px;"></div>
+            <div dir="ltr" style="font-size: 11px; font-family: var(--font-mono); color: var(--text-primary); text-align: start;">{{ s.token }}</div>
+            <div style="font-size: 12px; color: var(--text-muted);">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Spacing + radius -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+      <div>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 12px;">٤ — المسافات (سلم 4px)</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{ spaces }}" as="sp" hint-placeholder-count="8">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span dir="ltr" style="width: 84px; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); text-align: start;">{{ sp.token }}</span>
+              <div style="height: 14px; width: {{ sp.val }}; background: var(--brand-primary); border-radius: 3px;"></div>
+              <span style="font-size: 12px; color: var(--text-muted);">{{ sp.val }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 12px;">٥ — الأنصاف والظلال</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+          <sc-for list="{{ radii }}" as="r" hint-placeholder-count="6">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <div style="width: 100%; height: 52px; background: var(--primary-100); border: 2px solid var(--brand-primary); border-radius: {{ r.val }};"></div>
+              <span dir="ltr" style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">{{ r.token }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+          <sc-for list="{{ shadows }}" as="sh" hint-placeholder-count="5">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <div style="width: 100%; height: 52px; background: var(--surface-raised); border-radius: var(--radius-md); box-shadow: {{ sh.val }};"></div>
+              <span dir="ltr" style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">{{ sh.token }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 12px;">٦ — سلم الخط (Tajawal)</h2>
+      <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 14px;">
+        <sc-for list="{{ typeScale }}" as="t" hint-placeholder-count="6">
+          <div style="display: flex; align-items: baseline; gap: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <span dir="ltr" style="width: 130px; flex-shrink: 0; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); text-align: start;">{{ t.token }}</span>
+            <span style="font-size: {{ t.size }}; font-weight: {{ t.weight }}; color: var(--text-primary);">نظام الزاد الموحّد</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Motion + z + alt theme -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      <div>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 12px;">٧ — الحركة والطبقات</h2>
+        <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 18px; font-size: 13px; color: var(--text-secondary); line-height: 2;">
+          <div dir="ltr" style="text-align: start; font-family: var(--font-mono); font-size: 12px;">duration: fast 120 · base 200 · slow 320</div>
+          <div dir="ltr" style="text-align: start; font-family: var(--font-mono); font-size: 12px;">ease-standard: cubic-bezier(.2,0,0,1)</div>
+          <div dir="ltr" style="text-align: start; font-family: var(--font-mono); font-size: 12px;">z: modal 1400 · toast 1600 · tooltip 1700</div>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-brand); margin: 0 0 12px;">٨ — إثبات تبديل العلامة</h2>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0 0 12px;">نفس المكوّن، جهة فرعية بلون مختلف عبر <span dir="ltr" style="font-family: var(--font-mono);">data-brand</span> دون كسر.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <button style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: var(--action-primary-text); border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px;">الزاد (افتراضي)</button>
+            <span style="font-size: 11px; color: var(--text-muted);">brand.primary</span>
+          </div>
+          <div data-brand="teal" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <button style="border-radius: var(--radius-md); background: var(--action-primary-surface); color: var(--action-primary-text); border: none; padding: 12px 22px; font-family: inherit; font-weight: 700; font-size: 14px;">جهة فرعية</button>
+            <span dir="ltr" style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">data-brand="teal"</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="background: var(--surface-raised); border: 1px solid var(--border-default); border-inline-start: var(--border-heavy) solid var(--brand-secondary); border-radius: var(--radius-md); padding: 18px 20px; font-size: 14px; color: var(--text-secondary); line-height: 1.9;">
+      <strong style="color: var(--text-brand);">للاعتماد:</strong> هذه هي الأسس (المستوى 1) وعقد الشعار. عقود كل المكوّنات (المستوى 2) في ملف <span dir="ltr" style="font-family: var(--font-mono);">design-system/components.md</span>. بعد موافقتك أبدأ المستوى 3 — التنفيذ المرجعي لكل مكوّن بكل حالاته.
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { theme: 'light' };
+  renderVals() {
+    const mk = (name, role, hexes, cws) => {
+      const steps = [50,100,200,300,400,500,600,700,800,900].map((s,i) => {
+        const hex = hexes[i], cw = cws[i];
+        return { step: s, hex, cw: cw.toFixed(1), aa: cw >= 4.5, fg: s >= 400 ? '#ffffff' : '#3c3a3b' };
+      });
+      return { name, role, steps };
+    };
+    return {
+      theme: this.state.theme,
+      themeLabel: this.state.theme === 'light' ? '◐ معاينة الوضع الداكن' : '◑ معاينة الوضع الفاتح',
+      toggleTheme: () => this.setState(s => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
+      logoDonts: ['التمديد أو تغيير النسب', 'تغيير ألوان الشعار', 'إضافة ظل أو تدرّج', 'وضعه على خلفية مزدحمة', 'استخدام المارون مباشرة كنص على خلفية داكنة'],
+      scales: [
+        mk('الأساسي — Primary (مارون العلامة)', 'brand.primary = 700 · نص آمن ≥ 500', ['#f8f1f3','#f0e0e5','#edb5c6','#e184a0','#d5537a','#bc2e58','#9c2649','#7b1e3a','#60162c','#3e0e1c'], [1.11,1.27,1.75,2.62,3.93,5.72,7.53,10.05,12.74,16.35]),
+        mk('الثانوي — Secondary (ذهبي العلامة)', 'brand.secondary = 400 · خلفية فقط، نص داكن', ['#f9f7f1','#f1ecdf','#f2e0b1','#e9cc7c','#e0b748','#c99c22','#a6811c','#836616','#664f0f','#43330a'], [1.07,1.18,1.31,1.57,1.90,2.54,3.63,5.42,7.81,12.23]),
+        mk('المحايد — Neutral', 'الأسطح والنصوص والحدود', ['#f5f5f5','#e8e8e8','#d2d0d1','#b4b1b3','#969294','#777375','#635f61','#4e4b4d','#3c3a3b','#272626'], [1.09,1.23,1.53,2.13,3.07,4.67,6.29,8.62,11.29,15.09]),
+      ],
+      feedback: [
+        { name: 'نجاح — Success', solid: '#16a34a', surface: '#dcfce7', text: '#15803d' },
+        { name: 'تحذير — Warning', solid: '#d97706', surface: '#fef3c7', text: '#854d0e' },
+        { name: 'خطأ — Danger', solid: '#dc2626', surface: '#fee2e2', text: '#991b1b' },
+        { name: 'معلومة — Info', solid: '#2563eb', surface: '#dbeafe', text: '#1d4ed8' },
+      ],
+      semantics: [
+        { token: 'surface-base', label: 'خلفية الصفحة', swatch: 'var(--surface-base)' },
+        { token: 'surface-raised', label: 'البطاقات', swatch: 'var(--surface-raised)' },
+        { token: 'surface-sunken', label: 'مناطق غائرة', swatch: 'var(--surface-sunken)' },
+        { token: 'text-primary', label: 'النص الأساسي', swatch: 'var(--text-primary)' },
+        { token: 'text-brand', label: 'نص العلامة', swatch: 'var(--text-brand)' },
+        { token: 'border-default', label: 'الحدود', swatch: 'var(--border-default)' },
+      ],
+      spaces: [['space-1','4px'],['space-2','8px'],['space-3','12px'],['space-4','16px'],['space-6','24px'],['space-8','32px'],['space-12','48px'],['space-16','64px']].map(([token,val]) => ({ token, val })),
+      radii: [['radius-sm','6px'],['radius-md','10px'],['radius-lg','14px'],['radius-xl','20px'],['radius-2xl','28px'],['radius-full','9999px']].map(([token,val]) => ({ token, val })),
+      shadows: [['shadow-xs','var(--shadow-xs)'],['shadow-sm','var(--shadow-sm)'],['shadow-md','var(--shadow-md)'],['shadow-lg','var(--shadow-lg)'],['shadow-xl','var(--shadow-xl)']].map(([token,val]) => ({ token, val })),
+      typeScale: [
+        { token: 'text-5xl / 800', size: '48px', weight: 800 },
+        { token: 'text-4xl / 800', size: '38px', weight: 800 },
+        { token: 'text-2xl / 700', size: '24px', weight: 700 },
+        { token: 'text-lg / 700', size: '18px', weight: 700 },
+        { token: 'text-base / 400', size: '16px', weight: 400 },
+        { token: 'text-xs / 500', size: '14px', weight: 500 },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
