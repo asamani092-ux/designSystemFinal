@@ -217,8 +217,8 @@
       <div style="height: 4px; background: rgba(255,255,255,0.12);"><div style="height: 100%; width: {{ progressPct }}; background: #e9b221; transition: width 0.35s ease;"></div></div>
       <!-- slide -->
       <div style="flex: 1; position: relative; overflow: hidden;">
-        <img class="zrp-logo-light" src="assets/logo-full.png" alt="" style="position: absolute; top: 30px; inset-inline-end: 40px; height: 46px; width: auto; z-index: 3; display: {{ logoLightDisp }};">
-        <img class="zrp-logo-dark" src="assets/logo-white.png" alt="" style="position: absolute; top: 26px; inset-inline-end: 40px; height: 56px; width: auto; z-index: 3; display: {{ logoDarkDisp }};">
+        <img class="zrp-logo-light" src="assets/logo-full.png" alt="جمعية الزاد" style="position: absolute; top: 28px; left: 50%; transform: translateX(-50%); height: 68px; width: auto; z-index: 3; display: {{ logoLightDisp }};">
+        <img class="zrp-logo-dark" src="assets/logo-white.png" alt="جمعية الزاد" style="position: absolute; top: 24px; left: 50%; transform: translateX(-50%); height: 72px; width: auto; z-index: 3; display: {{ logoDarkDisp }};">
 
         <div class="zrp-slide" style="position: absolute; inset: 0; padding: 108px 8vw 90px; display: flex; flex-direction: column; justify-content: center; color: {{ textMain }};">
           <sc-if value="{{ sCover }}" hint-placeholder-val="{{ true }}">
@@ -384,7 +384,7 @@
           <sc-if value="{{ sClosing }}" hint-placeholder-val="{{ false }}">
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px;">
               <div style="width: 96px; height: 8px; border-radius: 99px; background: #e9b221;"></div>
-              <h1 class="zrp-cover-title" style="margin: 0; font-family: 'Rubik','Tajawal',sans-serif; font-size: 48px; font-weight: 700; color: {{ headMain }};">شكراً لكم</h1>
+              <h1 class="zrp-cover-title" style="margin: 0; font-family: 'Rubik','Tajawal',sans-serif; font-size: 48px; font-weight: 700; color: {{ headMain }};">{{ closingTitleVal }}</h1>
               <div style="font-size: 19px; opacity: 0.85;">{{ closingLineVal }}</div>
               <div style="font-size: 15px; opacity: 0.7;">{{ orgNameVal }}</div>
             </div>
@@ -439,15 +439,16 @@
   &quot;theme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dark&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;light&quot;], &quot;tsType&quot;: &quot;\&quot;dark\&quot; | \&quot;light\&quot;&quot;, &quot;section&quot;: &quot;العرض&quot;, &quot;label&quot;: &quot;مظهر العرض&quot; }
 }">
 class Component extends DCLogic {
-  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgLine: 'جمعية الزاد · إدارة الأداء والنمو', closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية', orgName: 'جمعية الزاد للتمكين المستدام', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
+  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgLine: 'جمعية الزاد · إدارة الأداء والنمو', closingTitle: 'شكراً لكم', closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية', orgName: 'جمعية الزاد للتمكين المستدام', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
   icon(p, fill) { return React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: 20, height: 20, viewBox: '0 0 24 24', fill: fill || 'none', stroke: fill ? 'none' : 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', dangerouslySetInnerHTML: { __html: p } }); }
   deckKeys() { const o = this.state.on; const D = this.reportData(); const evN = this.evidenceList().length; const has = { summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: evN, disb: D.disb.length }; const order = ['summary','kpi','dist','funnel','progress','table','timeline','evidence','disb']; const mid = order.filter(k => o[k] && has[k]); return ['cover', ...mid, 'closing']; }
   componentDidMount() {
     const D = this.reportData();
-    if (D.title || D.period || D.orgLine || D.closingLine || D.orgName) this.setState(s => ({
+    if (D.title || D.period || D.orgLine || D.closingTitle || D.closingLine || D.orgName) this.setState(s => ({
       title: D.title || s.title,
       period: D.period || s.period,
       orgLine: D.orgLine || s.orgLine,
+      closingTitle: D.closingTitle || s.closingTitle,
       closingLine: D.closingLine || s.closingLine,
       orgName: D.orgName || s.orgName,
     }));
@@ -489,6 +490,7 @@ class Component extends DCLogic {
        title:    "Report title (any language)",
        period:   "Q2 2026 / any period label",
        orgLine:  "Cover subtitle — e.g. جمعية الزاد · إدارة الأداء والنمو",
+       closingTitle: "Closing headline — e.g. شكراً لكم",
        closingLine: "Closing mid-line — e.g. إدارة الأداء والنمو · قسم الاستراتيجية",
        orgName:  "Closing org name — e.g. جمعية الزاد للتمكين المستدام",
        summary:  [ { text, rows:[[key,value], ...], note } ],   // exec summary
@@ -541,13 +543,14 @@ class Component extends DCLogic {
   reportData() {
     const src = (typeof window !== 'undefined' && window.ZAD_REPORT) || (this.props && this.props.report) || this.sampleData();
     const A = k => Array.isArray(src[k]) ? src[k] : [];
-    return { title: src.title, period: src.period, orgLine: src.orgLine, closingLine: src.closingLine, orgName: src.orgName,
+    return { title: src.title, period: src.period, orgLine: src.orgLine, closingTitle: src.closingTitle, closingLine: src.closingLine, orgName: src.orgName,
       summary: A('summary'), kpis: A('kpis'), dist: A('dist'), funnel: A('funnel'), progress: A('progress'), programs: A('programs'), timeline: A('timeline'), evidence: A('evidence'), disb: A('disb') };
   }
   sampleData() {
     return {
       title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م',
       orgLine: 'جمعية الزاد · إدارة الأداء والنمو',
+      closingTitle: 'شكراً لكم',
       closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية',
       orgName: 'جمعية الزاد للتمكين المستدام',
       summary: [
@@ -632,10 +635,11 @@ class Component extends DCLogic {
       isBuilder: !this.state.present,
       isPresenting: this.state.present,
       titleVal: this.state.title, periodVal: this.state.period,
-      orgLineVal: this.state.orgLine, closingLineVal: this.state.closingLine, orgNameVal: this.state.orgName,
+      orgLineVal: this.state.orgLine, closingTitleVal: this.state.closingTitle, closingLineVal: this.state.closingLine, orgNameVal: this.state.orgName,
       onTitle: (e) => { const v = e.target.value; this.setState({ title: v }); },
       onPeriod: (e) => { const v = e.target.value; this.setState({ period: v }); },
       onOrgLine: (e) => { const v = e.target.value; this.setState({ orgLine: v }); },
+      onClosingTitle: (e) => { const v = e.target.value; this.setState({ closingTitle: v }); },
       onClosingLine: (e) => { const v = e.target.value; this.setState({ closingLine: v }); },
       onOrgName: (e) => { const v = e.target.value; this.setState({ orgName: v }); },
       toggles: [
