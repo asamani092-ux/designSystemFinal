@@ -1,11 +1,11 @@
 # @zaad/design-system
 
-نظام الزاد الموحّد — مصدر التصميم الوحيد لكل منصات جمعية الزاد.
+نظام الزاد الموحّد — **المصدر الوحيد** للتصميم عبر المنصات.
 
 ## التثبيت
 
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.0"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.8"
 ```
 
 ```css
@@ -14,16 +14,16 @@
 @import "@zaad/design-system/zaad-addons.css";
 ```
 
-أزرار: `.btn-sm` (36) · افتراضي (44) · `.btn-lg` (52). في الجداول/FilterBar استخدم `btn-sm`.
-
 ```ts
 import zaadPreset from "@zaad/design-system/tailwind.preset";
 ```
 
-## للمطوّرين / الوكلاء
+## ممنوع في المنصات
 
-اتبع `AGENT_COMMAND.md` في جذر المستودع لربط منصة وتحسين واجهتها.
+- نسخ `Design_system_f` / `Zaad.design.system` / `design-system`
+- نسخ `zaad-addons.css` أو `tokens.css` محلياً
+- سكربتات التثبيت القديمة (PowerShell)
 
 ## العقود
 
-اقرأ `components.md` قبل تنفيذ أي مكوّن. التوكنات من `tokens.json` → `tokens.css`.
+`components.md` — اقرأ قبل تنفيذ أي مكوّن. الأزرار: `.btn-sm` (36) / افتراضي (44) / `.btn-lg` (52).

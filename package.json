@@ -1,6 +1,6 @@
 {
   "name": "@zaad/design-system",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "نظام الزاد الموحّد — توكنات ومكوّنات CSS قابلة للنقل (RTL)",
   "license": "UNLICENSED",
   "private": false,

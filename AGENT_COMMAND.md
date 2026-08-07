@@ -6,7 +6,7 @@
 
 ## ماذا حصل (السياق)
 
-1. مصدر التصميم الوحيد: `asamani092-ux/designSystemFinal` → الحزمة `@zaad/design-system` (`#v1.2.7`).
+1. مصدر التصميم الوحيد: `asamani092-ux/designSystemFinal` → الحزمة `@zaad/design-system` (`#v1.2.8`).
 2. النسخ المحلية (`Design_system_f` / `Zaad.design.system` / `design-system` المكرر) تُحذف بعد الربط.
 3. **المهمة الأساسية:** تحسين واجهات هذه المنصة باستخدام **المكوّنات الإضافية** من دليل الهوية (من ٦·٩ فما فوق) وعقود `components.md` — وليس مجرد استيراد CSS.
 4. المنصات: `redaPlatform` · `mqiasPlatform` · `itsalplatform` · `tkafulPlatform` · `tmkeenpPlatform`.
@@ -43,9 +43,17 @@
 
 نفّذ بالترتيب:
 1) اربط الحزمة:
-   "@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.7"
+   "@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.8"
    ثم tokens.css + components.css + zaad-addons.css + tailwind.preset + class zad-root و dir=rtl.
    احذف أي zaad-addons.css محلي واستبدله باستيراد الحزمة.
+
+احذف أيضاً أي بقايا تصميم قديم لمنع التعارض:
+   - Design_system_f / Zaad.design.system / design-system المنسوخ
+   - zaad-addons.css المحلي
+   - tokens.css / components.css / tailwind.preset المنسوخة يدوياً
+   - سكربتات install-*-tmkeen / PASTE-IN-POWERSHELL
+المصدر الوحيد: @zaad/design-system من github:asamani092-ux/designSystemFinal#v1.2.8
+
    الأزرار: .btn-sm(36) / افتراضي(44) / .btn-lg(52) — في الجداول والأشرطة الكثيفة استخدم btn-sm.
 2) احذف Design_system_f و Zaad.design.system وأي design-system محلي مكرر بعد نجاح البناء.
 3) اجرد شاشات الواجهة الحالية (صفحات، نماذج، جداول، لوحات، أدراج، نوافذ).
@@ -73,7 +81,7 @@
 1. أضف في `package.json`:
 
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.7"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.8"
 ```
 
 2. Tailwind: `presets: [zaadPreset]` من `@zaad/design-system/tailwind.preset`.
