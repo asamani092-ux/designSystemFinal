@@ -2,8 +2,11 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.2
+current: v1.2.3
 date: 2026-08-07
+
+### v1.2.3 — منشئ التقارير: حقول الجهة قابلة للتعديل
+- غلاف/خاتمة: `orgLine` · `closingLine` · `orgName` من إعدادات المنشئ و`ZAD_REPORT`.
 
 ### v1.2.2 — جوال الجداول بلا التفاف
 - خلايا الجوال/البريد LTR: `white-space: nowrap` + `min-width` + تمرير أفقي للغلاف على الشاشات الضيقة.
