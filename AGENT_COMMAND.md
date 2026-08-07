@@ -6,7 +6,7 @@
 
 ## ماذا حصل (السياق)
 
-1. مصدر التصميم الوحيد: `asamani092-ux/designSystemFinal` → الحزمة `@zaad/design-system` (`#v1.2.5`).
+1. مصدر التصميم الوحيد: `asamani092-ux/designSystemFinal` → الحزمة `@zaad/design-system` (`#v1.2.6`).
 2. النسخ المحلية (`Design_system_f` / `Zaad.design.system` / `design-system` المكرر) تُحذف بعد الربط.
 3. **المهمة الأساسية:** تحسين واجهات هذه المنصة باستخدام **المكوّنات الإضافية** من دليل الهوية (من ٦·٩ فما فوق) وعقود `components.md` — وليس مجرد استيراد CSS.
 4. المنصات: `redaPlatform` · `mqiasPlatform` · `itsalplatform` · `tkafulPlatform` · `tmkeenpPlatform`.
@@ -43,7 +43,7 @@
 
 نفّذ بالترتيب:
 1) اربط الحزمة:
-   "@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.5"
+   "@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.6"
    ثم tokens.css + components.css + zaad-addons.css + tailwind.preset + class zad-root و dir=rtl.
    احذف أي zaad-addons.css محلي واستبدله باستيراد الحزمة.
    الأزرار: .btn-sm(36) / افتراضي(44) / .btn-lg(52) — في الجداول والأشرطة الكثيفة استخدم btn-sm.
@@ -73,7 +73,7 @@
 1. أضف في `package.json`:
 
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.5"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.6"
 ```
 
 2. Tailwind: `presets: [zaadPreset]` من `@zaad/design-system/tailwind.preset`.
