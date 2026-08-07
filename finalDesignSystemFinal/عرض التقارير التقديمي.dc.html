@@ -1017,8 +1017,29 @@ class Component extends DCLogic {
       mediaCaption: (this.state.mediaView && this.state.mediaView.caption) || '',
       mediaNote: (this.state.mediaView && this.state.mediaView.note) || '',
       mediaZoom: (this.state.mediaView && this.state.mediaView.zoom) || 1,
+      mediaCurrent: (this.state.mediaView && this.state.mediaView.current) || 0,
+      mediaDuration: Math.max(0.1, (this.state.mediaView && this.state.mediaView.duration) || 0.1),
+      mediaTimeLabel: this.formatMediaTime((this.state.mediaView && this.state.mediaView.current) || 0) + ' / ' + this.formatMediaTime((this.state.mediaView && this.state.mediaView.duration) || 0),
+      mediaPlayLabel: (this.state.mediaView && this.state.mediaView.playing) ? 'إيقاف' : 'تشغيل',
+      mediaPlayClass: (this.state.mediaView && this.state.mediaView.playing) ? 'is-active' : '',
+      mediaMuteLabel: (this.state.mediaView && this.state.mediaView.muted) ? 'صوت' : 'كتم',
       closeMediaView: (e) => this.closeMediaView(e),
       stopMediaView: (e) => this.stopMediaView(e),
+      toggleVideoPlay: (e) => this.toggleVideoPlay(e),
+      toggleVideoMute: (e) => this.toggleVideoMute(e),
+      onVideoSeek: (e) => this.onVideoSeek(e),
+      onVideoPlay: () => this.patchMediaView({ playing: true }),
+      onVideoPause: () => this.patchMediaView({ playing: false }),
+      onVideoTime: (e) => {
+        const v = e && e.target;
+        if (!v) return;
+        this.patchMediaView({ current: v.currentTime || 0, duration: v.duration || (this.state.mediaView && this.state.mediaView.duration) || 0 });
+      },
+      onVideoMeta: (e) => {
+        const v = e && e.target;
+        if (!v) return;
+        this.patchMediaView({ duration: v.duration || 0, current: v.currentTime || 0 });
+      },
       zoomIn: (e) => { this.stopMediaView(e); this.setMediaZoom(((this.state.mediaView && this.state.mediaView.zoom) || 1) + 0.25); },
       zoomOut: (e) => { this.stopMediaView(e); this.setMediaZoom(((this.state.mediaView && this.state.mediaView.zoom) || 1) - 0.25); },
       zoomReset: (e) => { this.stopMediaView(e); this.setMediaZoom(1); },
