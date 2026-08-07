@@ -97,6 +97,10 @@
       box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.2);
     }
     @media (max-width: 520px) {
+      .zrp-kpis { grid-template-columns: 1fr !important; }
+      .zrp-evidence { grid-template-columns: 1fr 1fr !important; }
+      .zrp-dist { gap: 28px !important; justify-content: center; }
+      .zrp-controls { padding: 14px 18px !important; }
       .zrp-donut { width: 220px; height: 220px; }
       .zrp-donut__value { font-size: 22px; }
     }
@@ -168,6 +172,35 @@
             <button onClick="{{ startPresent }}" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #951740; color: #fff; border: none; padding: 14px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer;" style-hover="background: #65102a;">{{ playIcon }} بدء العرض</button>
             <button onClick="{{ startPresent }}" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #e9b221; color: #65102a; border: none; padding: 12px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;">{{ linkIcon }} معاينة الرابط</button>
             <div style="font-size: 11px; color: #9ca3af; line-height: 1.7;">التصدير كملف HTML مستقل يعمل محلياً على أي جهاز متاح عبر زر التصدير في المنصة بعد اعتماد العرض.</div>
+          </div>
+          <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(68,13,34,0.06);">
+            <div style="font-size: 13px; font-weight: 800; color: #951740; margin-bottom: 4px;">معرض الشواهد — صور وفيديو</div>
+            <div style="font-size: 12px; color: #6b7280; margin-bottom: 14px; line-height: 1.7;">كل منصة تغذّي شواهدها الخاصة عبر <code>ZAD_REPORT.evidence</code>. هنا يمكنك إضافة/تعديل الوسائط للمعاينة قبل الربط.</div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <sc-for list="{{ evidenceEditor }}" as="ev" hint-placeholder-count="2">
+                <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #fafafa;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <strong style="font-size: 13px; color: #951740;">شاهد {{ ev.n }}</strong>
+                    <button onClick="{{ ev.remove }}" type="button" style="border: none; background: transparent; color: #991b1b; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;">حذف</button>
+                  </div>
+                  <input value="{{ ev.caption }}" onInput="{{ ev.onCaption }}" placeholder="العنوان" style="width: 100%; border-radius: 8px; border: 1px solid #e5e7eb; padding: 8px 10px; font-family: inherit; font-size: 13px;">
+                  <input value="{{ ev.tag }}" onInput="{{ ev.onTag }}" placeholder="الوسم (فعالية / إنجاز…)" style="width: 100%; border-radius: 8px; border: 1px solid #e5e7eb; padding: 8px 10px; font-family: inherit; font-size: 13px;">
+                  <div style="display: flex; gap: 8px;">
+                    <button onClick="{{ ev.setImage }}" type="button" style="flex: 1; border-radius: 8px; border: 1px solid {{ ev.imgBorder }}; background: {{ ev.imgBg }}; color: {{ ev.imgColor }}; padding: 8px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;">صورة</button>
+                    <button onClick="{{ ev.setVideo }}" type="button" style="flex: 1; border-radius: 8px; border: 1px solid {{ ev.vidBorder }}; background: {{ ev.vidBg }}; color: {{ ev.vidColor }}; padding: 8px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;">فيديو</button>
+                  </div>
+                  <input value="{{ ev.src }}" onInput="{{ ev.onSrc }}" placeholder="رابط الصورة أو الفيديو (URL)" style="width: 100%; border-radius: 8px; border: 1px solid #e5e7eb; padding: 8px 10px; font-family: inherit; font-size: 13px; direction: ltr; text-align: start;">
+                  <sc-if value="{{ ev.isVideo }}" hint-placeholder-val="{{ false }}">
+                    <input value="{{ ev.poster }}" onInput="{{ ev.onPoster }}" placeholder="صورة غلاف الفيديو (poster URL)" style="width: 100%; border-radius: 8px; border: 1px solid #e5e7eb; padding: 8px 10px; font-family: inherit; font-size: 13px; direction: ltr; text-align: start;">
+                  </sc-if>
+                  <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #6b7280; cursor: pointer;">
+                    <input type="file" accept="{{ ev.accept }}" onChange="{{ ev.onFile }}" style="font-size: 12px;">
+                    رفع من الجهاز
+                  </label>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ addEvidence }}" type="button" style="margin-top: 12px; width: 100%; border-radius: 10px; border: 1px dashed #951740; background: #fff; color: #951740; padding: 10px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;">+ إضافة شاهد (صورة/فيديو)</button>
           </div>
         </div>
       </div>
@@ -316,9 +349,14 @@
                 <sc-for list="{{ evidence }}" as="e" hint-placeholder-count="4">
                   <button onClick="{{ e.click }}" style="background: {{ cardBg }}; border: 1px solid {{ borderMain }}; border-radius: 16px; overflow: hidden; cursor: pointer; font-family: inherit; text-align: start; color: {{ textMain }}; display: flex; flex-direction: column; padding: 0;" style-hover="border-color: #e9b221;">
                     <div style="aspect-ratio: 4 / 3; width: 100%; background: linear-gradient(135deg, rgba(149,23,64,0.12), rgba(233,178,33,0.12)); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                      <sc-if value="{{ e.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ e.imgSrc }}" alt="{{ e.caption }}" style="width: 100%; height: 100%; object-fit: cover;"></sc-if>
-                      <sc-if value="{{ e.hasImg }}" hint-placeholder-val="{{ true }}"><span style="color: #e9b221; opacity: 0.55; display: flex;">{{ imageIcon }}</span></sc-if>
+                      <sc-if value="{{ e.hasVideo }}" hint-placeholder-val="{{ false }}">
+                        <video src="{{ e.mediaSrc }}" poster="{{ e.posterSrc }}" muted playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
+                        <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(15,5,10,0.28); pointer-events: none;"><span style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(233,178,33,0.95); color: #65102a; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">{{ playIcon }}</span></span>
+                      </sc-if>
+                      <sc-if value="{{ e.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ e.mediaSrc }}" alt="{{ e.caption }}" style="width: 100%; height: 100%; object-fit: cover;"></sc-if>
+                      <sc-if value="{{ e.noMedia }}" hint-placeholder-val="{{ true }}"><span style="color: #e9b221; opacity: 0.55; display: flex;">{{ imageIcon }}</span></sc-if>
                       <span style="position: absolute; top: 10px; inset-inline-start: 10px; background: rgba(101,16,42,0.85); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 9999px;">{{ e.tag }}</span>
+                      <sc-if value="{{ e.hasVideo }}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 10px; inset-inline-end: 10px; background: rgba(15,5,10,0.7); color: #e9b221; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 9999px;">فيديو</span></sc-if>
                     </div>
                     <div style="padding: 14px 16px; display: flex; align-items: flex-start; gap: 8px;"><span style="font-size: 16px; font-weight: 600; line-height: 1.5; flex: 1;">{{ e.caption }}</span><span style="color: #e9b221; opacity: 0.8; display: flex; flex-shrink: 0; margin-top: 2px;">{{ infoIcon }}</span></div>
                   </button>
@@ -362,6 +400,12 @@
               <button onClick="{{ closeDetail }}" aria-label="إغلاق" style="width: 36px; height: 36px; border-radius: 10px; border: none; background: rgba(255,255,255,0.18); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ closeIcon }}</button>
             </div>
             <div style="padding: 22px 26px; display: flex; flex-direction: column; gap: 12px;">
+              <sc-if value="{{ detailHasVideo }}" hint-placeholder-val="{{ false }}">
+                <video src="{{ detailMediaSrc }}" poster="{{ detailPosterSrc }}" controls playsinline style="width: 100%; max-height: 320px; border-radius: 12px; background: #000;"></video>
+              </sc-if>
+              <sc-if value="{{ detailHasImg }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ detailMediaSrc }}" alt="" style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px;">
+              </sc-if>
               <div style="font-size: 13px; font-weight: 700; color: #e9b221;">التفصيل</div>
               <sc-for list="{{ detailRows }}" as="row" hint-placeholder-count="3">
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid {{ borderMain }}; padding-bottom: 10px; font-size: 17px;"><span style="opacity: 0.85;">{{ row.k }}</span><span style="font-weight: 700; color: {{ headMain }};">{{ row.v }}</span></div>
@@ -392,9 +436,9 @@
   &quot;theme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dark&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;light&quot;], &quot;tsType&quot;: &quot;\&quot;dark\&quot; | \&quot;light\&quot;&quot;, &quot;section&quot;: &quot;العرض&quot;, &quot;label&quot;: &quot;مظهر العرض&quot; }
 }">
 class Component extends DCLogic {
-  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgLine: 'جمعية الزاد · إدارة الأداء والنمو', closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية', orgName: 'جمعية الزاد للتمكين المستدام', on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
+  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgLine: 'جمعية الزاد · إدارة الأداء والنمو', closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية', orgName: 'جمعية الزاد للتمكين المستدام', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
   icon(p, fill) { return React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: 20, height: 20, viewBox: '0 0 24 24', fill: fill || 'none', stroke: fill ? 'none' : 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', dangerouslySetInnerHTML: { __html: p } }); }
-  deckKeys() { const o = this.state.on; const D = this.reportData(); const has = { summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: D.evidence.length, disb: D.disb.length }; const order = ['summary','kpi','dist','funnel','progress','table','timeline','evidence','disb']; const mid = order.filter(k => o[k] && has[k]); return ['cover', ...mid, 'closing']; }
+  deckKeys() { const o = this.state.on; const D = this.reportData(); const evN = this.evidenceList().length; const has = { summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: evN, disb: D.disb.length }; const order = ['summary','kpi','dist','funnel','progress','table','timeline','evidence','disb']; const mid = order.filter(k => o[k] && has[k]); return ['cover', ...mid, 'closing']; }
   componentDidMount() {
     const D = this.reportData();
     if (D.title || D.period || D.orgLine || D.closingLine || D.orgName) this.setState(s => ({
@@ -404,6 +448,9 @@ class Component extends DCLogic {
       closingLine: D.closingLine || s.closingLine,
       orgName: D.orgName || s.orgName,
     }));
+    if (Array.isArray(D.evidence) && D.evidence.length) {
+      this.setState({ evidenceItems: D.evidence.map(e => ({ ...e })) });
+    }
     this._key = (e) => { if (!this.state.present) return; if (e.key === 'ArrowLeft') this.go(1); else if (e.key === 'ArrowRight') this.go(-1); else if (e.key === 'Escape') this.setState({ present: false }); }; window.addEventListener('keydown', this._key);
   }
   componentWillUnmount() { window.removeEventListener('keydown', this._key); }
@@ -448,9 +495,16 @@ class Component extends DCLogic {
        progress: [ { label, pct(0-100), rows:[[..]], note } ],  // progress bars
        programs: [ { prog, total, done, pct, rows:[[..]], note } ], // table
        timeline: [ { title, time, rows:[[..]], note } ],        // agenda / milestones
-       evidence: [ { src(imageURL), caption, tag, note } ],     // proof / photo gallery
+       evidence: [ { type:'image'|'video', src, poster?, caption, tag, note, rows? } ], // media gallery — each platform feeds its own
        disb:     [ { label, amount, rows:[[..]], note } ]       // financials
      }
+
+     EVIDENCE MEDIA:
+       • type: "image" | "video" (optional — inferred from URL extension if omitted)
+       • src: absolute/relative URL or data: URL for image/video
+       • poster: optional cover image for video
+       • Each platform supplies its OWN evidence from its storage — NOT a shared central album.
+       • Builder UI can override evidence for preview via local state before platform wiring.
 
      RULES:
        • Values render verbatim — send Arabic digits (٠-٩) as-is, or call
@@ -463,6 +517,24 @@ class Component extends DCLogic {
        • Numbers/labels come 100% from platform data; only sampleData() is demo.
      ═══════════════════════════════════════════════════════════════════════ */
   toArabicDigits(n) { return String(n).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]); }
+  isVideoMedia(item) {
+    if (!item) return false;
+    if (item.type === 'video') return true;
+    if (item.type === 'image') return false;
+    const src = item.src || '';
+    return /\.(mp4|webm|ogg|mov|m4v)(\?|#|$)/i.test(src) || /^data:video\//i.test(src);
+  }
+  evidenceList() {
+    if (Array.isArray(this.state.evidenceItems)) return this.state.evidenceItems;
+    return this.reportData().evidence || [];
+  }
+  patchEvidence(i, patch) {
+    this.setState(s => {
+      const base = Array.isArray(s.evidenceItems) ? s.evidenceItems : (this.reportData().evidence || []).map(e => ({ ...e }));
+      const next = base.map((e, idx) => idx === i ? { ...e, ...patch } : e);
+      return { evidenceItems: next };
+    });
+  }
   reportData() {
     const src = (typeof window !== 'undefined' && window.ZAD_REPORT) || (this.props && this.props.report) || this.sampleData();
     const A = k => Array.isArray(src[k]) ? src[k] : [];
@@ -510,10 +582,10 @@ class Component extends DCLogic {
         { title: 'إغلاق تقرير الربع الثاني', time: '٣٠ يونيو ٢٠٢٦', rows: [['المؤشرات','٢٤'],['الحالة','مكتمل']], note: 'رُفع للإدارة في موعده.' },
       ],
       evidence: [
-        { src: '', caption: 'ورشة التمكين المالي — الرياض', tag: 'فعالية', note: 'حضور ١٤٠ مستفيداً على مدى يومين.' },
-        { src: '', caption: 'توزيع شهادات ريادة الأعمال', tag: 'إنجاز', note: 'تخريج ٩ مشاريع ناشئة.' },
-        { src: '', caption: 'زيارة ميدانية للمستفيدين', tag: 'متابعة', note: 'تقييم أثر مباشر في ٣ مدن.' },
-        { src: '', caption: 'ملتقى المتطوعين السنوي', tag: 'مجتمع', note: '٣٢٠ متطوعاً، ١٬٢٠٠ ساعة تطوعية.' },
+        { type: 'image', src: 'screenshots/01-found.png', caption: 'ورشة التمكين المالي — الرياض', tag: 'فعالية', note: 'حضور ١٤٠ مستفيداً على مدى يومين.' },
+        { type: 'image', src: 'screenshots/02-cards.png', caption: 'توزيع شهادات ريادة الأعمال', tag: 'إنجاز', note: 'تخريج ٩ مشاريع ناشئة.' },
+        { type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'screenshots/ben.png', caption: 'زيارة ميدانية للمستفيدين', tag: 'متابعة', note: 'تقييم أثر مباشر في ٣ مدن — مقطع توضيحي.' },
+        { type: 'image', src: 'screenshots/phone.png', caption: 'ملتقى المتطوعين السنوي', tag: 'مجتمع', note: '٣٢٠ متطوعاً، ١٬٢٠٠ ساعة تطوعية.' },
       ],
       programs: [
         { prog: 'التمكين المالي', total: '٥٤٢', done: '٣٩٠', pct: '٧٢٪', rows: [['قيد التنفيذ','١١٢'],['بانتظار الصرف','٤٠'],['مكتمل','٣٩٠']], note: 'أكبر البرامج حجماً.' },
@@ -573,8 +645,51 @@ class Component extends DCLogic {
         t('timeline', 'الخط الزمني / الأجندة', '<line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="14" r="2"/>'),
         t('evidence', 'معرض الشواهد', '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'),
         t('disb', 'الصرف المالي', '<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>'),
-      ].filter(x => ({ summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: D.evidence.length, disb: D.disb.length }[x.key] > 0)),
+      ].filter(x => ({ summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: this.evidenceList().length, disb: D.disb.length }[x.key] > 0)),
       selectAll: () => this.setState({ on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true } }),
+      addEvidence: () => this.setState(s => {
+        const base = Array.isArray(s.evidenceItems) ? s.evidenceItems : (this.reportData().evidence || []).map(e => ({ ...e }));
+        return { evidenceItems: [...base, { type: 'image', src: '', poster: '', caption: 'شاهد جديد', tag: 'شاهد', note: '' }] };
+      }),
+      evidenceEditor: this.evidenceList().map((e, i) => {
+        const isVideo = this.isVideoMedia(e);
+        return {
+          n: this.toArabicDigits(i + 1),
+          caption: e.caption || '',
+          tag: e.tag || '',
+          src: e.src || '',
+          poster: e.poster || '',
+          isVideo,
+          accept: isVideo ? 'video/*' : 'image/*,video/*',
+          imgBorder: !isVideo ? '#951740' : '#e5e7eb',
+          imgBg: !isVideo ? 'rgba(149,23,64,0.08)' : '#fff',
+          imgColor: !isVideo ? '#951740' : '#6b7280',
+          vidBorder: isVideo ? '#951740' : '#e5e7eb',
+          vidBg: isVideo ? 'rgba(149,23,64,0.08)' : '#fff',
+          vidColor: isVideo ? '#951740' : '#6b7280',
+          setImage: () => this.patchEvidence(i, { type: 'image' }),
+          setVideo: () => this.patchEvidence(i, { type: 'video' }),
+          onCaption: (ev) => this.patchEvidence(i, { caption: ev.target.value }),
+          onTag: (ev) => this.patchEvidence(i, { tag: ev.target.value }),
+          onSrc: (ev) => this.patchEvidence(i, { src: ev.target.value }),
+          onPoster: (ev) => this.patchEvidence(i, { poster: ev.target.value }),
+          onFile: (ev) => {
+            const file = ev.target.files && ev.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+              const dataUrl = reader.result;
+              const type = file.type.startsWith('video/') ? 'video' : 'image';
+              this.patchEvidence(i, { src: dataUrl, type });
+            };
+            reader.readAsDataURL(file);
+          },
+          remove: () => this.setState(s => {
+            const base = Array.isArray(s.evidenceItems) ? s.evidenceItems : (this.reportData().evidence || []).map(e => ({ ...e }));
+            return { evidenceItems: base.filter((_, idx) => idx !== i) };
+          }),
+        };
+      }),
       setLight: () => this.setState({ theme: 'light' }), setDark: () => this.setState({ theme: 'dark' }),
       lightBorder: dark ? '#e5e7eb' : '#951740', darkBorder: dark ? '#951740' : '#e5e7eb',
       deckCount: this.arNumSafe(deck.length),
@@ -638,7 +753,34 @@ class Component extends DCLogic {
       })(),
       funnel: D.funnel.map((f,i) => ({ ...f, width: (f.pct || 0) + '%', ...this.decorate('funnel', i, { title: f.stage, head: '', value: (f.pct || 0) + '٪', delta: '', rows: this.rowObjs(f.rows || []), note: f.note }) })),
       timeline: D.timeline.map((tm,i) => ({ ...tm, last: i === D.timeline.length - 1, ...this.decorate('timeline', i, { title: tm.title, head: '', value: '', delta: '', rows: this.rowObjs(tm.rows || []), note: tm.note }) })),
-      evidence: D.evidence.map((e,i) => ({ ...e, hasImg: !!(e.src && e.src.length), imgSrc: (e.src && e.src.length) ? e.src : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==', ...this.decorate('evidence', i, { title: e.caption, head: '', value: '', delta: '', rows: this.rowObjs(e.rows || []), note: e.note }) })),
+      evidence: this.evidenceList().map((e,i) => {
+        const hasSrc = !!(e.src && e.src.length);
+        const hasVideo = hasSrc && this.isVideoMedia(e);
+        const hasImg = hasSrc && !hasVideo;
+        return {
+          ...e,
+          hasVideo,
+          hasImg,
+          noMedia: !hasSrc,
+          mediaSrc: hasSrc ? e.src : '',
+          posterSrc: e.poster || '',
+          ...this.decorate('evidence', i, {
+            title: e.caption,
+            head: e.tag || '',
+            value: '',
+            delta: '',
+            rows: this.rowObjs(e.rows || []),
+            note: e.note,
+            mediaSrc: e.src || '',
+            posterSrc: e.poster || '',
+            mediaType: hasVideo ? 'video' : (hasImg ? 'image' : ''),
+          }),
+        };
+      }),
+      detailHasVideo: !!(this.state.detail && this.state.detail.mediaType === 'video' && this.state.detail.mediaSrc),
+      detailHasImg: !!(this.state.detail && this.state.detail.mediaType === 'image' && this.state.detail.mediaSrc),
+      detailMediaSrc: (this.state.detail && this.state.detail.mediaSrc) || '',
+      detailPosterSrc: (this.state.detail && this.state.detail.posterSrc) || '',
       detail: this.state.detail,
       detailOpen: !!this.state.detail,
       closeDetail: () => this.setState({ detail: null }),
