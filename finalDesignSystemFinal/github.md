@@ -2,8 +2,12 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.1
+current: v1.2.2
 date: 2026-08-07
+
+### v1.2.2 — جوال الجداول بلا التفاف
+- خلايا الجوال/البريد LTR: `white-space: nowrap` + `min-width` + تمرير أفقي للغلاف على الشاشات الضيقة.
+- عقد DataTable يوضح `cell-phone` / `dir=ltr`.
 
 ### v1.2.1 — مقاسات الأزرار + zaad-addons مركزي
 - أزرار بعقد sm(36) / md(44) / lg(52) — إلغاء فرض min-height:44 على كل الأزرار.

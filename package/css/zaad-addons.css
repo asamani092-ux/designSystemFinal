@@ -453,6 +453,36 @@
   background: color-mix(in srgb, var(--brand-secondary) 10%, transparent);
 }
 
+/* جوال/بريد داخل الجدول — سطر واحد دائماً + تمرير أفقي للغلاف */
+.zad-table-wrap td[dir="ltr"],
+.zad-table-wrap th[dir="ltr"],
+.zad-table-wrap .cell-ltr,
+.zad-table-wrap .cell-phone,
+.zad-table-wrap a[href^="tel:"],
+.zad-table-wrap a[href^="mailto:"],
+.tmkeen-table td[dir="ltr"],
+.tmkeen-table .cell-phone,
+.tmkeen-table a[href^="tel:"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: start;
+  min-width: 7.5rem;
+}
+@media (max-width: 767px) {
+  .zad-table-wrap,
+  .tmkeen-table-wrap,
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .zad-table-wrap table,
+  .tmkeen-table-wrap table {
+    min-width: 36rem;
+  }
+}
+
 /* Card / Badge tone helpers aligned to tokens */
 .zad-card {
   background: var(--surface-raised);
