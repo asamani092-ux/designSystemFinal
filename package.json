@@ -1,0 +1,35 @@
+{
+  "name": "@zaad/design-system",
+  "version": "1.2.1",
+  "description": "نظام الزاد الموحّد — توكنات ومكوّنات CSS قابلة للنقل (RTL)",
+  "license": "UNLICENSED",
+  "private": false,
+  "files": [
+    "package/css",
+    "package/tokens.json",
+    "package/components.md",
+    "package/tailwind.preset.ts",
+    "package/examples",
+    "package/README.md",
+    "AGENT_COMMAND.md"
+  ],
+  "exports": {
+    "./tokens.css": "./package/css/tokens.css",
+    "./components.css": "./package/css/components.css",
+    "./zaad-addons.css": "./package/css/zaad-addons.css",
+    "./tokens.json": "./package/tokens.json",
+    "./tailwind.preset": "./package/tailwind.preset.ts",
+    "./components.md": "./package/components.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asamani092-ux/designSystemFinal.git"
+  },
+  "keywords": [
+    "zaad",
+    "design-system",
+    "rtl",
+    "tokens",
+    "tailwind"
+  ]
+}

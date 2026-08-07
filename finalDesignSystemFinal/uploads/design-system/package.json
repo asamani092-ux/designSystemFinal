@@ -1,7 +1,7 @@
 {
-  "name": "@tmkeen/design-system",
-  "version": "1.0.0",
-  "description": "Design tokens and CSS components for Tmkeen platform (Arabic RTL)",
+  "name": "@zaad/design-system",
+  "version": "1.2.0",
+  "description": "Design tokens and CSS components for Zaad platforms (Arabic RTL) — use repo root package",
   "private": true,
   "files": [
     "tokens.json",
