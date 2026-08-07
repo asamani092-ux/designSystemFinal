@@ -96,6 +96,74 @@
       flex-shrink: 0;
       box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25), 0 2px 8px rgba(0,0,0,0.2);
     }
+    .zrp-evidence-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      image-rendering: auto;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+    .zrp-media-view {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      background: rgba(8, 3, 6, 0.92);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+    .zrp-media-view__stage {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.35);
+    }
+    .zrp-media-view__img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      image-rendering: auto;
+      transform-origin: center center;
+      transition: transform 0.2s ease;
+      border-radius: 8px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    }
+    .zrp-media-view__video {
+      width: min(960px, 96%);
+      max-height: min(72vh, 100%);
+      border-radius: 12px;
+      background: #000;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    }
+    .zrp-media-view__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 4px 4px;
+      color: #fff;
+    }
+    .zrp-media-view__btn {
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .zrp-media-view__btn:hover { border-color: #e9b221; color: #e9b221; }
     @media (max-width: 520px) {
       .zrp-kpis { grid-template-columns: 1fr !important; }
       .zrp-evidence { grid-template-columns: 1fr 1fr !important; }
@@ -347,16 +415,17 @@
               <h2 class="zrp-slide-title" style="margin: 0; font-size: 38px; font-weight: 800; color: {{ headMain }};">معرض الشواهد</h2>
               <div class="zrp-evidence" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;">
                 <sc-for list="{{ evidence }}" as="e" hint-placeholder-count="4">
-                  <button onClick="{{ e.click }}" style="background: {{ cardBg }}; border: 1px solid {{ borderMain }}; border-radius: 16px; overflow: hidden; cursor: pointer; font-family: inherit; text-align: start; color: {{ textMain }}; display: flex; flex-direction: column; padding: 0;" style-hover="border-color: #e9b221;">
-                    <div style="aspect-ratio: 4 / 3; width: 100%; background: linear-gradient(135deg, rgba(149,23,64,0.12), rgba(233,178,33,0.12)); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                  <button onClick="{{ e.openMedia }}" type="button" style="background: {{ cardBg }}; border: 1px solid {{ borderMain }}; border-radius: 16px; overflow: hidden; cursor: pointer; font-family: inherit; text-align: start; color: {{ textMain }}; display: flex; flex-direction: column; padding: 0;" style-hover="border-color: #e9b221;">
+                    <div style="aspect-ratio: 16 / 10; width: 100%; background: #1a0c12; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                       <sc-if value="{{ e.hasVideo }}" hint-placeholder-val="{{ false }}">
-                        <video src="{{ e.mediaSrc }}" poster="{{ e.posterSrc }}" muted playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
+                        <video class="zrp-evidence-thumb" src="{{ e.mediaSrc }}" poster="{{ e.posterSrc }}" muted playsinline preload="metadata"></video>
                         <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(15,5,10,0.28); pointer-events: none;"><span style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(233,178,33,0.95); color: #65102a; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">{{ playIcon }}</span></span>
                       </sc-if>
-                      <sc-if value="{{ e.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ e.mediaSrc }}" alt="{{ e.caption }}" style="width: 100%; height: 100%; object-fit: cover;"></sc-if>
+                      <sc-if value="{{ e.hasImg }}" hint-placeholder-val="{{ false }}"><img class="zrp-evidence-thumb" src="{{ e.mediaSrc }}" alt="{{ e.caption }}" decoding="async" loading="eager"></sc-if>
                       <sc-if value="{{ e.noMedia }}" hint-placeholder-val="{{ true }}"><span style="color: #e9b221; opacity: 0.55; display: flex;">{{ imageIcon }}</span></sc-if>
                       <span style="position: absolute; top: 10px; inset-inline-start: 10px; background: rgba(101,16,42,0.85); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 9999px;">{{ e.tag }}</span>
                       <sc-if value="{{ e.hasVideo }}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 10px; inset-inline-end: 10px; background: rgba(15,5,10,0.7); color: #e9b221; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 9999px;">فيديو</span></sc-if>
+                      <span style="position: absolute; bottom: 10px; inset-inline-end: 10px; background: rgba(15,5,10,0.65); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px;">تكبير</span>
                     </div>
                     <div style="padding: 14px 16px; display: flex; align-items: flex-start; gap: 8px;"><span style="font-size: 16px; font-weight: 600; line-height: 1.5; flex: 1;">{{ e.caption }}</span><span style="color: #e9b221; opacity: 0.8; display: flex; flex-shrink: 0; margin-top: 2px;">{{ infoIcon }}</span></div>
                   </button>
@@ -388,6 +457,33 @@
           </sc-if>
         </div>
       </div>
+      <sc-if value="{{ mediaViewOpen }}" hint-placeholder-val="{{ false }}">
+        <div class="zrp-media-view" onClick="{{ closeMediaView }}">
+          <div class="zrp-media-view__bar" onClick="{{ stopMediaView }}">
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+              <strong style="font-size: 16px;">{{ mediaCaption }}</strong>
+              <span style="font-size: 12px; opacity: 0.75;">{{ mediaNote }}</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
+              <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ true }}">
+                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomOut }}">تصغير</button>
+                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomReset }}">١×</button>
+                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomIn }}">تكبير</button>
+              </sc-if>
+              <button class="zrp-media-view__btn" type="button" onClick="{{ closeMediaView }}">إغلاق</button>
+            </div>
+          </div>
+          <div class="zrp-media-view__stage" onClick="{{ stopMediaView }}">
+            <sc-if value="{{ mediaIsVideo }}" hint-placeholder-val="{{ false }}">
+              <video class="zrp-media-view__video" src="{{ mediaSrc }}" poster="{{ mediaPoster }}" controls autoplay playsinline preload="auto"></video>
+            </sc-if>
+            <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ false }}">
+              <img class="zrp-media-view__img" src="{{ mediaSrc }}" alt="{{ mediaCaption }}" style="transform: scale({{ mediaZoom }});" decoding="async">
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
       <sc-if value="{{ detailOpen }}" hint-placeholder-val="{{ false }}">
         <div onClick="{{ closeDetail }}" style="position: absolute; inset: 0; z-index: 8; background: rgba(15,5,10,0.55); display: flex; justify-content: center; align-items: {{ overlayAlign }}; padding: 24px;">
           <div class="{{ panelClass }}" onClick="{{ stopDetail }}" style="background: {{ detailBg }}; color: {{ textMain }}; max-width: 640px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); border: 1px solid {{ borderMain }}; display: flex; flex-direction: column; overflow: hidden;">
@@ -400,12 +496,6 @@
               <button onClick="{{ closeDetail }}" aria-label="إغلاق" style="width: 36px; height: 36px; border-radius: 10px; border: none; background: rgba(255,255,255,0.18); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ closeIcon }}</button>
             </div>
             <div style="padding: 22px 26px; display: flex; flex-direction: column; gap: 12px;">
-              <sc-if value="{{ detailHasVideo }}" hint-placeholder-val="{{ false }}">
-                <video src="{{ detailMediaSrc }}" poster="{{ detailPosterSrc }}" controls playsinline style="width: 100%; max-height: 320px; border-radius: 12px; background: #000;"></video>
-              </sc-if>
-              <sc-if value="{{ detailHasImg }}" hint-placeholder-val="{{ false }}">
-                <img src="{{ detailMediaSrc }}" alt="" style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px;">
-              </sc-if>
               <div style="font-size: 13px; font-weight: 700; color: #e9b221;">التفصيل</div>
               <sc-for list="{{ detailRows }}" as="row" hint-placeholder-count="3">
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid {{ borderMain }}; padding-bottom: 10px; font-size: 17px;"><span style="opacity: 0.85;">{{ row.k }}</span><span style="font-weight: 700; color: {{ headMain }};">{{ row.v }}</span></div>
@@ -436,7 +526,7 @@
   &quot;theme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dark&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;light&quot;], &quot;tsType&quot;: &quot;\&quot;dark\&quot; | \&quot;light\&quot;&quot;, &quot;section&quot;: &quot;العرض&quot;, &quot;label&quot;: &quot;مظهر العرض&quot; }
 }">
 class Component extends DCLogic {
-  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgName: 'جمعية الزاد للتمكين المستدام', deptName: 'إدارة الأداء والنمو', closingTitle: 'شكراً لكم', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
+  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgName: 'جمعية الزاد للتمكين المستدام', deptName: 'إدارة الأداء والنمو', closingTitle: 'شكراً لكم', evidenceItems: null, mediaView: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
   icon(p, fill) { return React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: 20, height: 20, viewBox: '0 0 24 24', fill: fill || 'none', stroke: fill ? 'none' : 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', dangerouslySetInnerHTML: { __html: p } }); }
   deckKeys() { const o = this.state.on; const D = this.reportData(); const evN = this.evidenceList().length; const has = { summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: evN, disb: D.disb.length }; const order = ['summary','kpi','dist','funnel','progress','table','timeline','evidence','disb']; const mid = order.filter(k => o[k] && has[k]); return ['cover', ...mid, 'closing']; }
   componentDidMount() {
@@ -451,13 +541,48 @@ class Component extends DCLogic {
     if (Array.isArray(D.evidence) && D.evidence.length) {
       this.setState({ evidenceItems: D.evidence.map(e => ({ ...e })) });
     }
-    this._key = (e) => { if (!this.state.present) return; if (e.key === 'ArrowLeft') this.go(1); else if (e.key === 'ArrowRight') this.go(-1); else if (e.key === 'Escape') this.setState({ present: false }); }; window.addEventListener('keydown', this._key);
+    this._key = (e) => {
+      if (!this.state.present) return;
+      if (e.key === 'Escape') {
+        if (this.state.mediaView) { this.setState({ mediaView: null }); return; }
+        this.setState({ present: false });
+        return;
+      }
+      if (this.state.mediaView) return;
+      if (e.key === 'ArrowLeft') this.go(1);
+      else if (e.key === 'ArrowRight') this.go(-1);
+    }; window.addEventListener('keydown', this._key);
   }
   componentWillUnmount() { window.removeEventListener('keydown', this._key); }
   go(d) { const len = this.deckKeys().length; this.setState(s => ({ idx: Math.max(0, Math.min(len - 1, s.idx + d)) })); }
   tog(key) { this.setState(s => ({ openKey: s.openKey === key ? null : key })); }
   rowObjs(rows) { return rows.map(r => ({ k: r[0], v: r[1] })); }
-  openDetail(comp, d) { const has = (d.rows && d.rows.length) || (d.note && d.note.length); const note = (d.note && d.note.length) ? d.note : (has ? '' : 'لا تتوفر تفاصيل إضافية لهذا العنصر.'); this.setState({ detail: { ...d, note, mode: this.state.reveal[comp] } }); }
+  openDetail(comp, d) { const has = (d.rows && d.rows.length) || (d.note && d.note.length); const note = (d.note && d.note.length) ? d.note : (has ? '' : 'لا تتوفر تفاصيل إضافية لهذا العنصر.'); this.setState({ detail: { ...d, note, mode: this.state.reveal[comp] }, mediaView: null }); }
+  openMediaView(item) {
+    if (!item || !(item.src && item.src.length)) return;
+    const isVideo = this.isVideoMedia(item);
+    this.setState({
+      detail: null,
+      openKey: null,
+      mediaView: {
+        type: isVideo ? 'video' : 'image',
+        src: item.src,
+        poster: item.poster || '',
+        caption: item.caption || '',
+        note: item.note || '',
+        zoom: 1,
+      },
+    });
+  }
+  closeMediaView(e) { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mediaView: null }); }
+  stopMediaView(e) { if (e && e.stopPropagation) e.stopPropagation(); }
+  setMediaZoom(next) {
+    this.setState(s => {
+      if (!s.mediaView) return null;
+      const z = Math.max(1, Math.min(3, next));
+      return { mediaView: { ...s.mediaView, zoom: z } };
+    });
+  }
 
   /* ═══════════════════════════════════════════════════════════════════════
      DATA INTEGRATION CONTRACT  —  READ THIS, AGENT.
@@ -496,14 +621,15 @@ class Component extends DCLogic {
        progress: [ { label, pct(0-100), rows:[[..]], note } ],  // progress bars
        programs: [ { prog, total, done, pct, rows:[[..]], note } ], // table
        timeline: [ { title, time, rows:[[..]], note } ],        // agenda / milestones
-       evidence: [ { type:'image'|'video', src, poster?, caption, tag, note, rows? } ], // media gallery — each platform feeds its own
+       evidence: [ { type:'image'|'video', src, poster?, caption, tag, note, rows? } ], // click opens lightbox (play video / zoom image)
        disb:     [ { label, amount, rows:[[..]], note } ]       // financials
      }
 
      EVIDENCE MEDIA:
        • type: "image" | "video" (optional — inferred from URL extension if omitted)
-       • src: absolute/relative URL or data: URL for image/video
+       • src: absolute/relative URL or data: URL (prefer same-origin / uploaded assets for video)
        • poster: optional cover image for video
+       • UI: thumbnail on slide; click opens fullscreen viewer with video controls or image zoom
        • Each platform supplies its OWN evidence from its storage — NOT a shared central album.
        • Builder UI can override evidence for preview via local state before platform wiring.
 
@@ -585,7 +711,7 @@ class Component extends DCLogic {
       evidence: [
         { type: 'image', src: 'screenshots/01-found.png', caption: 'ورشة التمكين المالي — الرياض', tag: 'فعالية', note: 'حضور ١٤٠ مستفيداً على مدى يومين.' },
         { type: 'image', src: 'screenshots/02-cards.png', caption: 'توزيع شهادات ريادة الأعمال', tag: 'إنجاز', note: 'تخريج ٩ مشاريع ناشئة.' },
-        { type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'screenshots/ben.png', caption: 'زيارة ميدانية للمستفيدين', tag: 'متابعة', note: 'تقييم أثر مباشر في ٣ مدن — مقطع توضيحي.' },
+        { type: 'video', src: 'assets/media/sample.mp4', poster: 'screenshots/ben.png', caption: 'زيارة ميدانية للمستفيدين', tag: 'متابعة', note: 'تقييم أثر مباشر في ٣ مدن — اضغط للتشغيل بملء الشاشة.' },
         { type: 'image', src: 'screenshots/phone.png', caption: 'ملتقى المتطوعين السنوي', tag: 'مجتمع', note: '٣٢٠ متطوعاً، ١٬٢٠٠ ساعة تطوعية.' },
       ],
       programs: [
@@ -694,8 +820,8 @@ class Component extends DCLogic {
       setLight: () => this.setState({ theme: 'light' }), setDark: () => this.setState({ theme: 'dark' }),
       lightBorder: dark ? '#e5e7eb' : '#951740', darkBorder: dark ? '#951740' : '#e5e7eb',
       deckCount: this.arNumSafe(deck.length),
-      startPresent: () => this.setState({ present: true, idx: 0 }),
-      exitPresent: () => this.setState({ present: false }),
+      startPresent: () => this.setState({ present: true, idx: 0, mediaView: null, detail: null }),
+      exitPresent: () => this.setState({ present: false, mediaView: null, detail: null }),
       playIcon: I('<polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/>'),
       linkIcon: I('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'),
       closeIcon: I('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'),
@@ -755,7 +881,7 @@ class Component extends DCLogic {
       funnel: D.funnel.map((f,i) => ({ ...f, width: (f.pct || 0) + '%', ...this.decorate('funnel', i, { title: f.stage, head: '', value: (f.pct || 0) + '٪', delta: '', rows: this.rowObjs(f.rows || []), note: f.note }) })),
       timeline: D.timeline.map((tm,i) => ({ ...tm, last: i === D.timeline.length - 1, ...this.decorate('timeline', i, { title: tm.title, head: '', value: '', delta: '', rows: this.rowObjs(tm.rows || []), note: tm.note }) })),
       evidence: this.evidenceList().map((e,i) => {
-        const hasSrc = !!(e.src && e.src.length);
+        const hasSrc = !!(e.src && String(e.src).length);
         const hasVideo = hasSrc && this.isVideoMedia(e);
         const hasImg = hasSrc && !hasVideo;
         return {
@@ -765,6 +891,7 @@ class Component extends DCLogic {
           noMedia: !hasSrc,
           mediaSrc: hasSrc ? e.src : '',
           posterSrc: e.poster || '',
+          openMedia: () => this.openMediaView(e),
           ...this.decorate('evidence', i, {
             title: e.caption,
             head: e.tag || '',
@@ -772,16 +899,26 @@ class Component extends DCLogic {
             delta: '',
             rows: this.rowObjs(e.rows || []),
             note: e.note,
-            mediaSrc: e.src || '',
-            posterSrc: e.poster || '',
-            mediaType: hasVideo ? 'video' : (hasImg ? 'image' : ''),
           }),
         };
       }),
-      detailHasVideo: !!(this.state.detail && this.state.detail.mediaType === 'video' && this.state.detail.mediaSrc),
-      detailHasImg: !!(this.state.detail && this.state.detail.mediaType === 'image' && this.state.detail.mediaSrc),
-      detailMediaSrc: (this.state.detail && this.state.detail.mediaSrc) || '',
-      detailPosterSrc: (this.state.detail && this.state.detail.posterSrc) || '',
+      mediaViewOpen: !!this.state.mediaView,
+      mediaIsVideo: !!(this.state.mediaView && this.state.mediaView.type === 'video'),
+      mediaIsImage: !!(this.state.mediaView && this.state.mediaView.type === 'image'),
+      mediaSrc: (this.state.mediaView && this.state.mediaView.src) || '',
+      mediaPoster: (this.state.mediaView && this.state.mediaView.poster) || '',
+      mediaCaption: (this.state.mediaView && this.state.mediaView.caption) || '',
+      mediaNote: (this.state.mediaView && this.state.mediaView.note) || '',
+      mediaZoom: (this.state.mediaView && this.state.mediaView.zoom) || 1,
+      closeMediaView: (e) => this.closeMediaView(e),
+      stopMediaView: (e) => this.stopMediaView(e),
+      zoomIn: (e) => { this.stopMediaView(e); this.setMediaZoom(((this.state.mediaView && this.state.mediaView.zoom) || 1) + 0.25); },
+      zoomOut: (e) => { this.stopMediaView(e); this.setMediaZoom(((this.state.mediaView && this.state.mediaView.zoom) || 1) - 0.25); },
+      zoomReset: (e) => { this.stopMediaView(e); this.setMediaZoom(1); },
+      detailHasVideo: false,
+      detailHasImg: false,
+      detailMediaSrc: '',
+      detailPosterSrc: '',
       detail: this.state.detail,
       detailOpen: !!this.state.detail,
       closeDetail: () => this.setState({ detail: null }),

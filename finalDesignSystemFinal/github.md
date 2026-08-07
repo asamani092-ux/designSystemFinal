@@ -2,8 +2,12 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.9
+current: v1.2.10
 date: 2026-08-07
+
+### v1.2.10 — شواهد: فيديو عامل + تكبير صور
+- عارض ملء للوسائط: تشغيل فيديو بتحكمات، تكبير/تصغير للصور، جودة contain.
+- عينة فيديو محلية `assets/media/sample.mp4`.
 
 ### v1.2.9 — تبسيط الحقول وأوامر الوكيل
 - منشئ التقارير: اسم الجهة + القسم مرة واحدة (غلاف وخاتمة).
@@ -11,7 +15,7 @@ date: 2026-08-07
 
 ### v1.2.8 — تنظيف المصدر ومنع التعارض
 - حذف `uploads/design-system` (نسخة tmkeen القديمة + سكربتات التثبيت المحلية).
-- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.9`.
+- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.10`.
 - مجلد `design-system/` للتوثيق والعقود فقط — لا يُنسخ إلى المنصات.
 
 ### v1.2.7 — شعار العرض في الوسط وأكبر
@@ -64,7 +68,7 @@ date: 2026-08-07
 ## Distribution
 المصدر الوحيد للمنصات:
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.9"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.10"
 ```
 ```css
 @import "@zaad/design-system/tokens.css";

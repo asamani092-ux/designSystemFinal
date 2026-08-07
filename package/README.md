@@ -1,7 +1,7 @@
 # @zaad/design-system
 
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.9"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.10"
 ```
 
 ```css
