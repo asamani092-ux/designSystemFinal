@@ -342,6 +342,30 @@ input[type="password"][dir="ltr"],
   cursor: pointer;
 }
 
+/* أرقام الجوال / البريد / القيم LTR داخل الجداول — بلا التفاف على الشاشات الضيقة */
+.tmkeen-table td[dir="ltr"],
+.tmkeen-table th[dir="ltr"],
+.tmkeen-table .cell-ltr,
+.tmkeen-table .cell-phone,
+.tmkeen-table a[href^="tel:"],
+.tmkeen-table a[href^="mailto:"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-align: start;
+  min-width: 7.5rem;
+}
+
+/* غلاف تمرير أفقي إن ضاق العمود */
+.tmkeen-table-wrap,
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* ── Tabs (segmented) ── */
 .tab-bar {
   display: flex;

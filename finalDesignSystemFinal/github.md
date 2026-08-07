@@ -2,8 +2,33 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.1
+current: v1.2.8
 date: 2026-08-07
+
+### v1.2.8 — تنظيف المصدر ومنع التعارض
+- حذف `uploads/design-system` (نسخة tmkeen القديمة + سكربتات التثبيت المحلية).
+- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.8`.
+- مجلد `design-system/` للتوثيق والعقود فقط — لا يُنسخ إلى المنصات.
+
+### v1.2.7 — شعار العرض في الوسط وأكبر
+- شعار النهاري/الليلي في منتصف أعلى الشريحة بارتفاع أكبر قليلاً.
+
+### v1.2.6 — نصوص شريحة الخاتمة قابلة للتعديل
+- عنوان الخاتمة + السطرين السفليين من قسم «شريحة الخاتمة» في إعدادات المظهر.
+
+### v1.2.5 — معرض الشواهد: صور وفيديو لكل منصة
+- الشواهد من `ZAD_REPORT.evidence` لكل منصة (ليست مصدراً مشتركاً).
+- دعم `type: image|video` + `poster` + رفع ملف/رابط من إعدادات المنشئ.
+
+### v1.2.4 — تحسين دونات توزيع الحالات
+- فجوات بين الشرائح، إطار ذهبي، مركز يعرض النسبة الأعلى، أشرطة مصغّرة في الأسطورة.
+
+### v1.2.3 — منشئ التقارير: حقول الجهة قابلة للتعديل
+- غلاف/خاتمة: `orgLine` · `closingLine` · `orgName` من إعدادات المنشئ و`ZAD_REPORT`.
+
+### v1.2.2 — جوال الجداول بلا التفاف
+- خلايا الجوال/البريد LTR: `white-space: nowrap` + `min-width` + تمرير أفقي للغلاف على الشاشات الضيقة.
+- عقد DataTable يوضح `cell-phone` / `dir=ltr`.
 
 ### v1.2.1 — مقاسات الأزرار + zaad-addons مركزي
 - أزرار بعقد sm(36) / md(44) / lg(52) — إلغاء فرض min-height:44 على كل الأزرار.
@@ -25,16 +50,25 @@ date: 2026-08-07
 - الأسس، المكوّنات، المصادقة، المكوّنات الموسّعة، الأساسية والمنصية، منشئ العرض التقديمي.
 
 ## Files
-- `package/` — حزمة الاستهلاك للمنصات (tokens / components / preset / contracts)
-- `AGENT_COMMAND.md` — أمر لصقه لوكيل كل منصة
-- `دليل الهوية الرسمي.dc.html` — المصدر (Design Component)
-- `designSystemFinal1.html` — النسخة المستقلة المُصدّرة (للنشر/الرفع)
+- `package/` — حزمة الاستهلاك `@zaad/design-system`
+- `AGENT_COMMAND.md` — أمر وكلاء المنصات
+- `finalDesignSystemFinal/design-system/` — توثيق وعقود (لا يُنسخ للمنصات)
+- `عرض التقارير التقديمي.dc.html` — منشئ العرض التقديمي
+- `دليل الهوية الرسمي.dc.html` / `designSystemFinal1.html` — الدليل
 
+## 
 ## Distribution
+المصدر الوحيد للمنصات:
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.0"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.8"
 ```
-كل منصة تعتمد الحزمة وتحذف النسخ المحلية. تحسين المكوّنات يتم هنا فقط.
+```css
+@import "@zaad/design-system/tokens.css";
+@import "@zaad/design-system/components.css";
+@import "@zaad/design-system/zaad-addons.css";
+```
+لا تنسخ مجلدات التصميم إلى المنصات. احذف `Design_system_f` / `Zaad.design.system` / `zaad-addons.css` المحلي.
 
+## 
 ## How version is stamped
 رقم الإصدار يظهر في تذييل الصفحة (footer) وفي هذا الملف. عند أي تعديل لاحق: ارفع الرقم هنا وفي التذييل، وأضف سطراً تحت "التغييرات"، وأنشئ git tag `vX.Y.Z`.
