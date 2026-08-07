@@ -2,8 +2,13 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.0
-date: 2026-08-06
+current: v1.2.1
+date: 2026-08-07
+
+### v1.2.1 — مقاسات الأزرار + zaad-addons مركزي
+- أزرار بعقد sm(36) / md(44) / lg(52) — إلغاء فرض min-height:44 على كل الأزرار.
+- نقل `zaad-addons.css` إلى الحزمة مع تصغير Chips/Tabs/Breadcrumb في السياقات الكثيفة.
+- الاستهلاك: `#v1.2.1` + استيراد `zaad-addons.css` من الحزمة وحذف النسخ المحلية.
 
 ### v1.2.0 — التوزيع المركزي للمنصات
 - حزمة npm: `@zaad/design-system` من جذر المستودع (`package.json` + `package/`).

@@ -71,7 +71,7 @@
 1. أضف في `package.json`:
 
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.0"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.1"
 ```
 
 2. Tailwind: `presets: [zaadPreset]` من `@zaad/design-system/tailwind.preset`.
@@ -80,7 +80,10 @@
 ```css
 @import "@zaad/design-system/tokens.css";
 @import "@zaad/design-system/components.css";
+@import "@zaad/design-system/zaad-addons.css";
 ```
+
+احذف `zaad-addons.css` المحلي إن وُجد. الأزرار: `.btn-sm` / افتراضي / `.btn-lg`.
 
 4. الجذر: `lang="ar" dir="rtl"` + `zad-root`.
 5. احذف النسخ المحلية بعد نجاح البناء.

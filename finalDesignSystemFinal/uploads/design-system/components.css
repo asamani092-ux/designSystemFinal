@@ -14,93 +14,144 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Buttons ── */
-.btn-primary {
+/* ── Buttons ──
+ * المقاسات وفق العقد: sm(36) | md(44 افتراضي) | lg(52)
+ * لا تفرض min-height:44 على كل الأزرار — استخدم .btn-sm في الجداول/الأشرطة الكثيفة
+ */
+.btn-primary,
+.btn-secondary,
+.btn-recommend,
+.btn-register,
+.btn-danger,
+.btn-ghost,
+.zad-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: var(--tmkeen-radius-lg);
-  background: var(--tmkeen-primary);
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  color: #fff;
+  gap: var(--space-2, 0.5rem);
+  box-sizing: border-box;
+  border-radius: var(--radius-md, var(--tmkeen-radius-lg));
+  font-family: inherit;
+  font-weight: var(--weight-bold, 600);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.2;
   text-align: start;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--duration-fast, 0.15s) var(--ease-standard, ease),
+    border-color var(--duration-fast, 0.15s) var(--ease-standard, ease),
+    color var(--duration-fast, 0.15s) var(--ease-standard, ease);
   border: none;
   cursor: pointer;
+  /* md افتراضي */
+  min-height: 44px;
+  padding-block: 0;
+  padding-inline: var(--space-5, 1.25rem);
 }
-.btn-primary:hover {
-  background: var(--tmkeen-primary-dark);
+.btn-sm,
+.zad-btn--sm {
+  min-height: 36px;
+  padding-inline: var(--space-3, 0.75rem);
+  font-size: var(--text-xs, 0.8125rem);
 }
-.btn-primary:focus-visible {
-  outline: 2px solid var(--tmkeen-primary);
-  outline-offset: 2px;
+.btn-md,
+.zad-btn--md {
+  min-height: 44px;
+  padding-inline: var(--space-5, 1.25rem);
 }
-.btn-primary:disabled {
-  opacity: 0.6;
+.btn-lg,
+.zad-btn--lg {
+  min-height: 52px;
+  padding-inline: var(--space-6, 1.5rem);
+  font-size: var(--text-base, 1rem);
+}
+.btn-block,
+.zad-btn--full {
+  width: 100%;
+}
+.btn-icon-only {
+  width: var(--btn-size, 44px);
+  min-width: var(--btn-size, 44px);
+  padding-inline: 0;
+}
+.btn-sm.btn-icon-only { width: 36px; min-width: 36px; min-height: 36px; }
+.btn-lg.btn-icon-only { width: 52px; min-width: 52px; min-height: 52px; }
+
+.btn-primary,
+.zad-btn--primary {
+  background: var(--action-primary-surface, var(--tmkeen-primary));
+  color: var(--action-primary-text, #fff);
+}
+.btn-primary:hover,
+.zad-btn--primary:hover {
+  background: var(--action-primary-hover, var(--tmkeen-primary-dark));
+}
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-recommend:focus-visible,
+.btn-register:focus-visible,
+.btn-danger:focus-visible,
+.btn-ghost:focus-visible,
+.zad-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus, 0 0 0 3px rgba(188, 46, 88, 0.35));
+}
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-recommend:disabled,
+.btn-register:disabled,
+.btn-danger:disabled,
+.btn-ghost:disabled,
+.zad-btn:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: var(--tmkeen-radius-lg);
-  border: 1px solid var(--tmkeen-surface-border);
-  background: var(--tmkeen-surface);
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  color: var(--tmkeen-brand-gray);
-  text-align: start;
-  transition: background-color 0.15s ease;
-  cursor: pointer;
+.btn-secondary,
+.zad-btn--secondary {
+  border: 1px solid var(--action-secondary-border, var(--tmkeen-surface-border));
+  background: var(--action-secondary-surface, var(--tmkeen-surface));
+  color: var(--action-secondary-text, var(--tmkeen-brand-gray));
 }
-.btn-secondary:hover {
-  background: var(--tmkeen-surface-muted);
-}
-.btn-secondary:focus-visible {
-  outline: 2px solid var(--tmkeen-surface-border);
-  outline-offset: 2px;
+.btn-secondary:hover,
+.zad-btn--secondary:hover {
+  background: var(--action-secondary-hover, var(--tmkeen-surface-muted));
 }
 
-.btn-recommend {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: var(--tmkeen-radius-lg);
-  background: var(--tmkeen-secondary);
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  color: var(--tmkeen-warning);
-  text-align: start;
-  transition: background-color 0.15s ease;
-  border: none;
-  cursor: pointer;
+.btn-recommend,
+.zad-btn--accent {
+  background: var(--action-accent-surface, var(--tmkeen-secondary));
+  color: var(--action-accent-text, var(--tmkeen-warning));
 }
-.btn-recommend:hover {
-  background: var(--tmkeen-secondary-light);
+.btn-recommend:hover,
+.zad-btn--accent:hover {
+  background: var(--action-accent-hover, var(--tmkeen-secondary-light));
 }
 
 .btn-register {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: var(--tmkeen-radius-lg);
-  background: rgb(250, 204, 21);
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  color: var(--tmkeen-warning);
-  text-align: start;
-  transition: background-color 0.15s ease;
-  border: none;
-  cursor: pointer;
+  background: var(--action-accent-surface, rgb(250, 204, 21));
+  color: var(--action-accent-text, var(--tmkeen-warning));
 }
 .btn-register:hover {
-  background: var(--tmkeen-secondary);
+  background: var(--action-accent-hover, var(--tmkeen-secondary));
+}
+
+.btn-danger,
+.zad-btn--danger {
+  background: var(--danger-solid, var(--tmkeen-danger));
+  color: #fff;
+}
+.btn-danger:hover,
+.zad-btn--danger:hover {
+  filter: brightness(0.92);
+}
+
+.btn-ghost,
+.zad-btn--ghost {
+  background: transparent;
+  color: var(--action-ghost-text, var(--tmkeen-primary));
+}
+.btn-ghost:hover,
+.zad-btn--ghost:hover {
+  background: var(--action-ghost-hover, var(--primary-50, #f8f1f3));
 }
 
 /* ── Cards ── */
