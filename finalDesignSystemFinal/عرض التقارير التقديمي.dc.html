@@ -109,24 +109,45 @@
       position: absolute;
       inset: 0;
       z-index: 20;
-      background: rgba(8, 3, 6, 0.92);
       display: flex;
       flex-direction: column;
       padding: 16px;
+      pointer-events: none;
+    }
+    .zrp-media-view__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 3, 6, 0.92);
+      pointer-events: auto;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+    .zrp-media-view__panel {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      pointer-events: auto;
     }
     .zrp-media-view__stage {
       flex: 1;
       min-height: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 12px;
       overflow: auto;
       border-radius: 16px;
       background: rgba(0,0,0,0.35);
+      padding: 12px;
     }
     .zrp-media-view__img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: calc(100% - 8px);
       width: auto;
       height: auto;
       object-fit: contain;
@@ -138,10 +159,36 @@
     }
     .zrp-media-view__video {
       width: min(960px, 96%);
-      max-height: min(72vh, 100%);
+      max-height: min(62vh, 100%);
       border-radius: 12px;
       background: #000;
       box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    }
+    .zrp-media-view__controls {
+      width: min(960px, 96%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: rgba(15,5,10,0.85);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .zrp-media-view__seek {
+      flex: 1;
+      min-width: 140px;
+      accent-color: #e9b221;
+      cursor: pointer;
+    }
+    .zrp-media-view__time {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+      min-width: 7.5rem;
+      text-align: center;
     }
     .zrp-media-view__bar {
       display: flex;
@@ -149,7 +196,7 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      padding: 12px 4px 4px;
+      padding: 0 4px 12px;
       color: #fff;
     }
     .zrp-media-view__btn {
@@ -164,6 +211,7 @@
       cursor: pointer;
     }
     .zrp-media-view__btn:hover { border-color: #e9b221; color: #e9b221; }
+    .zrp-media-view__btn.is-active { background: #e9b221; color: #65102a; border-color: #e9b221; }
     @media (max-width: 520px) {
       .zrp-kpis { grid-template-columns: 1fr !important; }
       .zrp-evidence { grid-template-columns: 1fr 1fr !important; }
@@ -458,28 +506,37 @@
         </div>
       </div>
       <sc-if value="{{ mediaViewOpen }}" hint-placeholder-val="{{ false }}">
-        <div class="zrp-media-view" onClick="{{ closeMediaView }}">
-          <div class="zrp-media-view__bar" onClick="{{ stopMediaView }}">
-            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
-              <strong style="font-size: 16px;">{{ mediaCaption }}</strong>
-              <span style="font-size: 12px; opacity: 0.75;">{{ mediaNote }}</span>
+        <div class="zrp-media-view">
+          <button class="zrp-media-view__backdrop" type="button" aria-label="إغلاق" onClick="{{ closeMediaView }}"></button>
+          <div class="zrp-media-view__panel">
+            <div class="zrp-media-view__bar">
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+                <strong style="font-size: 16px;">{{ mediaCaption }}</strong>
+                <span style="font-size: 12px; opacity: 0.75;">{{ mediaNote }}</span>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
+                <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ true }}">
+                  <button class="zrp-media-view__btn" type="button" onClick="{{ zoomOut }}">تصغير</button>
+                  <button class="zrp-media-view__btn" type="button" onClick="{{ zoomReset }}">١×</button>
+                  <button class="zrp-media-view__btn" type="button" onClick="{{ zoomIn }}">تكبير</button>
+                </sc-if>
+                <button class="zrp-media-view__btn" type="button" onClick="{{ closeMediaView }}">إغلاق</button>
+              </div>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
-              <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ true }}">
-                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomOut }}">تصغير</button>
-                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomReset }}">١×</button>
-                <button class="zrp-media-view__btn" type="button" onClick="{{ zoomIn }}">تكبير</button>
+            <div class="zrp-media-view__stage">
+              <sc-if value="{{ mediaIsVideo }}" hint-placeholder-val="{{ false }}">
+                <video class="zrp-media-view__video" src="{{ mediaSrc }}" poster="{{ mediaPoster }}" controls controlslist="nodownload" playsinline preload="auto" onPlay="{{ onVideoPlay }}" onPause="{{ onVideoPause }}" onTimeUpdate="{{ onVideoTime }}" onLoadedMetadata="{{ onVideoMeta }}"></video>
+                <div class="zrp-media-view__controls">
+                  <button class="zrp-media-view__btn {{ mediaPlayClass }}" type="button" onClick="{{ toggleVideoPlay }}">{{ mediaPlayLabel }}</button>
+                  <input class="zrp-media-view__seek" type="range" min="0" max="{{ mediaDuration }}" step="0.1" value="{{ mediaCurrent }}" onInput="{{ onVideoSeek }}" aria-label="شريط التنقل">
+                  <span class="zrp-media-view__time">{{ mediaTimeLabel }}</span>
+                  <button class="zrp-media-view__btn" type="button" onClick="{{ toggleVideoMute }}">{{ mediaMuteLabel }}</button>
+                </div>
               </sc-if>
-              <button class="zrp-media-view__btn" type="button" onClick="{{ closeMediaView }}">إغلاق</button>
+              <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ false }}">
+                <img class="zrp-media-view__img" src="{{ mediaSrc }}" alt="{{ mediaCaption }}" style="transform: scale({{ mediaZoom }});" decoding="async">
+              </sc-if>
             </div>
-          </div>
-          <div class="zrp-media-view__stage" onClick="{{ stopMediaView }}">
-            <sc-if value="{{ mediaIsVideo }}" hint-placeholder-val="{{ false }}">
-              <video class="zrp-media-view__video" src="{{ mediaSrc }}" poster="{{ mediaPoster }}" controls autoplay playsinline preload="auto"></video>
-            </sc-if>
-            <sc-if value="{{ mediaIsImage }}" hint-placeholder-val="{{ false }}">
-              <img class="zrp-media-view__img" src="{{ mediaSrc }}" alt="{{ mediaCaption }}" style="transform: scale({{ mediaZoom }});" decoding="async">
-            </sc-if>
           </div>
         </div>
       </sc-if>
@@ -571,17 +628,67 @@ class Component extends DCLogic {
         caption: item.caption || '',
         note: item.note || '',
         zoom: 1,
+        playing: false,
+        muted: false,
+        current: 0,
+        duration: 0,
       },
     });
+    if (isVideo) {
+      setTimeout(() => {
+        const v = this.getMediaVideoEl();
+        if (v) { v.muted = false; v.play().catch(() => {}); }
+      }, 80);
+    }
   }
-  closeMediaView(e) { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mediaView: null }); }
+  closeMediaView(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const v = this.getMediaVideoEl();
+    if (v) { try { v.pause(); } catch (_) {} }
+    this.setState({ mediaView: null });
+  }
   stopMediaView(e) { if (e && e.stopPropagation) e.stopPropagation(); }
+  getMediaVideoEl() {
+    return (typeof document !== 'undefined') ? document.querySelector('.zrp-media-view__video') : null;
+  }
+  formatMediaTime(sec) {
+    const s = Math.max(0, Math.floor(Number(sec) || 0));
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return String(m).padStart(2, '0') + ':' + String(r).padStart(2, '0');
+  }
+  patchMediaView(patch) {
+    this.setState(s => (s.mediaView ? { mediaView: { ...s.mediaView, ...patch } } : null));
+  }
   setMediaZoom(next) {
     this.setState(s => {
       if (!s.mediaView) return null;
       const z = Math.max(1, Math.min(3, next));
       return { mediaView: { ...s.mediaView, zoom: z } };
     });
+  }
+  toggleVideoPlay(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const v = this.getMediaVideoEl();
+    if (!v) return;
+    if (v.paused) v.play().catch(() => {});
+    else v.pause();
+  }
+  toggleVideoMute(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const v = this.getMediaVideoEl();
+    if (!v) return;
+    v.muted = !v.muted;
+    this.patchMediaView({ muted: !!v.muted });
+  }
+  onVideoSeek(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const v = this.getMediaVideoEl();
+    const t = Number(e && e.target && e.target.value);
+    if (v && Number.isFinite(t)) {
+      v.currentTime = t;
+      this.patchMediaView({ current: t });
+    }
   }
 
   /* ═══════════════════════════════════════════════════════════════════════

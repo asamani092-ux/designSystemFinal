@@ -5,7 +5,7 @@
 ## ماذا تفعل (بالترتيب)
 
 1. اقرأ `VERSION` من مستودع التصميم أو ثبّت الوسم من `package.json` هناك → اعتمدية:
-   `"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.10"`
+   `"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.11"`
 2. اربط في الأنماط العامة فقط:
    `tokens.css` + `components.css` + `zaad-addons.css` + `tailwind.preset` + `zad-root` + `dir=rtl`.
 3. احذف كل نسخة تصميم محلية: `Design_system_f` · `Zaad.design.system` · `design-system` المكرر · `zaad-addons.css` المحلي · أي `tokens.css`/`components.css` منسوخ.

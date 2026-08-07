@@ -2,8 +2,11 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.10
+current: v1.2.11
 date: 2026-08-07
+
+### v1.2.11 — تحكم كامل بالفيديو في الشواهد
+- شريط: تشغيل/إيقاف + تنقّل (seek) + كتم + الوقت، مع controls أصلية دون إغلاق بالغلط.
 
 ### v1.2.10 — شواهد: فيديو عامل + تكبير صور
 - عارض ملء للوسائط: تشغيل فيديو بتحكمات، تكبير/تصغير للصور، جودة contain.
@@ -15,7 +18,7 @@ date: 2026-08-07
 
 ### v1.2.8 — تنظيف المصدر ومنع التعارض
 - حذف `uploads/design-system` (نسخة tmkeen القديمة + سكربتات التثبيت المحلية).
-- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.10`.
+- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.11`.
 - مجلد `design-system/` للتوثيق والعقود فقط — لا يُنسخ إلى المنصات.
 
 ### v1.2.7 — شعار العرض في الوسط وأكبر
@@ -68,7 +71,7 @@ date: 2026-08-07
 ## Distribution
 المصدر الوحيد للمنصات:
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.10"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.11"
 ```
 ```css
 @import "@zaad/design-system/tokens.css";
