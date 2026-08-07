@@ -11,7 +11,10 @@
 ```css
 @import "@zaad/design-system/tokens.css";
 @import "@zaad/design-system/components.css";
+@import "@zaad/design-system/zaad-addons.css";
 ```
+
+أزرار: `.btn-sm` (36) · افتراضي (44) · `.btn-lg` (52). في الجداول/FilterBar استخدم `btn-sm`.
 
 ```ts
 import zaadPreset from "@zaad/design-system/tailwind.preset";
