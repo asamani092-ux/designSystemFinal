@@ -2,8 +2,11 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.3
+current: v1.2.4
 date: 2026-08-07
+
+### v1.2.4 — تحسين دونات توزيع الحالات
+- فجوات بين الشرائح، إطار ذهبي، مركز يعرض النسبة الأعلى، أشرطة مصغّرة في الأسطورة.
 
 ### v1.2.3 — منشئ التقارير: حقول الجهة قابلة للتعديل
 - غلاف/خاتمة: `orgLine` · `closingLine` · `orgName` من إعدادات المنشئ و`ZAD_REPORT`.
