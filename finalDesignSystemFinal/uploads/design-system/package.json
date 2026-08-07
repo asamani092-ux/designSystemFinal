@@ -1,34 +1,20 @@
 {
   "name": "@zaad/design-system",
   "version": "1.2.0",
-  "description": "نظام الزاد الموحّد — توكنات ومكوّنات CSS قابلة للنقل (RTL)",
-  "license": "UNLICENSED",
-  "private": false,
+  "description": "Design tokens and CSS components for Zaad platforms (Arabic RTL) — use repo root package",
+  "private": true,
   "files": [
-    "package/css",
-    "package/tokens.json",
-    "package/components.md",
-    "package/tailwind.preset.ts",
-    "package/examples",
-    "package/README.md",
-    "AGENT_COMMAND.md"
+    "tokens.json",
+    "tokens.css",
+    "components.css",
+    "tailwind.preset.ts",
+    "README.md",
+    "examples/"
   ],
   "exports": {
-    "./tokens.css": "./package/css/tokens.css",
-    "./components.css": "./package/css/components.css",
-    "./tokens.json": "./package/tokens.json",
-    "./tailwind.preset": "./package/tailwind.preset.ts",
-    "./components.md": "./package/components.md"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/asamani092-ux/designSystemFinal.git"
-  },
-  "keywords": [
-    "zaad",
-    "design-system",
-    "rtl",
-    "tokens",
-    "tailwind"
-  ]
+    "./tokens.css": "./tokens.css",
+    "./components.css": "./components.css",
+    "./tokens.json": "./tokens.json",
+    "./tailwind.preset": "./tailwind.preset.ts"
+  }
 }
