@@ -554,7 +554,7 @@ class Component extends DCLogic {
     }; window.addEventListener('keydown', this._key);
   }
   componentWillUnmount() { window.removeEventListener('keydown', this._key); }
-  go(d) { const len = this.deckKeys().length; this.setState(s => ({ idx: Math.max(0, Math.min(len - 1, s.idx + d)) })); }
+  go(d) { const len = this.deckKeys().length; this.setState(s => ({ idx: Math.max(0, Math.min(len - 1, s.idx + d)), mediaView: null, detail: null, openKey: null })); }
   tog(key) { this.setState(s => ({ openKey: s.openKey === key ? null : key })); }
   rowObjs(rows) { return rows.map(r => ({ k: r[0], v: r[1] })); }
   openDetail(comp, d) { const has = (d.rows && d.rows.length) || (d.note && d.note.length); const note = (d.note && d.note.length) ? d.note : (has ? '' : 'لا تتوفر تفاصيل إضافية لهذا العنصر.'); this.setState({ detail: { ...d, note, mode: this.state.reveal[comp] }, mediaView: null }); }
