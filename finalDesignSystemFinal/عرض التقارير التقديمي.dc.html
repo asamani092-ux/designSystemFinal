@@ -159,15 +159,12 @@
               <input value="{{ titleVal }}" onInput="{{ onTitle }}" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
               <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">الفترة</label>
               <input value="{{ periodVal }}" onInput="{{ onPeriod }}" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
-              <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">الجهة / الإدارة (غلاف العرض)</label>
-              <input value="{{ orgLineVal }}" onInput="{{ onOrgLine }}" placeholder="جمعية الزاد · إدارة الأداء والنمو" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
-              <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #eee; font-size: 13px; font-weight: 800; color: #951740;">شريحة الخاتمة</div>
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">اسم الجهة</label>
+              <input value="{{ orgNameVal }}" onInput="{{ onOrgName }}" placeholder="جمعية الزاد للتمكين المستدام" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">القسم / الإدارة</label>
+              <input value="{{ deptNameVal }}" onInput="{{ onDeptName }}" placeholder="إدارة الأداء والنمو" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
               <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">عنوان الخاتمة</label>
               <input value="{{ closingTitleVal }}" onInput="{{ onClosingTitle }}" placeholder="شكراً لكم" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
-              <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">السطر الثاني (القسم)</label>
-              <input value="{{ closingLineVal }}" onInput="{{ onClosingLine }}" placeholder="إدارة الأداء والنمو · قسم الاستراتيجية" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
-              <label style="display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin: 12px 0 6px;">السطر الثالث (اسم الجهة)</label>
-              <input value="{{ orgNameVal }}" onInput="{{ onOrgName }}" placeholder="جمعية الزاد للتمكين المستدام" style="width: 100%; border-radius: 10px; border: 1px solid #e5e7eb; padding: 11px 14px; font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: #951740;">
             </div>
           </div>
           <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(68,13,34,0.06); display: flex; flex-direction: column; gap: 10px;">
@@ -226,7 +223,7 @@
               <div style="width: 96px; height: 8px; border-radius: 99px; background: #e9b221;"></div>
               <h1 class="zrp-cover-title" style="margin: 0; font-family: 'Rubik','Tajawal',sans-serif; font-size: 54px; font-weight: 700; line-height: 1.4; color: {{ headMain }};">{{ titleVal }}</h1>
               <div style="font-size: 22px; font-weight: 500; opacity: 0.85;">{{ periodVal }}</div>
-              <div style="font-size: 15px; opacity: 0.7; margin-top: 8px;">{{ orgLineVal }}</div>
+              <div style="font-size: 15px; opacity: 0.7; margin-top: 8px;">{{ orgNameVal }} · {{ deptNameVal }}</div>
             </div>
           </sc-if>
           <sc-if value="{{ sSummary }}" hint-placeholder-val="{{ false }}">
@@ -385,7 +382,7 @@
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px;">
               <div style="width: 96px; height: 8px; border-radius: 99px; background: #e9b221;"></div>
               <h1 class="zrp-cover-title" style="margin: 0; font-family: 'Rubik','Tajawal',sans-serif; font-size: 48px; font-weight: 700; color: {{ headMain }};">{{ closingTitleVal }}</h1>
-              <div style="font-size: 19px; opacity: 0.85;">{{ closingLineVal }}</div>
+              <div style="font-size: 19px; opacity: 0.85;">{{ deptNameVal }}</div>
               <div style="font-size: 15px; opacity: 0.7;">{{ orgNameVal }}</div>
             </div>
           </sc-if>
@@ -439,18 +436,17 @@
   &quot;theme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dark&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;light&quot;], &quot;tsType&quot;: &quot;\&quot;dark\&quot; | \&quot;light\&quot;&quot;, &quot;section&quot;: &quot;العرض&quot;, &quot;label&quot;: &quot;مظهر العرض&quot; }
 }">
 class Component extends DCLogic {
-  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgLine: 'جمعية الزاد · إدارة الأداء والنمو', closingTitle: 'شكراً لكم', closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية', orgName: 'جمعية الزاد للتمكين المستدام', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
+  state = { present: false, idx: 0, theme: 'dark', title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م', orgName: 'جمعية الزاد للتمكين المستدام', deptName: 'إدارة الأداء والنمو', closingTitle: 'شكراً لكم', evidenceItems: null, on: { summary: true, kpi: true, dist: true, funnel: true, progress: true, table: true, timeline: true, evidence: true, disb: true }, reveal: { summary: 'float', kpi: 'float', dist: 'float', funnel: 'float', progress: 'down', table: 'down', timeline: 'down', evidence: 'float', disb: 'float' }, detail: null, openKey: null };
   icon(p, fill) { return React.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: 20, height: 20, viewBox: '0 0 24 24', fill: fill || 'none', stroke: fill ? 'none' : 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', dangerouslySetInnerHTML: { __html: p } }); }
   deckKeys() { const o = this.state.on; const D = this.reportData(); const evN = this.evidenceList().length; const has = { summary: D.summary.length, kpi: D.kpis.length, dist: D.dist.length, funnel: D.funnel.length, progress: D.progress.length, table: D.programs.length, timeline: D.timeline.length, evidence: evN, disb: D.disb.length }; const order = ['summary','kpi','dist','funnel','progress','table','timeline','evidence','disb']; const mid = order.filter(k => o[k] && has[k]); return ['cover', ...mid, 'closing']; }
   componentDidMount() {
     const D = this.reportData();
-    if (D.title || D.period || D.orgLine || D.closingTitle || D.closingLine || D.orgName) this.setState(s => ({
+    if (D.title || D.period || D.orgName || D.deptName || D.closingTitle || D.orgLine || D.closingLine) this.setState(s => ({
       title: D.title || s.title,
       period: D.period || s.period,
-      orgLine: D.orgLine || s.orgLine,
-      closingTitle: D.closingTitle || s.closingTitle,
-      closingLine: D.closingLine || s.closingLine,
       orgName: D.orgName || s.orgName,
+      deptName: D.deptName || D.closingLine || D.orgLine || s.deptName,
+      closingTitle: D.closingTitle || s.closingTitle,
     }));
     if (Array.isArray(D.evidence) && D.evidence.length) {
       this.setState({ evidenceItems: D.evidence.map(e => ({ ...e })) });
@@ -489,10 +485,10 @@ class Component extends DCLogic {
      {
        title:    "Report title (any language)",
        period:   "Q2 2026 / any period label",
-       orgLine:  "Cover subtitle — e.g. جمعية الزاد · إدارة الأداء والنمو",
+       orgName:  "Organization name — used on cover + closing (مرة واحدة)",
+       deptName: "Department / admin — used on cover + closing (مرة واحدة)",
        closingTitle: "Closing headline — e.g. شكراً لكم",
-       closingLine: "Closing mid-line — e.g. إدارة الأداء والنمو · قسم الاستراتيجية",
-       orgName:  "Closing org name — e.g. جمعية الزاد للتمكين المستدام",
+       // legacy aliases still accepted: orgLine, closingLine → mapped to deptName
        summary:  [ { text, rows:[[key,value], ...], note } ],   // exec summary
        kpis:     [ { label, value, delta, rows:[[..]], note } ],// KPI cards
        dist:     [ { label, pct(0-100), color?, rows:[[..]], note } ], // donut / status split
@@ -543,16 +539,15 @@ class Component extends DCLogic {
   reportData() {
     const src = (typeof window !== 'undefined' && window.ZAD_REPORT) || (this.props && this.props.report) || this.sampleData();
     const A = k => Array.isArray(src[k]) ? src[k] : [];
-    return { title: src.title, period: src.period, orgLine: src.orgLine, closingTitle: src.closingTitle, closingLine: src.closingLine, orgName: src.orgName,
+    return { title: src.title, period: src.period, orgName: src.orgName, deptName: src.deptName || src.closingLine || src.orgLine, closingTitle: src.closingTitle,
       summary: A('summary'), kpis: A('kpis'), dist: A('dist'), funnel: A('funnel'), progress: A('progress'), programs: A('programs'), timeline: A('timeline'), evidence: A('evidence'), disb: A('disb') };
   }
   sampleData() {
     return {
       title: 'تقرير الأداء الاستراتيجي', period: 'الربع الثاني 2026م',
-      orgLine: 'جمعية الزاد · إدارة الأداء والنمو',
-      closingTitle: 'شكراً لكم',
-      closingLine: 'إدارة الأداء والنمو · قسم الاستراتيجية',
       orgName: 'جمعية الزاد للتمكين المستدام',
+      deptName: 'إدارة الأداء والنمو',
+      closingTitle: 'شكراً لكم',
       summary: [
         { text: 'نمو إجمالي المستفيدين بنسبة ٨٪ مقارنة بالربع السابق.', rows: [['الربع الأول','١٬١٥٤'],['الربع الثاني','١٬٢٤٧'],['النمو','+٩٣']], note: 'أعلى نمو في مسار التمكين المالي.' },
         { text: 'اعتماد ٣٤ برنامجاً مكتملاً ضمن مسارات التمكين.', rows: [['التمكين المالي','١٤'],['ريادة الأعمال','٩'],['التدريب المهني','١١']], note: '٣ برامج جديدة اكتملت هذا الربع.' },
@@ -635,13 +630,12 @@ class Component extends DCLogic {
       isBuilder: !this.state.present,
       isPresenting: this.state.present,
       titleVal: this.state.title, periodVal: this.state.period,
-      orgLineVal: this.state.orgLine, closingTitleVal: this.state.closingTitle, closingLineVal: this.state.closingLine, orgNameVal: this.state.orgName,
+      orgNameVal: this.state.orgName, deptNameVal: this.state.deptName, closingTitleVal: this.state.closingTitle,
       onTitle: (e) => { const v = e.target.value; this.setState({ title: v }); },
       onPeriod: (e) => { const v = e.target.value; this.setState({ period: v }); },
-      onOrgLine: (e) => { const v = e.target.value; this.setState({ orgLine: v }); },
-      onClosingTitle: (e) => { const v = e.target.value; this.setState({ closingTitle: v }); },
-      onClosingLine: (e) => { const v = e.target.value; this.setState({ closingLine: v }); },
       onOrgName: (e) => { const v = e.target.value; this.setState({ orgName: v }); },
+      onDeptName: (e) => { const v = e.target.value; this.setState({ deptName: v }); },
+      onClosingTitle: (e) => { const v = e.target.value; this.setState({ closingTitle: v }); },
       toggles: [
         t('summary', 'الملخّص التنفيذي', '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>'),
         t('kpi', 'المؤشرات (KPI)', '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>'),
