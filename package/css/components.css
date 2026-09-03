@@ -151,7 +151,7 @@
 }
 .btn-ghost:hover,
 .zad-btn--ghost:hover {
-  background: var(--action-ghost-hover, var(--primary-50, #f8f1f3));
+  background: var(--action-ghost-hover, var(--primary-50, #faf1f4));
 }
 
 /* ── Cards ── */

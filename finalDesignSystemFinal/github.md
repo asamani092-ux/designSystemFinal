@@ -2,8 +2,13 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.11
-date: 2026-08-07
+current: v1.2.12
+date: 2026-09-03
+
+### v1.2.12 — ألوان الهوية المعتمدة
+- استبدال سلالم الألوان بالقيم المعتمدة: مارون `#951A41` · رمادي `#938989` · ذهبي `#E7B121` · سطح `#E4DDD4`.
+- `brand.primary = primary.600` · `surface.base = neutral.50` (`#E4DDD4`) لخلفيات الواجهات.
+- تحديث `tokens.css` · `tokens.json` · `tailwind.preset.ts` · `components.md`.
 
 ### v1.2.11 — تحكم كامل بالفيديو في الشواهد
 - شريط: تشغيل/إيقاف + تنقّل (seek) + كتم + الوقت، مع controls أصلية دون إغلاق بالغلط.
@@ -18,7 +23,7 @@ date: 2026-08-07
 
 ### v1.2.8 — تنظيف المصدر ومنع التعارض
 - حذف `uploads/design-system` (نسخة tmkeen القديمة + سكربتات التثبيت المحلية).
-- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.11`.
+- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.12`.
 - مجلد `design-system/` للتوثيق والعقود فقط — لا يُنسخ إلى المنصات.
 
 ### v1.2.7 — شعار العرض في الوسط وأكبر
@@ -71,7 +76,7 @@ date: 2026-08-07
 ## Distribution
 المصدر الوحيد للمنصات:
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.11"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.12"
 ```
 ```css
 @import "@zaad/design-system/tokens.css";
