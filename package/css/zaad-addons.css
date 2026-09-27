@@ -470,15 +470,115 @@
   text-align: start;
   min-width: 7.5rem;
 }
+/* غلاف الجدول — تمرير لمسي افتراضي */
+.zad-table-wrap,
+.tmkeen-table-wrap,
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * تجاوب الجوال (< 768): جدول → بطاقات
+ * يلزم data-label على كل <td> (نص رأس العمود). اترك data-label="" لخلية الإجراءات.
+ * استثناء: .perm-matrix أو .zad-table--scroll يبقيان تمريرًا أفقيًا.
+ */
 @media (max-width: 767px) {
-  .zad-table-wrap,
-  .tmkeen-table-wrap,
-  .table-scroll {
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix),
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix),
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) {
+    overflow-x: visible;
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) table,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) table,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) table {
+    min-width: 0 !important;
+    display: block;
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) thead,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) thead,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) thead {
+    display: none;
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tbody,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tbody,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) tbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tfoot,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tfoot,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) tfoot {
+    display: block;
+    margin-top: var(--space-3);
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tbody tr,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) tbody tr,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) tbody tr {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--surface-raised);
+    border: var(--border-hairline) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-xs);
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 7px 0 !important;
+    border-bottom: var(--border-hairline) solid color-mix(in srgb, var(--border-subtle) 50%, transparent);
+    font-size: var(--text-xs);
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td:last-child,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td:last-child,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) td:last-child {
+    border-bottom: none;
+    padding-top: var(--space-2) !important;
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td::before,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td::before,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) td::before {
+    content: attr(data-label);
+    font-weight: var(--weight-bold);
+    color: var(--text-brand);
+    font-size: var(--text-2xs);
+    flex-shrink: 0;
+    margin-inline-end: var(--space-3);
+  }
+  .zad-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td[data-label=""]::before,
+  .tmkeen-table-wrap:not(.zad-table--scroll):not(.perm-matrix) td[data-label=""]::before,
+  .table-scroll:not(.zad-table--scroll):not(.perm-matrix) td[data-label=""]::before {
+    display: none;
+  }
+
+  /* شبكات وأشرطة أدوات — لفّ بدل تجاوز أفقي */
+  .zad-root .zad-filter-bar,
+  .zad-root .zad-toolbar {
+    flex-wrap: wrap;
+  }
+  .zad-root img,
+  .zad-root svg {
+    max-width: 100%;
+  }
+}
+
+/* تمرير أفقي صريح عند الحاجة */
+@media (max-width: 767px) {
+  .zad-table--scroll,
+  .perm-matrix {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .zad-table-wrap table,
-  .tmkeen-table-wrap table {
+  .zad-table--scroll table,
+  .perm-matrix table {
     min-width: 36rem;
   }
 }
