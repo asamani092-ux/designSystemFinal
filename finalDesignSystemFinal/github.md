@@ -2,8 +2,13 @@ repo: asamani092-ux/designSystemFinal
 branch: main
 
 ## Version
-current: v1.2.12
-date: 2026-09-03
+current: v1.2.13
+date: 2026-09-27
+
+### v1.2.13 — تجاوب الجوال + دليل محدّث
+- دليل الهوية: قسم إدارة المستخدمين، نمط KPI زجاجي، جداول بطاقات على الجوال (`data-label`).
+- `zaad-addons.css`: جدول → بطاقات < 768px؛ استثناء `.zad-table--scroll` / `.perm-matrix`.
+- ألوان الدليل مزامنة مع الهوية المعتمدة (`#951A41` · `#E7B121` · `#938989` · `#E4DDD4`).
 
 ### v1.2.12 — ألوان الهوية المعتمدة
 - استبدال سلالم الألوان بالقيم المعتمدة: مارون `#951A41` · رمادي `#938989` · ذهبي `#E7B121` · سطح `#E4DDD4`.
@@ -23,7 +28,7 @@ date: 2026-09-03
 
 ### v1.2.8 — تنظيف المصدر ومنع التعارض
 - حذف `uploads/design-system` (نسخة tmkeen القديمة + سكربتات التثبيت المحلية).
-- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.12`.
+- المصدر الوحيد للاستهلاك: جذر المستودع `package/` عبر `@zaad/design-system#v1.2.13`.
 - مجلد `design-system/` للتوثيق والعقود فقط — لا يُنسخ إلى المنصات.
 
 ### v1.2.7 — شعار العرض في الوسط وأكبر
@@ -76,7 +81,7 @@ date: 2026-09-03
 ## Distribution
 المصدر الوحيد للمنصات:
 ```json
-"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.12"
+"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.13"
 ```
 ```css
 @import "@zaad/design-system/tokens.css";

@@ -4,14 +4,19 @@
 
 ## ماذا تفعل (بالترتيب)
 
-1. اقرأ `VERSION` من مستودع التصميم أو ثبّت الوسم من `package.json` هناك → اعتمدية:
-   `"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.12"`
+1. اقرأ `VERSION` من مستودع التصميم → اعتمدية:
+   `"@zaad/design-system": "github:asamani092-ux/designSystemFinal#v1.2.13"`
 2. اربط في الأنماط العامة فقط:
    `tokens.css` + `components.css` + `zaad-addons.css` + `tailwind.preset` + `zad-root` + `dir=rtl`.
 3. احذف كل نسخة تصميم محلية: `Design_system_f` · `Zaad.design.system` · `design-system` المكرر · `zaad-addons.css` المحلي · أي `tokens.css`/`components.css` منسوخ.
-4. حسّن واجهات المنصة الموجودة وفق عقود الحزمة — اقرأ من `components.md` **فقط** أقسام المكوّنات الظاهرة في الشاشات الحالية.
-5. لا تُعدّل أسماء دوال/معاملات الـ UI. لا قيم لون/مسافة صريحة. RTL منطقي.
-6. `npm install && npm run build` ثم فرع + PR يذكر الشاشات المحدّثة.
+4. حسّن واجهات المنصة الظاهرة وفق عقود الحزمة — اقرأ من `components.md` **فقط** أقسام المكوّنات المستخدمة.
+5. **أولوية: تجاوب الجوال (< 768px)**
+   - كل جدول داخل `.zad-table-wrap` أو `.table-scroll`: أضف `data-label` على كل `<td>` (= نص رأس العمود)، و`data-label=""` لخلية الإجراءات.
+   - لا تعتمد على تصغير الجدول؛ الوضع الافتراضي = بطاقات صف.
+   - لفّ أشرطة الأدوات/الفلاتر؛ امنع التمرير الأفقي للصفحة؛ صور/SVG بـ `max-width:100%`.
+   - خلايا الجوال/البريد: `dir="ltr"` + `cell-phone`.
+6. لا تُعدّل أسماء دوال/معاملات الـ UI. لا قيم لون/مسافة صريحة. RTL منطقي.
+7. `npm install && npm run build` ثم فرع + PR يذكر الشاشات المحدّثة + اختبار جوال.
 
 ## Big O
 ربط O(1) · تحسين الشاشات O(S) · بلا نسخ ملفات تصميم.

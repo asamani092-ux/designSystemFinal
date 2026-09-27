@@ -7,11 +7,11 @@
 </head>
 <body>
 <x-dc>
-<template id="__bundler_thumbnail" data-bg-color="#8b1538">
+<template id="__bundler_thumbnail" data-bg-color="#951A41">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="800" fill="#8b1538"></rect>
-    <circle cx="600" cy="400" r="140" fill="#f2b824"></circle>
-    <text x="600" y="430" font-size="140" text-anchor="middle" fill="#8b1538" font-family="sans-serif" font-weight="800">ز</text>
+    <rect width="1200" height="800" fill="#951A41"></rect>
+    <circle cx="600" cy="400" r="140" fill="#E7B121"></circle>
+    <text x="600" y="430" font-size="140" text-anchor="middle" fill="#951A41" font-family="sans-serif" font-weight="800">ز</text>
   </svg>
 </template>
 <helmet>
@@ -19,13 +19,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f5f5; --card: #f8f8f8; --border: #e8e8e8;
-      --text: #706f6f; --head: #8b1538; --code-bg: #f5f5f5;
-      --primary: #8b1538; --primary-hover: #6e102c;
-      --brand-solid: #8b1538; --brand-solid-hover: #6e102c; --brand-solid-text: #ffffff;
-      --chrome: #8b1538; --chrome-hover: #6e102c; --chrome-text: #ffffff;
+      --bg: #E4DDD4; --card: #ffffff; --border: #e8e8e8;
+      --text: #645d5d; --head: #951A41; --code-bg: #E4DDD4;
+      --primary: #951A41; --primary-hover: #7a1535;
+      --brand-solid: #951A41; --brand-solid-hover: #7a1535; --brand-solid-text: #ffffff;
+      --chrome: #951A41; --chrome-hover: #7a1535; --chrome-text: #ffffff;
       color-scheme: light;
-      --primary-soft: rgba(139,21,56,0.08); --primary-soft-2: rgba(139,21,56,0.1); --primary-border: rgba(139,21,56,0.2);
+      --primary-soft: rgba(149,26,65,0.08); --primary-soft-2: rgba(149,26,65,0.1); --primary-border: rgba(149,26,65,0.2);
     }
     .theme-dark {
       --bg: #14161a; --card: #1e2127; --border: #31353d;
@@ -36,7 +36,7 @@
       color-scheme: dark;
       --primary-soft: rgba(225,77,99,0.14); --primary-soft-2: rgba(225,77,99,0.22); --primary-border: rgba(225,77,99,0.34);
     }
-    body { margin: 0; background: #f5f5f5; }
+    body { margin: 0; background: #E4DDD4; }
     .theme-dark, body:has(.theme-dark) { background: #14161a; }
     * { box-sizing: border-box; }
     a { color: var(--primary); text-decoration: none; }
@@ -75,19 +75,49 @@
     }
     /* Global component responsiveness — adjust grids & fixed widths to fit every screen */
     @media (max-width: 640px) {
-      .main-wrap section > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+      /* All grid containers → single column (deep match, not just direct children) */
+      .main-wrap div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
       .radius-swatch { width: 100% !important; }
+      /* Schedule grid → 2 cols on small screens */
+      .sched-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .sched-grid > div[style*="grid-column"] { grid-column: auto !important; }
+      /* Flex rows that overflow → wrap or stack */
+      .main-wrap div[style*="flex-direction: row"], .main-wrap div[style*="display: flex"][style*="gap"] {
+        flex-wrap: wrap !important;
+      }
+    }
+    @media (max-width: 480px) {
+      /* Calendar grid stays 7 cols */
+      .main-wrap div[style*="repeat(7"] { grid-template-columns: repeat(7, 1fr) !important; }
+      /* Filter row grids inside cards → stack */
+      .main-wrap div[style*="1fr 1fr"] { grid-template-columns: 1fr !important; }
     }
     @media (max-width: 400px) {
       .phone-frame { width: 100% !important; max-width: 300px; }
+    }
+    /* Tables — card mode on mobile */
+    .table-scroll { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .table-scroll table { min-width: 580px; }
+    @media (max-width: 640px) {
+      .table-scroll:not(.perm-matrix) { overflow-x: visible !important; }
+      .table-scroll:not(.perm-matrix) table { min-width: 0 !important; display: block !important; }
+      .table-scroll:not(.perm-matrix) thead { display: none !important; }
+      .table-scroll:not(.perm-matrix) tbody { display: flex !important; flex-direction: column; gap: 12px; }
+      .table-scroll:not(.perm-matrix) tfoot { display: block !important; margin-top: 12px; }
+      .table-scroll:not(.perm-matrix) tfoot tr { background: var(--primary-soft) !important; border: 2px solid var(--primary) !important; }
+      .table-scroll:not(.perm-matrix) tr { display: flex !important; flex-direction: column; gap: 0; background: var(--card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; padding: 16px !important; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+      .table-scroll:not(.perm-matrix) td { display: flex !important; align-items: center; justify-content: space-between; padding: 7px 0 !important; border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent); font-size: 13px !important; }
+      .table-scroll:not(.perm-matrix) td:last-child { border-bottom: none; padding-top: 10px !important; }
+      .table-scroll:not(.perm-matrix) td::before { content: attr(data-label); font-weight: 700; color: var(--head); font-size: 12px; flex-shrink: 0; margin-inline-end: 12px; }
+      .table-scroll:not(.perm-matrix) td[data-label=""]::before { display: none; }
     }
     /* Never let any card/grid child force horizontal overflow */
     .main-wrap { overflow-x: hidden; }
     .main-wrap img, .main-wrap svg { max-width: 100%; }
     /* Soften harsh literal button colors in dark mode */
-    .theme-dark .btn-gold { background: rgba(242,184,36,0.16) !important; color: #f0cd6a !important; }
-    .theme-dark .btn-gold:hover { background: rgba(242,184,36,0.26) !important; }
-    .theme-dark .btn-cream { background: rgba(242,184,36,0.1) !important; color: #e2c68e !important; }
+    .theme-dark .btn-gold { background: rgba(231,177,33,0.16) !important; color: #f0cd6a !important; }
+    .theme-dark .btn-gold:hover { background: rgba(231,177,33,0.26) !important; }
+    .theme-dark .btn-cream { background: rgba(231,177,33,0.1) !important; color: #e2c68e !important; }
     .theme-dark .btn-sec:hover { background: var(--border) !important; }
     .theme-dark .logo-light { display: none !important; }
     .theme-dark .logo-dark { display: inline !important; }
@@ -113,7 +143,7 @@
   </style>
 </helmet>
 
-<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#8B1538"></rect><g transform="translate(38 26)"><path d="M12 0 C3 4 -2 14 -2 26 C-2 34 3 42 12 46 C12 30 12 14 12 0 Z" fill="#F2B824"></path><path d="M12 6 C20 9 25 16 25 26 C25 34 20 40 12 44 C12 31 12 18 12 6 Z" fill="#ffffff" opacity="0.92"></path></g></svg></template>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#951A41"></rect><g transform="translate(38 26)"><path d="M12 0 C3 4 -2 14 -2 26 C-2 34 3 42 12 46 C12 30 12 14 12 0 Z" fill="#E7B121"></path><path d="M12 6 C20 9 25 16 25 26 C25 34 20 40 12 44 C12 31 12 18 12 6 Z" fill="#ffffff" opacity="0.92"></path></g></svg></template>
 
 <div dir="rtl" class="{{ themeClass }}" style="font-family: 'Tajawal', Tahoma, Arial, sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); text-align: start;">
 
@@ -159,10 +189,10 @@
   </nav>
 
   <!-- ===== Header ===== -->
-  <header class="hero-wrap" style="color: var(--primary); padding: 56px 24px 48px; border-bottom: 1px solid var(--border); background-color: #F8F8F8">
+  <header class="hero-wrap" style="color: var(--primary); padding: 56px 24px 48px; border-bottom: 1px solid var(--border); background-color: #ffffff">
     <div style="max-width: 72rem; margin-inline: auto; display: flex; flex-direction: column; gap: 12px;">
       <div style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <span style="background: #f2b824; color: #6e102c; font-size: 12px; font-weight: 800; padding: 4px 14px; border-radius: 9999px;">الإصدار 1.0 — يوليو 2026</span>
+        <span style="background: #E7B121; color: #7a1535; font-size: 12px; font-weight: 800; padding: 4px 14px; border-radius: 9999px;">الإصدار 1.0 — يوليو 2026</span>
         <span style="background: var(--primary-soft); color: var(--primary); font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 9999px;">هوية معتمدة</span>
       </div>
       <h1 class="hero-title" style="margin: 0; font-size: 40px; font-weight: 800; line-height: 1.2; color: var(--primary);">نظام تصميم منصة</h1>
@@ -200,13 +230,28 @@
     <!-- ===== KPI cards ===== -->
     <section data-screen-label="بطاقات المؤشرات">
       <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">١·٥ — بطاقات المؤشرات (KPI)</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+      <!-- النمط الأصلي -->
+      <p style="font-size: 13px; font-weight: 600; color: var(--text); margin: 16px 0 8px;">النمط الأساسي</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
         <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
           <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px;">
             <div style="width: 42px; height: 42px; border-radius: 10px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center;">{{ k.svg }}</div>
             <div style="font-size: 13px; font-weight: 600; color: var(--text);">{{ k.label }}</div>
             <div style="font-size: 28px; font-weight: 800; color: var(--head); line-height: 1;">{{ k.value }}</div>
             <div style="font-size: 12px; font-weight: 600; color: {{ k.deltaColor }};">{{ k.delta }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <!-- نمط الحدود الحمراء المتقطعة + خلفية زجاجية -->
+      <p style="font-size: 13px; font-weight: 600; color: var(--text); margin: 24px 0 8px;">نمط الحدود الحمراء المتقطعة — زجاجي</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="background: rgba(149,26,65,0.04); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 2px dashed #c9243f; border-radius: 16px; padding: 20px; box-shadow: 0 4px 24px rgba(149,26,65,0.08), inset 0 1px 0 rgba(255,255,255,0.45); display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 100%); pointer-events: none;"></div>
+            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(149,26,65,0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">{{ k.svg }}</div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--text); position: relative; z-index: 1;">{{ k.label }}</div>
+            <div style="font-size: 28px; font-weight: 800; color: var(--head); line-height: 1; position: relative; z-index: 1;">{{ k.value }}</div>
+            <div style="font-size: 12px; font-weight: 600; color: {{ k.deltaColor }}; position: relative; z-index: 1;">{{ k.delta }}</div>
           </div>
         </sc-for>
       </div>
@@ -246,8 +291,8 @@
       <p style="font-size: 14px; margin: 0 0 20px;">حشوة موحّدة ‎px-6 py-3، زوايا ‎rounded-lg، وزن 600.</p>
       <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
         <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; background: var(--brand-solid); padding: 12px 24px; font-weight: 600; color: #fff; border: none; cursor: pointer; font-family: inherit; font-size: 15px;" style-hover="background: var(--brand-solid-hover);">إجراء رئيسي</button>
-        <button class="btn-sec" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 24px; font-weight: 600; color: var(--text); cursor: pointer; font-family: inherit; font-size: 15px;" style-hover="background: #f5f5f5;">إجراء ثانوي</button>
-        <button class="btn-gold" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; background: #f2b824; padding: 12px 24px; font-weight: 600; color: #854d0e; border: none; cursor: pointer; font-family: inherit; font-size: 15px;" style-hover="background: #f5c84d;">توصية مرحلة</button>
+        <button class="btn-sec" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 24px; font-weight: 600; color: var(--text); cursor: pointer; font-family: inherit; font-size: 15px;" style-hover="background: #E4DDD4;">إجراء ثانوي</button>
+        <button class="btn-gold" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; background: #E7B121; padding: 12px 24px; font-weight: 600; color: #854d0e; border: none; cursor: pointer; font-family: inherit; font-size: 15px;" style-hover="background: #f5c84d;">توصية مرحلة</button>
         <button class="btn-cream" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; padding: 12px 24px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; font-size: 15px; color: #714513; background-color: #F2E9D1" style-hover="background: #d9a31f;">سجّل الآن ←</button>
         <button disabled="" style="display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; background: var(--brand-solid); padding: 12px 24px; font-weight: 600; color: #fff; border: none; opacity: 0.6; cursor: not-allowed; font-family: inherit; font-size: 15px;">معطّل</button>
       </div>
@@ -272,31 +317,31 @@
         <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 16px;">
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">الاسم الكامل</label>
-            <input type="text" placeholder="أدخل الاسم" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="text" placeholder="أدخل الاسم" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">البريد الإلكتروني</label>
-            <input type="email" dir="ltr" placeholder="name@example.com" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="email" dir="ltr" placeholder="name@example.com" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">رقم الجوال</label>
-            <input type="tel" dir="ltr" placeholder="05XXXXXXXX" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="tel" dir="ltr" placeholder="05XXXXXXXX" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">رقم الهوية الوطنية</label>
-            <input type="text" inputmode="numeric" dir="ltr" placeholder="1XXXXXXXXX" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="text" inputmode="numeric" dir="ltr" placeholder="1XXXXXXXXX" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">بحث سريع</label>
             <div style="position: relative;">
               <span style="position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: #a3a3a3; display: flex;">{{ icons.search }}</span>
-              <input type="text" placeholder="ابحث عن مستفيد…" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 44px 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+              <input type="text" placeholder="ابحث عن مستفيد…" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 44px 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
             </div>
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">البرنامج</label>
             <div style="position: relative;">
-              <select style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 44px 12px 16px; color: var(--head); font-family: inherit; font-size: 14px; font-weight: 600; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+              <select style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 44px 12px 16px; color: var(--head); font-family: inherit; font-size: 14px; font-weight: 600; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
                 <option>التمكين المالي</option>
                 <option>ريادة الأعمال</option>
                 <option>التدريب المهني</option>
@@ -306,7 +351,7 @@
           </div>
           <div>
             <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">ملاحظات</label>
-            <textarea rows="3" placeholder="أضف ملاحظة…" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; resize: vertical;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);"></textarea>
+            <textarea rows="3" placeholder="أضف ملاحظة…" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; resize: vertical;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);"></textarea>
           </div>
           <div style="display: flex; flex-direction: column; gap: 10px;">
             <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer;">
@@ -374,11 +419,11 @@
             <tbody>
               <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
                 <tr style="border-top: 1px solid var(--border); background: {{ r.bg }};" style-hover="background: var(--primary-soft); cursor: pointer;">
-                  <td style="padding: 12px 16px; font-weight: 500; color: var(--head);">{{ r.name }}</td>
-                  <td style="padding: 12px 16px;">{{ r.program }}</td>
-                  <td style="padding: 12px 16px;"><span dir="ltr" style="color: var(--text); font-variant-numeric: tabular-nums;">{{ r.phone }}</span></td>
-                  <td style="padding: 12px 16px;"><span style="display: inline-block; border-radius: {{ r.badgeRadius }}; background: {{ r.badgeBg }}; padding: 2px 12px; font-size: 12px; font-weight: 600; color: {{ r.badgeColor }};">{{ r.status }}</span></td>
-                  <td style="padding: 12px 16px;"><div style="display: flex; align-items: center; justify-content: center; gap: 6px;"><button onClick="{{ r.view }}" title="عرض" aria-label="عرض" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: var(--primary-soft); color: var(--primary); border-color: var(--primary);">{{ eyeIcon }}</button><button onClick="{{ r.edit }}" title="تعديل" aria-label="تعديل" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: var(--primary-soft); color: var(--primary); border-color: var(--primary);">{{ editIcon }}</button><button onClick="{{ r.suspend }}" title="إيقاف الحساب" aria-label="إيقاف الحساب" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: #fef9c3; color: #854d0e; border-color: #854d0e;">{{ approveIcon }}</button><button onClick="{{ r.remove }}" title="حذف" aria-label="حذف" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: #fee2e2; color: #991b1b; border-color: #991b1b;">{{ deleteIcon }}</button></div></td>
+                  <td data-label="المستفيد" style="padding: 12px 16px; font-weight: 500; color: var(--head);">{{ r.name }}</td>
+                  <td data-label="البرنامج" style="padding: 12px 16px;">{{ r.program }}</td>
+                  <td data-label="الجوال" style="padding: 12px 16px;"><span dir="ltr" style="color: var(--text); font-variant-numeric: tabular-nums;">{{ r.phone }}</span></td>
+                  <td data-label="الحالة" style="padding: 12px 16px;"><span style="display: inline-block; border-radius: {{ r.badgeRadius }}; background: {{ r.badgeBg }}; padding: 2px 12px; font-size: 12px; font-weight: 600; color: {{ r.badgeColor }};">{{ r.status }}</span></td>
+                  <td data-label="" style="padding: 12px 16px;"><div style="display: flex; align-items: center; justify-content: center; gap: 6px;"><button onClick="{{ r.view }}" title="عرض" aria-label="عرض" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: var(--primary-soft); color: var(--primary); border-color: var(--primary);">{{ eyeIcon }}</button><button onClick="{{ r.edit }}" title="تعديل" aria-label="تعديل" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: var(--primary-soft); color: var(--primary); border-color: var(--primary);">{{ editIcon }}</button><button onClick="{{ r.suspend }}" title="إيقاف الحساب" aria-label="إيقاف الحساب" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: #fef9c3; color: #854d0e; border-color: #854d0e;">{{ approveIcon }}</button><button onClick="{{ r.remove }}" title="حذف" aria-label="حذف" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer;" style-hover="background: #fee2e2; color: #991b1b; border-color: #991b1b;">{{ deleteIcon }}</button></div></td>
                 </tr>
               </sc-for>
             </tbody>
@@ -407,19 +452,19 @@
               <tbody>
                 <sc-for list="{{ reportRows }}" as="rr" hint-placeholder-count="3">
                   <tr style="border-top: 1px solid var(--border);">
-                    <td style="padding: 12px 16px; font-weight: 600; color: var(--head);">{{ rr.prog }}</td>
-                    <td style="padding: 12px 16px;">{{ rr.total }}</td>
-                    <td style="padding: 12px 16px;">{{ rr.done }}</td>
-                    <td style="padding: 12px 16px; color: var(--head); font-weight: 700;">{{ rr.pct }}</td>
+                    <td data-label="البرنامج" style="padding: 12px 16px; font-weight: 600; color: var(--head);">{{ rr.prog }}</td>
+                    <td data-label="المستفيدون" style="padding: 12px 16px;">{{ rr.total }}</td>
+                    <td data-label="المكتمل" style="padding: 12px 16px;">{{ rr.done }}</td>
+                    <td data-label="النسبة" style="padding: 12px 16px; color: var(--head); font-weight: 700;">{{ rr.pct }}</td>
                   </tr>
                 </sc-for>
               </tbody>
               <tfoot>
                 <tr style="border-top: 2px solid var(--border); font-weight: 800; color: var(--head);">
-                  <td style="padding: 12px 16px;">الإجمالي</td>
-                  <td style="padding: 12px 16px;">١٬٢٤٧</td>
-                  <td style="padding: 12px 16px;">٨٩٨</td>
-                  <td style="padding: 12px 16px;">٧٢٪</td>
+                  <td data-label="البرنامج" style="padding: 12px 16px;">الإجمالي</td>
+                  <td data-label="المستفيدون" style="padding: 12px 16px;">١٬٢٤٧</td>
+                  <td data-label="المكتمل" style="padding: 12px 16px;">٨٩٨</td>
+                  <td data-label="النسبة" style="padding: 12px 16px;">٧٢٪</td>
                 </tr>
               </tfoot>
             </table>
@@ -458,7 +503,7 @@
           </div>
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px;"><span>ريادة الأعمال</span><span style="color: #854d0e;">٤٥٪</span></div>
-            <div style="height: 10px; border-radius: 9999px; background: var(--border); overflow: hidden;"><div style="width: 45%; height: 100%; background: #f2b824; border-radius: 9999px;"></div></div>
+            <div style="height: 10px; border-radius: 9999px; background: var(--border); overflow: hidden;"><div style="width: 45%; height: 100%; background: #E7B121; border-radius: 9999px;"></div></div>
           </div>
         </div>
         <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
@@ -546,7 +591,7 @@
             <div style="display: flex; align-items: center; flex: 1; min-width: 0;">
               <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0;">
                 <div style="width: 34px; height: 34px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: {{ st.circleBg }}; color: {{ st.circleColor }}; border: 2px solid {{ st.circleBorder }};">{{ st.n }}</div>
-                <span class="step-label" style="font-size: 12px; font-weight: 600; color: #8B1538; white-space: nowrap">{{ st.label }}</span>
+                <span class="step-label" style="font-size: 12px; font-weight: 600; color: #951A41; white-space: nowrap">{{ st.label }}</span>
               </div>
               <sc-if value="{{ st.line }}" hint-placeholder-val="{{ true }}"><div style="height: 2px; flex: 1; background: {{ st.lineColor }}; margin: 0 8px 22px;"></div></sc-if>
             </div>
@@ -560,7 +605,7 @@
         <sc-for list="{{ accordion }}" as="ac" hint-placeholder-count="3">
           <div style="background: var(--card); border: 2px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
             <button onClick="{{ ac.toggle }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 15px; font-weight: 700; color: var(--head); text-align: start;">
-              <span style="color: #8B1538">{{ ac.q }}</span>
+              <span style="color: #951A41">{{ ac.q }}</span>
               <span style="display: flex; flex-shrink: 0; color: var(--text); transform: {{ ac.chevronRot }};">{{ chevronIcon }}</span>
             </button>
             <sc-if value="{{ ac.open }}" hint-placeholder-val="{{ false }}">
@@ -866,9 +911,147 @@
       </div>
     </section>
 
+    <!-- ===== User Management ===== -->
+    <section data-screen-label="إدارة المستخدمين">
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٣ — إدارة المستخدمين والصلاحيات</h2>
+      <p style="font-size: 14px; margin: 0 0 20px;">لوحة إدارة كاملة: جدول المستخدمين مع الفلترة، مصفوفة الأدوار والصلاحيات، دعوة مستخدم جديد، وسجل النشاط.</p>
+
+      <!-- 1) Users Table with filters -->
+      <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div style="font-size: 15px; font-weight: 800; color: var(--primary);">١) جدول المستخدمين</div>
+          <button style="display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; background: var(--brand-solid); color: #fff; border: none; padding: 10px 18px; font-weight: 700; font-family: inherit; font-size: 13px; cursor: pointer;" style-hover="background: var(--brand-solid-hover);"><span style="display: flex;">{{ plusIcon }}</span> دعوة مستخدم</button>
+        </div>
+        <!-- Filter bar -->
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+          <div style="position: relative; flex: 1; min-width: 180px;"><span style="position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--text); display: flex;">{{ searchMiniIcon }}</span><input type="text" placeholder="بحث بالاسم أو البريد…" style="width: 100%; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); padding: 10px 10px 10px 38px; color: var(--text); font-family: inherit; font-size: 13px;"></div>
+          <select style="border-radius: 10px; border: 1px solid var(--border); background: var(--bg); padding: 10px 14px; color: var(--text); font-family: inherit; font-size: 13px; min-width: 120px;"><option>كل الأدوار</option><option>مدير النظام</option><option>مشرف</option><option>موظف</option><option>مستفيد</option></select>
+          <select style="border-radius: 10px; border: 1px solid var(--border); background: var(--bg); padding: 10px 14px; color: var(--text); font-family: inherit; font-size: 13px; min-width: 120px;"><option>كل الحالات</option><option>نشط</option><option>معلّق</option><option>موقوف</option></select>
+        </div>
+        <!-- Table -->
+        <div class="table-scroll" style="overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;">
+          <table style="width: 100%; font-size: 14px; border-collapse: collapse; text-align: start; min-width: 700px;">
+            <thead>
+              <tr style="background: var(--primary-soft); color: var(--head);">
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">المستخدم</th>
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">البريد</th>
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">الدور</th>
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">الحالة</th>
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">آخر دخول</th>
+                <th style="padding: 12px 16px; text-align: center; font-weight: 700;">الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ adminUsers }}" as="u" hint-placeholder-count="5">
+                <tr style="border-top: 1px solid var(--border);">
+                  <td data-label="" style="padding: 12px 16px;"><div style="display: flex; align-items: center; gap: 10px;"><div style="width: 36px; height: 36px; border-radius: 9999px; background: {{ u.avBg }}; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 700;">{{ u.initials }}</div><div><div style="font-weight: 600; color: var(--head);">{{ u.name }}</div><div style="font-size: 12px; color: var(--text);">{{ u.dept }}</div></div></div></td>
+                  <td data-label="البريد" style="padding: 12px 16px;"><span dir="ltr" style="font-size: 13px; color: var(--text);">{{ u.email }}</span></td>
+                  <td data-label="الدور" style="padding: 12px 16px;"><span style="display: inline-block; border-radius: 8px; background: {{ u.roleBg }}; color: {{ u.roleColor }}; padding: 3px 12px; font-size: 12px; font-weight: 700;">{{ u.role }}</span></td>
+                  <td data-label="الحالة" style="padding: 12px 16px;"><span style="display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: {{ u.statusColor }};"><span style="width: 8px; height: 8px; border-radius: 9999px; background: {{ u.statusColor }};"></span>{{ u.status }}</span></td>
+                  <td data-label="آخر دخول" style="padding: 12px 16px; font-size: 13px; color: var(--text);">{{ u.lastLogin }}</td>
+                  <td data-label="" style="padding: 12px 16px;"><div style="display: flex; align-items: center; justify-content: center; gap: 6px;"><button title="تعديل" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: var(--primary-soft);">{{ editIcon }}</button><button title="تعليق" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: #854d0e; cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: #fef9c3;">{{ pauseIcon }}</button><button title="حذف" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: #991b1b; cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: #fee2e2;">{{ trashIcon }}</button></div></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 13px; color: var(--text); flex-wrap: wrap; gap: 8px;">
+          <span>عرض ٥ من ٢٤ مستخدم</span>
+          <div style="display: flex; gap: 4px;">
+            <button style="width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center;">{{ chevronIcon }}</button>
+            <button style="min-width: 34px; height: 34px; border-radius: 8px; border: none; background: var(--brand-solid); color: #fff; font-weight: 700; font-size: 13px; cursor: pointer;">١</button>
+            <button style="min-width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px; cursor: pointer;">٢</button>
+            <button style="min-width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px; cursor: pointer;">٣</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) Roles & Permissions Matrix -->
+      <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <div style="font-size: 15px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">٢) مصفوفة الأدوار والصلاحيات</div>
+        <div class="table-scroll perm-matrix" style="overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;">
+          <table style="width: 100%; font-size: 13px; border-collapse: collapse; text-align: center; min-width: 600px;">
+            <thead>
+              <tr style="background: var(--primary-soft); color: var(--head);">
+                <th style="padding: 12px 16px; text-align: start; font-weight: 700;">الصلاحية</th>
+                <sc-for list="{{ roleHeaders }}" as="rh" hint-placeholder-count="4">
+                  <th style="padding: 12px 16px; font-weight: 700;">{{ rh }}</th>
+                </sc-for>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ permRows }}" as="pr" hint-placeholder-count="8">
+                <tr style="border-top: 1px solid var(--border);">
+                  <td style="padding: 10px 16px; text-align: start; font-weight: 600; color: var(--head);">{{ pr.label }}</td>
+                  <td style="padding: 10px 16px;"><span style="display: inline-flex; width: 22px; height: 22px; border-radius: 6px; align-items: center; justify-content: center; background: {{ pr.c1Bg }}; color: {{ pr.c1Color }};">{{ pr.c1 }}</span></td>
+                  <td style="padding: 10px 16px;"><span style="display: inline-flex; width: 22px; height: 22px; border-radius: 6px; align-items: center; justify-content: center; background: {{ pr.c2Bg }}; color: {{ pr.c2Color }};">{{ pr.c2 }}</span></td>
+                  <td style="padding: 10px 16px;"><span style="display: inline-flex; width: 22px; height: 22px; border-radius: 6px; align-items: center; justify-content: center; background: {{ pr.c3Bg }}; color: {{ pr.c3Color }};">{{ pr.c3 }}</span></td>
+                  <td style="padding: 10px 16px;"><span style="display: inline-flex; width: 22px; height: 22px; border-radius: 6px; align-items: center; justify-content: center; background: {{ pr.c4Bg }}; color: {{ pr.c4Color }};">{{ pr.c4 }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-size: 12px; color: var(--text);">
+          <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #dcfce7; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 10px; font-weight: 800;">✓</span> مسموح</div>
+          <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #fee2e2; display: flex; align-items: center; justify-content: center; color: #991b1b; font-size: 10px; font-weight: 800;">✕</span> ممنوع</div>
+          <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #fef9c3; display: flex; align-items: center; justify-content: center; color: #854d0e; font-size: 10px; font-weight: 800;">◐</span> جزئي</div>
+        </div>
+      </div>
+
+      <!-- 3) Invite User Form -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+          <div style="font-size: 15px; font-weight: 800; color: var(--primary); margin-bottom: 16px;">٣) دعوة مستخدم جديد</div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">الاسم الكامل</label>
+              <input type="text" placeholder="أدخل اسم المستخدم" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px;">
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">البريد الإلكتروني</label>
+              <input type="email" dir="ltr" placeholder="user@example.com" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px;">
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">الدور</label>
+              <select style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px;"><option>اختر الدور…</option><option>مدير النظام</option><option>مشرف</option><option>موظف</option><option>مستفيد</option></select>
+            </div>
+            <div>
+              <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text);">المنصة</label>
+              <select style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px;"><option>اختر المنصة…</option><option>منصة الجمعية</option><option>منصة التحفيظ</option><option>منصة التدريب</option><option>منصة الأسر المنتجة</option><option>منصة المستودع</option><option>منصة العملاء</option></select>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 4px;">
+              <button style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: var(--brand-solid); padding: 12px; font-weight: 700; color: #fff; border: none; cursor: pointer; font-family: inherit; font-size: 14px;" style-hover="background: var(--brand-solid-hover);"><span style="display: flex;">{{ mailIcon }}</span> إرسال الدعوة</button>
+              <button style="border-radius: 12px; background: transparent; padding: 12px 18px; font-weight: 700; color: var(--text); border: 1px solid var(--border); cursor: pointer; font-family: inherit; font-size: 14px;" style-hover="background: var(--primary-soft);">إلغاء</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4) Activity Log -->
+        <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="font-size: 15px; font-weight: 800; color: var(--primary);">٤) سجل النشاط</div>
+            <select style="border-radius: 8px; border: 1px solid var(--border); background: var(--bg); padding: 6px 12px; color: var(--text); font-family: inherit; font-size: 12px;"><option>آخر ٢٤ ساعة</option><option>آخر ٧ أيام</option><option>آخر ٣٠ يوم</option></select>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0;">
+            <sc-for list="{{ activityLog }}" as="log" hint-placeholder-count="6">
+              <div style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <div style="width: 36px; height: 36px; border-radius: 9999px; background: {{ log.iconBg }}; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: {{ log.iconColor }};">{{ log.icon }}</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 13px; color: var(--head);"><span style="font-weight: 700;">{{ log.user }}</span> {{ log.action }}</div>
+                  <div style="font-size: 12px; color: var(--text); margin-top: 2px;">{{ log.time }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <button style="width: 100%; margin-top: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); padding: 10px; font-weight: 600; color: var(--primary); cursor: pointer; font-family: inherit; font-size: 13px;" style-hover="background: var(--primary-soft);">عرض السجل الكامل</button>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== Extended components ===== -->
     <section data-screen-label="مكونات موسعة">
-      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٣ — مكوّنات موسّعة</h2>
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٤ — مكوّنات موسّعة</h2>
       <p style="font-size: 14px; margin: 0 0 20px;">مكوّنات رحلة الطلب والصرف والمرفقات والتقارير — مبنية على نفس التوكنات.</p>
 
       <!-- 1) Wizard -->
@@ -997,7 +1180,7 @@
 
     <!-- ===== Profile drawer ===== -->
     <section data-screen-label="درج ملف المستفيد">
-      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٤ — درج ملف المستفيد</h2>
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٥ — درج ملف المستفيد</h2>
       <p style="font-size: 14px; margin: 0 0 16px;">درج جانبي يفتح من جهة البدء يعرض الملف الكامل في تبويبات: البيانات، المرفقات، سجل الطلبات، الملاحظات.</p>
       <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1010,7 +1193,7 @@
 
     <!-- ===== Report presentation launcher ===== -->
     <section data-screen-label="منشئ العرض التقديمي">
-      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٥ — منشئ العرض التقديمي للتقارير</h2>
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٦ — منشئ العرض التقديمي للتقارير</h2>
       <p style="font-size: 14px; margin: 0 0 16px;">أداة مستقلة تحوّل تقارير أي منصة إلى عرض تقديمي احترافي (شرائح ملء الشاشة، ثيم فاتح/داكن، تفاعل بالنقر على المؤشرات). تُغذّى ببيانات المنصة عبر عقد بيانات موثّق داخلها.</p>
       <div style="background: linear-gradient(135deg, var(--brand-solid), #65102a); border-radius: 16px; padding: 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 16px;">
@@ -1023,7 +1206,7 @@
 
     <!-- ===== Essential + platform components ===== -->
     <section data-screen-label="مكونات أساسية ومنصية">
-      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٦ — مكوّنات أساسية ومتخصّصة للمنصات</h2>
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٧ — مكوّنات أساسية ومتخصّصة للمنصات</h2>
       <p style="font-size: 14px; margin: 0 0 20px;">الحزمة الأساسية (Toast، قوائم، تلميح، منتقي تاريخ، هيكل تحميل) وعناصر متخصّصة (خرائط، تقويم، موارد بشرية، مسارات عمل، رافع ملفات) لتغطية المنصات الست.</p>
 
       <!-- Essential pack -->
@@ -1202,7 +1385,7 @@
 
     <!-- ===== Workflow forms: tasks / survey / intake ===== -->
     <section data-screen-label="نماذج المهام والاستبيان والاستقبال">
-      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٧ — نماذج المهام والاستبيانات واستقبال الطلبات</h2>
+      <h2 class="sec-h2" style="font-size: 24px; font-weight: 800; color: var(--head); margin: 0 0 4px;">٦·١٨ — نماذج المهام والاستبيانات واستقبال الطلبات</h2>
       <p style="font-size: 14px; margin: 0 0 20px;">إسناد المهام للموظفين، بنّاء استبيان قابل للمشاركة، وبوابة استقبال طلبات عامة مع القبول والإسناد.</p>
 
       <!-- Task assignment -->
@@ -1324,7 +1507,7 @@
         <sc-for list="{{ adoption }}" as="a" hint-placeholder-count="4">
           <div style="background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
             <div style="font-weight: 700; color: var(--head); font-size: 15px; margin-bottom: 6px;">{{ a.platform }}</div>
-            <div dir="ltr" style="font-size: 12px; background: var(--code-bg); border-radius: 6px; padding: 8px 12px; font-family: monospace; color: #6e102c; text-align: left; margin-bottom: 6px; word-break: break-all;">{{ a.code }}</div>
+            <div dir="ltr" style="font-size: 12px; background: var(--code-bg); border-radius: 6px; padding: 8px 12px; font-family: monospace; color: #7a1535; text-align: left; margin-bottom: 6px; word-break: break-all;">{{ a.code }}</div>
             <div style="font-size: 13px; line-height: 1.6;">{{ a.note }}</div>
           </div>
         </sc-for>
@@ -1339,7 +1522,7 @@
       <div style="background: var(--card); border-radius: 16px; max-width: 26rem; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border);">
           <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--head);">تأكيد الاعتماد</h3>
-          <button onClick="{{ closeModal }}" aria-label="إغلاق" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: transparent; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: rgba(139,21,56,0.08);">{{ xIcon }}</button>
+          <button onClick="{{ closeModal }}" aria-label="إغلاق" style="width: 34px; height: 34px; border-radius: 10px; border: none; background: transparent; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center;" style-hover="background: rgba(149,26,65,0.08);">{{ xIcon }}</button>
         </div>
         <div style="padding: 24px; font-size: 14px; line-height: 1.8; color: var(--text);">هل أنت متأكد من اعتماد طلب المستفيد «سارة العتيبي» للمرحلة الثانية؟ لا يمكن التراجع عن هذا الإجراء.</div>
         <div style="display: flex; gap: 10px; justify-content: flex-start; padding: 0 24px 24px;">
@@ -1384,15 +1567,15 @@
         <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 14px;">
           <div>
             <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text);">الاسم</label>
-            <input type="text" value="{{ editName }}" onInput="{{ onEditName }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="text" value="{{ editName }}" onInput="{{ onEditName }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text);">{{ editF1Label }}</label>
-            <input type="text" value="{{ editF1Value }}" onInput="{{ onEditF1 }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="text" value="{{ editF1Value }}" onInput="{{ onEditF1 }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
           <div>
             <label style="display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text);">{{ editF2Label }}</label>
-            <input type="text" dir="ltr" value="{{ editF2Value }}" onInput="{{ onEditF2 }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(139,21,56,0.2);">
+            <input type="text" dir="ltr" value="{{ editF2Value }}" onInput="{{ onEditF2 }}" style="width: 100%; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; outline: none; text-align: right;" style-focus="border-color: var(--head); box-shadow: 0 0 0 2px rgba(149,26,65,0.2);">
           </div>
         </div>
         <div style="display: flex; gap: 10px; justify-content: flex-start; padding: 0 24px 24px;">
@@ -1426,7 +1609,7 @@
             <div>
               <div style="font-size: 20px; font-weight: 800;">سارة العتيبي</div>
               <div style="font-size: 13px; opacity: 0.9;">التمكين المالي · الرياض</div>
-              <span style="display: inline-block; margin-top: 6px; background: #f2b824; color: #6e102c; font-size: 11px; font-weight: 800; padding: 2px 12px; border-radius: 9999px;">نشط</span>
+              <span style="display: inline-block; margin-top: 6px; background: #E7B121; color: #7a1535; font-size: 11px; font-weight: 800; padding: 2px 12px; border-radius: 9999px;">نشط</span>
             </div>
           </div>
         </div>
@@ -1607,9 +1790,9 @@ class Component extends DCLogic {
       toggleTheme: () => this.setState(s => ({ dark: !s.dark })),
       navLinks: [
         { label: "الرئيسية", color: "var(--primary)", bg: "var(--primary-soft)" },
-        { label: "المستفيدون", color: "#706f6f", bg: "transparent" },
-        { label: "البرامج", color: "#706f6f", bg: "transparent" },
-        { label: "التقارير", color: "#706f6f", bg: "transparent" },
+        { label: "المستفيدون", color: "#645d5d", bg: "transparent" },
+        { label: "البرامج", color: "#645d5d", bg: "transparent" },
+        { label: "التقارير", color: "#645d5d", bg: "transparent" },
       ],
       iconList: [
         { svg: icons.home, name: "الرئيسية" },
@@ -1629,7 +1812,7 @@ class Component extends DCLogic {
         { svg: icons.users, label: "إجمالي المستفيدين", value: "١٬٢٤٧", delta: "+٨٪ هذا الشهر", deltaColor: "#15803d" },
         { svg: icons.file, label: "طلبات معلّقة", value: "٨٦", delta: "١٢ بحاجة مراجعة", deltaColor: "#854d0e" },
         { svg: icons.check, label: "برامج مكتملة", value: "٣٤", delta: "+٣ هذا الربع", deltaColor: "#15803d" },
-        { svg: icons.chart, label: "معدل الإنجاز", value: "٧٢٪", delta: "الهدف ٨٠٪", deltaColor: "#706f6f" },
+        { svg: icons.chart, label: "معدل الإنجاز", value: "٧٢٪", delta: "الهدف ٨٠٪", deltaColor: "#645d5d" },
       ],
       alerts: [
         { svg: icons.check, title: "تم حفظ التغييرات", body: "تم تحديث بيانات المستفيد بنجاح.", bg: "#dcfce7", color: "#15803d", border: "#15803d" },
@@ -1699,6 +1882,40 @@ class Component extends DCLogic {
         field2Label: "رقم الجوال", field2Value: b.phone,
         field3Label: "نسبة الإنجاز", field3Value: this.arNum(b.pct) + "٪",
       } }) })),
+      // --- User Management Data ---
+      trashIcon: icons.trash,
+      pauseIcon: icons.ban,
+      adminUsers: [
+        { name: "عبدالله الأحمد", initials: "عا", dept: "الإدارة العليا", email: "a.ahmed@alzad.org", role: "مدير النظام", roleBg: "var(--primary-soft)", roleColor: "var(--primary)", status: "نشط", statusColor: "#15803d", lastLogin: "منذ ساعة", avBg: "var(--primary)" },
+        { name: "سارة العتيبي", initials: "سع", dept: "قسم المستفيدين", email: "s.otaibi@alzad.org", role: "مشرف", roleBg: "#ede9fe", roleColor: "#6d28d9", status: "نشط", statusColor: "#15803d", lastLogin: "منذ ٣ ساعات", avBg: "#6d28d9" },
+        { name: "فهد القحطاني", initials: "فق", dept: "قسم المالية", email: "f.qahtani@alzad.org", role: "موظف", roleBg: "#dbeafe", roleColor: "#1d4ed8", status: "نشط", statusColor: "#15803d", lastLogin: "أمس", avBg: "#1d4ed8" },
+        { name: "نورة الشمري", initials: "نش", dept: "قسم التدريب", email: "n.shamri@alzad.org", role: "موظف", roleBg: "#dbeafe", roleColor: "#1d4ed8", status: "معلّق", statusColor: "#854d0e", lastLogin: "منذ ٥ أيام", avBg: "#854d0e" },
+        { name: "محمد الدوسري", initials: "مد", dept: "—", email: "m.dosari@alzad.org", role: "مستفيد", roleBg: "#f3f4f6", roleColor: "#374151", status: "موقوف", statusColor: "#991b1b", lastLogin: "منذ شهر", avBg: "#991b1b" },
+      ],
+      roleHeaders: ["مدير النظام", "مشرف", "موظف", "مستفيد"],
+      permRows: (() => {
+        const ck = { bg: "#dcfce7", color: "#15803d", v: "✓" };
+        const no = { bg: "#fee2e2", color: "#991b1b", v: "✕" };
+        const pt = { bg: "#fef9c3", color: "#854d0e", v: "◐" };
+        return [
+          { label: "إدارة المستخدمين", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: pt.v, c2Bg: pt.bg, c2Color: pt.color, c3: no.v, c3Bg: no.bg, c3Color: no.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+          { label: "إدارة الأدوار", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: no.v, c2Bg: no.bg, c2Color: no.color, c3: no.v, c3Bg: no.bg, c3Color: no.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+          { label: "عرض التقارير", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: ck.v, c2Bg: ck.bg, c2Color: ck.color, c3: pt.v, c3Bg: pt.bg, c3Color: pt.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+          { label: "إدارة المستفيدين", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: ck.v, c2Bg: ck.bg, c2Color: ck.color, c3: ck.v, c3Bg: ck.bg, c3Color: ck.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+          { label: "الموافقة على الطلبات", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: ck.v, c2Bg: ck.bg, c2Color: ck.color, c3: no.v, c3Bg: no.bg, c3Color: no.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+          { label: "رفع المرفقات", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: ck.v, c2Bg: ck.bg, c2Color: ck.color, c3: ck.v, c3Bg: ck.bg, c3Color: ck.color, c4: ck.v, c4Bg: ck.bg, c4Color: ck.color },
+          { label: "تعديل البيانات الشخصية", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: ck.v, c2Bg: ck.bg, c2Color: ck.color, c3: ck.v, c3Bg: ck.bg, c3Color: ck.color, c4: pt.v, c4Bg: pt.bg, c4Color: pt.color },
+          { label: "إعدادات النظام", c1: ck.v, c1Bg: ck.bg, c1Color: ck.color, c2: no.v, c2Bg: no.bg, c2Color: no.color, c3: no.v, c3Bg: no.bg, c3Color: no.color, c4: no.v, c4Bg: no.bg, c4Color: no.color },
+        ];
+      })(),
+      activityLog: [
+        { user: "عبدالله الأحمد", action: "أضاف مستخدم جديد «فاطمة العنزي»", time: "منذ ١٥ دقيقة", icon: icons.plus, iconBg: "#dcfce7", iconColor: "#15803d" },
+        { user: "سارة العتيبي", action: "عدّلت صلاحيات «فهد القحطاني»", time: "منذ ساعة", icon: icons.edit, iconBg: "var(--primary-soft)", iconColor: "var(--primary)" },
+        { user: "فهد القحطاني", action: "سجّل دخول من جهاز جديد", time: "منذ ٣ ساعات", icon: icons.users, iconBg: "#dbeafe", iconColor: "#1d4ed8" },
+        { user: "النظام", action: "علّق حساب «نورة الشمري» — عدم نشاط", time: "منذ ٥ ساعات", icon: icons.ban, iconBg: "#fef9c3", iconColor: "#854d0e" },
+        { user: "عبدالله الأحمد", action: "أوقف حساب «محمد الدوسري» نهائياً", time: "أمس ١١:٣٠ ص", icon: icons.trash, iconBg: "#fee2e2", iconColor: "#991b1b" },
+        { user: "سارة العتيبي", action: "أرسلت دعوة لـ «خالد المطيري»", time: "أمس ٩:١٥ ص", icon: icons.mail, iconBg: "var(--primary-soft)", iconColor: "var(--primary)" },
+      ],
       mobileNav: [
         { label: "الرئيسية", svg: icons.home, color: "var(--text)" },
         { label: "المستفيدون", svg: icons.users, color: "var(--primary)" },
@@ -1732,7 +1949,7 @@ class Component extends DCLogic {
         { initials: "", bg: "var(--primary)" },
         { initials: "", bg: "#b45309" },
         { initials: "", bg: "#3F6E51" },
-        { initials: "+٥", bg: "#706f6f" },
+        { initials: "+٥", bg: "#645d5d" },
       ],
       accordion: [
         { q: "كيف أقدّم طلب انضمام لبرنامج؟", a: "من صفحة البرامج، اختر البرنامج ثم اضغط «تقديم طلب» وأكمل الحقول المطلوبة.", open: this.state.acc === 0 },
@@ -2072,13 +2289,13 @@ class Component extends DCLogic {
         { name: "full", val: "9999px", desc: "صور، شارات دائرية" },
       ],
       brandColors: [
-        { name: "الأساسي", hex: "#8B1538", token: "primary", use: "عناوين، أزرار، روابط" },
-        { name: "الأساسي الداكن", hex: "#6E102C", token: "primary-dark", use: "حالة hover" },
-        { name: "الثانوي", hex: "#F2B824", token: "secondary", use: "تمييز، CTA تسجيل" },
-        { name: "رمادي الهوية", hex: "#706F6F", token: "brand-gray", use: "نصوص ثانوية" },
-        { name: "السطح", hex: "#F8F8F8", token: "surface", use: "خلفية البطاقات" },
-        { name: "سطح خافت", hex: "#F5F5F5", token: "surface-muted", use: "خلفية الصفحات" },
-        { name: "الحدود", hex: "#E8E8E8", token: "surface-border", use: "حدود العناصر" },
+        { name: "الأساسي", hex: "#951A41", token: "primary", use: "عناوين، أزرار، روابط" },
+        { name: "الأساسي الداكن", hex: "#7a1535", token: "primary-dark", use: "حالة hover" },
+        { name: "الثانوي", hex: "#E7B121", token: "secondary", use: "تمييز، CTA تسجيل" },
+        { name: "رمادي الهوية", hex: "#938989", token: "brand-gray", use: "نصوص ثانوية" },
+        { name: "السطح", hex: "#ffffff", token: "surface", use: "خلفية البطاقات" },
+        { name: "سطح خافت", hex: "#E4DDD4", token: "surface-muted", use: "خلفية الصفحات" },
+        { name: "الحدود", hex: "#c5bbb0", token: "surface-border", use: "حدود العناصر" },
       ],
       typeScale: [
         { label: "عنوان صفحة", spec: "text-2xl / 700", size: "24px", weight: 700, color: "var(--head)", sample: "لوحة تحكم منصة التمكين" },
